@@ -1,38 +1,43 @@
 
 # Akraphy Studio - AI Product Photography Platform
 
-> **"Saniyeler içinde profesyonel stüdyo kalitesinde görseller oluşturun."**
+> **"Professional studio-quality images in seconds."**
 
-Akraphy Studio, e-ticaret satıcıları için geliştirilmiş özel bir yapay zeka arayüzüdür. Sıradan telefon fotoğraflarını saniyeler içinde yüksek dönüşümlü pazarlama görsellerine dönüştürür.
+Akraphy Studio is a specialized AI interface for e-commerce sellers. It transforms ordinary smartphone photos into high-conversion marketing assets in seconds.
 
-## 🌟 Öne Çıkan Özellikler
+## 🌟 Key Features
 
-*   **Akıllı Stüdyo Modları:** Mücevher, Moda, Kozmetik ve Teknoloji gibi dikey alanlar için optimize edilmiş yapay zeka istemleri.
-*   **Gelişmiş Arkaplan Kütüphanesi:** Saf Beyaz (Pazaryeri uyumlu), Yaşam Alanı, Dış Mekan, Mermer ve daha fazlası.
-*   **Gerçekçi Işık Motoru:** 3D geometriyi anlayan yapay zeka ile doğal gölge ve yansıma oluşturma.
-*   **Profesyonel İndirme Seçenekleri:** Kare (1:1), Portre (9:16), Hikaye (4:5) gibi sosyal medya ve web formatları.
+*   **Smart Studio Modes:** Optimized prompts for niches like Jewelry, Fashion, Beauty, and Tech.
+*   **Professional Background Library:** Pure White (marketplace compliant), Lifestyle, Outdoor, Marble, and more.
+*   **Realistic Lighting Engine:** AI that understands 3D geometry to cast natural shadows and reflections.
+*   **Multi-Format Export:** High-quality downloads in 1:1 (Square), 9:16 (Story), and 4:5 (Portrait) ratios using "Fit & Blur" logic.
+*   **User Management:** LocalStorage-based account system with credit tracking and 5 subscription plans.
+*   **Multi-language Support:** Full Turkish and English localization.
 
-## 🚀 Hızlı Başlangıç (Test Modu)
+## 🚀 Quick Start (Test Mode)
 
-Uygulama şu an **akraphy@akraphy.com** admin kullanıcısı ile otomatik olarak başlar. Admin kullanıcısı **Studio Plan** (250 kredi) yetkilerine sahiptir.
+The application automatically starts with the **akraphy@akraphy.com** admin user. 
+- **Admin Privileges:** Access to the "Studio" plan with 999 credits.
+- **Auto-Login:** No registration required for testing.
 
-## 🏗 Teknik Mimari
+## 🏗 Technical Architecture
 
 *   **Frontend:** React 19 (TypeScript)
-*   **Styling:** Tailwind CSS (Anthracite Dark Mode)
-*   **Engine:** @google/genai (Gemini 2.5 Flash Image)
-*   **Automation:** n8n Webhook Integration
+*   **Styling:** Tailwind CSS with a custom Anthracite/Apple design system.
+*   **AI Engine:** Integrated via Gemini 2.5 Flash for prompt engineering.
+*   **Automation:** n8n Webhook integration for heavy lifting diffusion processing.
 
-## 🔌 n8n Entegrasyonu
+## 🔌 n8n Integration
 
-Frontend, n8n veya benzeri platformlara şu JSON payload'unu gönderir:
+The frontend sends the following JSON payload to the n8n webhook:
 ```json
 {
   "image": "base64_string...",
   "category": "JEWELRY",
   "scene": "CLEAN_WHITE",
   "lighting": "STUDIO_SOFT",
-  "prompt": "Full AI system instruction..."
+  "prompt": "Full AI system instruction...",
+  "timestamp": "ISO-8601"
 }
 ```
 

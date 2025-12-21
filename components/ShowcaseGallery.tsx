@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language, GalleryItem } from '../types';
+import { Language, GalleryItem, ProductCategory, SceneType, LightingType } from '../types';
 import { translations } from '../translations';
-import { X, ZoomIn, Info, ChevronRight } from 'lucide-react';
+import { X, ZoomIn, ChevronRight } from 'lucide-react';
 import { ComparisonSlider } from './ComparisonSlider';
 import { SHOWCASE_ITEMS } from '../data/galleryData';
 
@@ -12,6 +12,7 @@ interface ShowcaseGalleryProps {
 
 export const ShowcaseGallery: React.FC<ShowcaseGalleryProps> = ({ lang }) => {
   const t = translations[lang];
+  const configT = t.config;
   const [selectedExample, setSelectedExample] = useState<GalleryItem | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,22 @@ export const ShowcaseGallery: React.FC<ShowcaseGalleryProps> = ({ lang }) => {
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [selectedExample]);
+
+  // Helper to get translated label from enum value
+  const getTranslatedLabel = (type: 'category' | 'scene' | 'lighting', value: string) => {
+    let key: string | undefined;
+    
+    if (type === 'category') {
+      key = Object.keys(ProductCategory).find(k => ProductCategory[k as keyof typeof ProductCategory] === value);
+      return key ? configT.categories[key as keyof typeof configT.categories] : value;
+    } else if (type === 'scene') {
+      key = Object.keys(SceneType).find(k => SceneType[k as keyof typeof SceneType] === value);
+      return key ? configT.scenes[key as keyof typeof configT.scenes] : value;
+    } else {
+      key = Object.keys(LightingType).find(k => LightingType[k as keyof typeof LightingType] === value);
+      return key ? configT.lighting[key as keyof typeof configT.lighting] : value;
+    }
+  };
 
   return (
     <>
@@ -55,8 +72,8 @@ export const ShowcaseGallery: React.FC<ShowcaseGalleryProps> = ({ lang }) => {
                  </div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                <p className="text-white text-xs font-bold truncate opacity-80">{ex.category}</p>
-                <p className="text-white text-[10px] font-medium truncate opacity-60">{ex.scene}</p>
+                <p className="text-white text-xs font-bold truncate opacity-80">{getTranslatedLabel('category', ex.category)}</p>
+                <p className="text-white text-[10px] font-medium truncate opacity-60">{getTranslatedLabel('scene', ex.scene)}</p>
               </div>
             </div>
           ))}
@@ -87,15 +104,15 @@ export const ShowcaseGallery: React.FC<ShowcaseGalleryProps> = ({ lang }) => {
             </div>
 
             <div className="pointer-events-auto mt-4 flex flex-col items-center text-center">
-                <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 mb-4 shadow-xl">
+                <div className="flex flex-wrap items-center justify-center gap-3 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 mb-4 shadow-xl">
                     <span className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">{lang === 'tr' ? 'STÜDYO REÇETESİ' : 'STUDIO RECIPE'}</span>
-                    <div className="w-[1px] h-3 bg-white/10"></div>
+                    <div className="hidden sm:block w-[1px] h-3 bg-white/10"></div>
                     <div className="flex items-center gap-2 text-white text-xs font-bold">
-                        <span className="opacity-100">{selectedExample.category}</span>
+                        <span className="opacity-100">{getTranslatedLabel('category', selectedExample.category)}</span>
                         <ChevronRight className="w-3 h-3 text-white/30" />
-                        <span className="opacity-100">{selectedExample.scene}</span>
+                        <span className="opacity-100">{getTranslatedLabel('scene', selectedExample.scene)}</span>
                         <ChevronRight className="w-3 h-3 text-white/30" />
-                        <span className="opacity-100 text-blue-400">{selectedExample.lighting}</span>
+                        <span className="opacity-100 text-blue-400">{getTranslatedLabel('lighting', selectedExample.lighting)}</span>
                     </div>
                 </div>
                 <h3 className="text-white text-2xl font-bold mb-1 tracking-tight">{selectedExample.title}</h3>

@@ -1,41 +1,43 @@
 
-# Akraphy Studio Mimari Dokümantasyonu
+# Akraphy Studio Technical Architecture (Blueprint)
 
-Bu belge, Akraphy Studio uygulamasının teknik yapısını ve veri akışını özetler.
+This document serves as both a human-readable guide and a technical blueprint for AI-assisted development (Cursor/Bolt/Neo).
 
-## 1. Genel Yapı
+## 1. Core Structure
+Akraphy Studio is a React 19 SPA. It follows a modular design pattern where UI, Business Logic (Services), and Data are clearly separated.
 
-Uygulama, modern bir React SPA (Single Page Application) olarak tasarlanmıştır. Sunucusuz (Serverless) bir yapıda çalışır; mantıksal işlemlerin bir kısmı istemci tarafında, karmaşık görüntü işleme süreçleri ise n8n otomasyon katmanı üzerinden harici yapay zeka modellerine aktarılır.
+## 2. Technical Stack
+- **Framework:** React 19 (TypeScript).
+- **Icons:** Lucide-React.
+- **Styling:** Tailwind CSS (Anthracite/Apple System).
+- **Backend:** n8n Webhook (`https://n8n-cb9h.onrender.com/webhook-test/e9725b70-543e-4419-97dc-a4c1b4666463`).
+- **Storage:** Browser LocalStorage for persistence.
 
-## 2. Bileşenler ve Görevleri
+## 3. Data Flow & AI Pipeline
+1.  **Capture:** Image is read via `FileReader` and converted to Base64.
+2.  **Engineering:** `geminiService.ts` translates user selections into technical photography terminology.
+3.  **Communication:** `n8nService.ts` sends the payload.
+4.  **Transformation:** n8n processes the image (Inpainting/Outpainting) and returns the modified result.
+5.  **Result Viewer:** `ImageViewer.tsx` handles dynamic canvas resizing to provide multiple social media formats without distortion.
 
-### A. UI Katmanı (components/)
-- **App.tsx:** Ana uygulama konteyneri, global state (dil, tema, kullanıcı) yönetimi.
-- **StyleSelector:** Kullanıcının kategori, sahne ve ışık seçimlerini yaptığı panel.
-- **ComparisonSlider:** "Öncesi/Sonrası" karşılaştırmalarını interaktif olarak sunan bileşen.
-- **ProcessingOverlay:** Yapay zeka işleme aşamasında kullanıcıyı bilgilendiren animasyonlu ekran.
-- **ImageViewer:** İşlenmiş görseli farklı formatlarda (1:1, 9:16 vb.) indirme imkanı sunan detaylı görüntüleyici.
+## 4. Component Hierarchy
+- **App.tsx:** Global state, Header (User Info/Credits), Navigation (Gallery > Pricing > Guide).
+- **StyleSelector.tsx:** Grid-based selection for studio parameters.
+- **LandingSections.tsx:** High-level marketing sections (Features, Comparison Slider, FAQ).
+- **ShowcaseGallery.tsx:** Metadata-driven gallery showing "Recipes" (translated dynamically).
+- **PricingModal.tsx / PricingSection.tsx:** Centered 5-package subscription system.
 
-### B. Servis Katmanı (services/)
-- **geminiService.ts:** Ürünün türüne ve seçilen stile göre Gemini (veya benzeri modeller) için profesyonel fotoğrafçılık istemleri (prompt) oluşturur.
-- **n8nService.ts:** Yapılandırılmış veriyi ve görseli n8n Webhook adresine POST eder ve sonucu geri alır.
-- **authService.ts:** LocalStorage tabanlı kullanıcı yönetimi ve kredi sistemi.
+## 5. Visual Standards (For AI Generators)
+- **Rounded Corners:** `rounded-[2rem]` (32px) for main containers.
+- **Glassmorphism:** `backdrop-blur-xl` with semi-transparent overlays (`/80`).
+- **Color Palette:**
+  - Dark Mode: `#0B1120` (Background), `#151e32` (Cards).
+  - Highlights: Apple Blue (`#0066CC`), Pure White, and Sharp Black.
 
-### C. Veri Katmanı (data/ & types.ts)
-- **galleryData.ts:** Ana sayfada ve galeride gösterilen örnek çalışmaların "reçeteleri".
-- **translations.ts:** Tam kapsamlı TR/EN dil desteği.
+## 6. Logic Persistence (AuthService)
+- No actual backend server is required for this demo.
+- `authService.ts` simulates a database.
+- Credits are deducted on the client side upon successful image generation.
 
-## 3. Veri Akışı (Data Flow)
-
-1. **Giriş:** Kullanıcı görsel yükler (Client-side Base64 conversion).
-2. **Yapılandırma:** Kullanıcı stüdyo ayarlarını (Sahne, Işık) seçer.
-3. **Prompt Mühendisliği:** Seçimler, `geminiService` üzerinden profesyonel bir fotoğrafçılık komutuna dönüştürülür.
-4. **İletişim:** `n8nService`, Base64 görseli ve promptu n8n webhook'una iletir.
-5. **İşleme:** n8n tarafında arkaplan silme ve yeniden oluşturma (Diffusion) işlemleri gerçekleşir.
-6. **Yanıt:** İşlenmiş görsel URL'si veya Base64 verisi uygulamaya geri döner ve kullanıcıya sunulur.
-
-## 4. Güvenlik ve Performans
-
-- **Güvenlik:** API anahtarları çevre değişkenleri (`process.env`) üzerinden yönetilir.
-- **Performans:** Görseller tarayıcı tarafında işlenmeden önce Base64'e dönüştürülür, büyük boyutlu dosyaların transferi n8n katmanında optimize edilir.
-- **Offline:** LocalStorage kullanımı sayesinde kullanıcı oturumu ve kredileri tarayıcı kapatılsa dahi korunur.
+---
+*Reference for AI-driven development - Akraphy Studio v1.1*
