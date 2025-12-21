@@ -12,7 +12,8 @@ interface PricingSectionProps {
 }
 
 export const PricingSection: React.FC<PricingSectionProps> = ({ lang, onBuyClick, currency, user }) => {
-  const t = translations[lang];
+  const t = translations[lang] || translations.en;
+  const packagesData = t.packages || translations.en.packages;
 
   // Currency Symbols
   const currencySymbol: Record<Currency, string> = {
@@ -24,39 +25,39 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ lang, onBuyClick
   const rawPackages: CreditPackage[] = [
     {
       id: 'free',
-      name: t.packages.free.name,
+      name: packagesData.free.name,
       credits: 2,
       prices: { 'TRY': 0, 'USD': 0, 'EUR': 0 },
-      features: t.packages.free.features
+      features: packagesData.free.features
     },
     {
       id: 'starter',
-      name: t.packages.starter.name,
+      name: packagesData.starter.name,
       credits: 10,
       prices: { 'TRY': 150, 'USD': 5, 'EUR': 4 },
-      features: t.packages.starter.features
+      features: packagesData.starter.features
     },
     {
       id: 'pro',
-      name: t.packages.pro.name,
+      name: packagesData.pro.name,
       credits: 50,
       prices: { 'TRY': 450, 'USD': 15, 'EUR': 14 },
       popular: true,
-      features: t.packages.pro.features
+      features: packagesData.pro.features
     },
     {
       id: 'studio',
-      name: t.packages.studio.name,
+      name: packagesData.studio.name,
       credits: 250,
       prices: { 'TRY': 1500, 'USD': 45, 'EUR': 42 },
-      features: t.packages.studio.features
+      features: packagesData.studio.features
     },
     {
       id: 'enterprise',
-      name: t.packages.enterprise.name,
+      name: packagesData.enterprise.name,
       credits: 1000,
       prices: { 'TRY': 4500, 'USD': 150, 'EUR': 140 },
-      features: t.packages.enterprise.features
+      features: packagesData.enterprise.features
     }
   ];
 

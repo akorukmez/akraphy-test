@@ -1,13 +1,14 @@
 
 export type Language = 'en' | 'tr';
 export type Currency = 'TRY' | 'USD' | 'EUR';
+export type ProcessingProvider = 'gemini' | 'n8n';
 
 export interface User {
   id: string;
   email: string;
   credits: number;
   name: string;
-  planName: string; // Added to track user package
+  planName: string;
   preferredCurrency?: Currency;
 }
 
@@ -25,6 +26,7 @@ export enum ProductCategory {
 }
 
 export enum SceneType {
+  TRANSPARENT = 'Transparent (Background Removal Only)',
   CLEAN_WHITE = 'Pure White Studio (E-Commerce Standard)',
   LIFESTYLE_HOME = 'Cozy Home Interior (Lifestyle)',
   LUXURY_DARK = 'Dark Minimalist (Premium)',
@@ -52,6 +54,7 @@ export interface ProcessingState {
   isProcessing: boolean;
   step: 'idle' | 'uploading' | 'analyzing' | 'generating' | 'completed' | 'error';
   error: string | null;
+  batchProgress?: { current: number; total: number };
 }
 
 export interface CreditPackage {

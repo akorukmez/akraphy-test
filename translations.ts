@@ -1,134 +1,165 @@
 
 import { Language } from './types';
 
-export const translations = {
+export const translations: Record<Language, any> = {
   en: {
     title: "Akraphy Studio",
-    subtitle: "AI Product Photography",
-    desc: "Create professional studio-quality images for your products in seconds. No equipment needed.",
-    poweredBy: "Powered by Akraphy Engine™",
-    selectStyle: "Studio Setup",
-    uploadTitle: "Upload Photo",
-    uploadDesc: "Drag & drop or click to upload",
-    originalSource: "Original",
-    aiResult: "Generated Image",
-    waitingInput: "Ready to Generate",
-    waitingDesc: "Upload a product photo to start the transformation.",
-    processButton: "Generate Image",
-    processing: "Processing...",
-    save: "Download",
+    subtitle: "Professional Studio Simulator",
+    desc: "Instantly give your product photos a professional studio feel. No hardware or lighting equipment needed.",
+    poweredBy: "Akraphy Studio Engine™",
+    selectStyle: "Studio Configuration",
+    uploadTitle: "Import Photo",
+    uploadDesc: "Drag & drop or click to upload original product",
+    originalSource: "Original Subject",
+    aiResult: "Studio Signature",
+    waitingInput: "Ready for Shooting",
+    waitingDesc: "Import a product photo to start the digital studio session.",
+    processButton: "Start Session",
+    batchProcessButton: "Start Batch Session",
+    processing: "Shooting...",
+    save: "Export Image",
     errorValidImage: "Please upload a valid image file.",
-    errorLoad: "Failed to upload.",
-    errorGen: "Generation failed. Please try again.",
+    errorLoad: "Failed to load product.",
+    errorGen: "Studio simulation failed. Please try again.",
     credits: "Credits",
-    buyCredits: "Buy Credits",
+    buyCredits: "Get Credits",
     noCreditsTitle: "Insufficient Credits",
-    noCreditsDesc: "You need more credits to generate images. Choose a plan below.",
-    pricingTitle: "Pricing Plans",
-    pricingDesc: "Flexible options for sellers of all sizes.",
+    noCreditsDesc: "You need more credits to start new studio sessions.",
+    pricingTitle: "Studio Access Plans",
+    pricingDesc: "Flexible options for digital product photography.",
     mostPopular: "Best Value",
     purchase: "Select Plan",
-    successTitle: "Purchase Successful",
-    successDesc: "Credits added to your account.",
+    successTitle: "Session Confirmed",
+    successDesc: "Credits added to your studio account.",
     loginRequired: "Login Required",
-    loginDesc: "Please login to save your work.",
+    loginDesc: "Please login to manage your studio sessions.",
     loginBtn: "Login / Sign Up",
     logout: "Logout",
     welcome: "Welcome",
     currency: "Currency",
+    batchToggle: "Multi-Scene Suite",
+    batchDesc: "Select up to 5 scenes for a full studio collection.",
+    providerSelect: "Studio Engine",
+    download: "Download",
+    downloadOptions: "Download Options",
+    studioRecipe: "Studio Recipe",
+    close: "Close",
+    footer: {
+      privacy: "Privacy Policy",
+      terms: "Terms of Use",
+      guide: "Studio Guide",
+      rights: "All rights reserved."
+    },
+    policies: {
+      privacy: `At Akraphy Studio, we prioritize the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Akraphy Studio and how we use it.
+
+1. Information Collection
+We collect images uploaded for processing solely for the purpose of providing the service. We do not use your images for training public AI models without consent.
+
+2. Data Security
+All uploaded files are processed securely and automatically deleted from our temporary servers after processing is complete.
+
+3. User Accounts
+We store your name, email, and credit balance information securely. We do not sell or share your personal data with third parties.
+
+4. Cookies
+We use local storage to maintain your session and preferences (like theme and language).`,
+      terms: `Welcome to Akraphy Studio! These terms and conditions outline the rules and regulations for the use of Akraphy Studio's Website.
+
+1. License
+Unless otherwise stated, Akraphy Studio and/or its licensors own the intellectual property rights for all material on Akraphy Studio. You retain full commercial rights to the images you generate using our platform.
+
+2. Usage Limits
+You may not use our service to generate illegal, offensive, or harmful content. We reserve the right to ban users who violate this policy.
+
+3. Refund Policy
+Digital credits are non-refundable once used. If you experience a technical error, please contact support for credit restitution.
+
+4. Service Availability
+We strive for 99.9% uptime but do not guarantee uninterrupted access to the service due to maintenance or third-party provider outages.`
+    },
     nav: {
-      gallery: "Gallery",
-      pricing: "Pricing",
+      gallery: "Showcase",
+      pricing: "Access Plans",
       help: "Guide",
       faq: "FAQ"
     },
     loadingSteps: [
-      "Analyzing subject...",
-      "Removing background...",
-      "Generating scene...",
-      "Adjusting lighting...",
-      "Finalizing details..."
+      "Analyzing product geometry...",
+      "Clearing original environment...",
+      "Setting up digital scene...",
+      "Calibrating studio lighting...",
+      "Finalizing high-res details..."
     ],
     landing: {
-      featuresTitle: "Why Akraphy?",
+      featuresTitle: "The Digital Studio Edge",
       features: [
-        { title: "Marketplace Ready", desc: "Create images compliant with Amazon, Shopify, and Instagram standards instantly." },
-        { title: "Realistic Lighting", desc: "Our AI understands 3D geometry to cast natural shadows and reflections." },
-        { title: "Brand Consistency", desc: "Maintain a consistent visual style across your entire product catalog." },
-        { title: "Commercial Use", desc: "You own 100% of the rights to the generated images for your business." }
+        { title: "Marketplace Physics", desc: "Simulate backgrounds compliant with Amazon, Shopify, and Instagram standards." },
+        { title: "Ray-Traced Shadows", desc: "Our engine understands 3D geometry to cast natural shadows and reflections." },
+        { title: "Batch Photography", desc: "One product photo, five different studio setups in a single session." },
+        { title: "Full Commercial Rights", desc: "You own 100% of the rights to the exported studio images." }
       ],
-      comparisonTitle: "Standard vs Professional",
+      comparisonTitle: "Ordinary vs. Studio Quality",
       comparisonDesc: "See how we transform ordinary phone photos into high-conversion marketing assets.",
       faqTitle: "Frequently Asked Questions",
       faq: [
-        { q: "How does Akraphy AI work?", a: "Akraphy uses advanced generative AI models integrated via specialized workflows (n8n). It analyzes your product's geometry and material, then recreates it in a professional studio setting with realistic shadows and reflections." },
-        { q: "Is this suitable for high-end e-commerce?", a: "Absolutely. We offer specialized modes for Jewelry, Fashion, and Tech that prioritize macro details and texture accuracy, making them perfect for premium marketplaces like Amazon, Trendyol, or Shopify." },
-        { q: "Do I own the rights to the images?", a: "Yes. All images generated through Akraphy Studio come with full commercial usage rights. You can use them in advertisements, social media, and web stores without any attribution." },
-        { q: "What kind of photos should I upload?", a: "For best results, upload clear, well-lit photos taken with a smartphone or camera. A neutral background is helpful but not mandatory, as our AI will automatically remove the original background." },
-        { q: "How do I get more credits?", a: "You can purchase credit packages directly from the Pricing section. We offer various plans from 'Starter' for small shops to 'Enterprise' for high-volume agencies." },
-        { q: "Can I use Akraphy for social media content?", a: "Yes! Our built-in image viewer allows you to download results in various aspect ratios like 9:16 for Stories/Reels or 1:1 for main feeds." }
+        { q: "Is this a generator tool?", a: "No, Akraphy is a Studio Simulator. It preserves your exact product and places it in a digitally reconstructed professional environment." },
+        { q: "What is Batch Mode?", a: "Batch Mode allows you to select up to 5 different scenes. Our engine will process them all at once, giving you a full collection for one product." },
+        { q: "How does the 'Transparent' mode work?", a: "It focuses solely on background removal, providing a clean PNG of your product for custom design work." },
+        { q: "Can I use it for social media content?", a: "Yes! Use the Multi-Scene Suite to get various vibes (Pastel, Lifestyle, Luxury) for the same product instantly." }
       ]
     },
     steps: {
-      upload: "Upload",
-      analyze: "Analyze",
-      generate: "Generate",
-      done: "Complete"
+      upload: "Import",
+      analyze: "Calibrate",
+      generate: "Simulate",
+      done: "Export"
     },
     config: {
       categoryTitle: "1. Category",
-      sceneTitle: "2. Background (Scene)",
-      lightingTitle: "3. Lighting (Mood)",
+      sceneTitle: "2. Scene",
+      lightingTitle: "3. Lighting",
       categories: {
-        JEWELRY: "Jewelry & High-End",
-        FASHION: "Fashion & Apparel",
-        HANDMADE: "Handmade & Craft",
-        HOME: "Home & Furniture",
-        BEAUTY: "Beauty & Cosmetics",
-        BOOKS: "Stationery & Books",
+        JEWELRY: "Jewelry",
+        FASHION: "Fashion",
+        HANDMADE: "Handmade",
+        HOME: "Furniture",
+        BEAUTY: "Cosmetics",
+        BOOKS: "Stationery",
         TECH: "Electronics",
-        KIDS: "Baby & Kids",
-        FOOD: "Food & Beverage",
-        AUTOMOTIVE: "Automotive"
+        KIDS: "Baby",
+        FOOD: "Beverage",
+        AUTOMOTIVE: "Auto"
       },
       scenes: {
+        TRANSPARENT: "Background Removal",
         CLEAN_WHITE: "Pure White",
-        LIFESTYLE_HOME: "Lifestyle Home",
+        LIFESTYLE_HOME: "Lifestyle",
         LUXURY_DARK: "Premium Dark",
-        OUTDOOR_NATURAL: "Outdoor Nature",
-        PASTEL_CREATIVE: "Creative Pastel",
-        CONCRETE_URBAN: "Concrete / Urban",
-        MARBLE_ELEGANCE: "Marble Surface",
+        OUTDOOR_NATURAL: "Natural",
+        PASTEL_CREATIVE: "Pastel",
+        CONCRETE_URBAN: "Industrial",
+        MARBLE_ELEGANCE: "Marble",
         WOODEN_RUSTIC: "Rustic Wood",
         WATER_DYNAMIC: "Water Ripple",
         VELVET_SOFT: "Soft Velvet"
       },
       lighting: {
-        STUDIO_SOFT: "Studio Soft",
-        NATURAL_SUN: "Natural Sunlight",
-        PROFESSIONAL_CRISP: "Sharp & Crisp",
-        MOODY_DIM: "Dramatic Moody",
-        GOLDEN_HOUR: "Golden Hour",
-        NEON_VIBE: "Cyber Neon",
-        RIM_LIGHT: "Rim Highlight"
+        STUDIO_SOFT: "Softbox",
+        NATURAL_SUN: "Natural",
+        PROFESSIONAL_CRISP: "Sharp",
+        MOODY_DIM: "Atmospheric",
+        GOLDEN_HOUR: "Sunset",
+        NEON_VIBE: "Cyber",
+        RIM_LIGHT: "Contour"
       }
     },
-    styles: {
-      MARBLE_LUXURY: "Marble Luxury",
-      WATER_REFLECTION: "Water Reflection",
-      MINIMALIST_BEIGE: "Minimalist Beige",
-      BLACK_VELVET: "Black Velvet",
-      NATURE_STONE: "Nature Stone",
-      PASTEL_PINK: "Pastel Pink",
-      WOODEN_RUSTIC: "Wooden Rustic",
-      GOLDEN_HOUR: "Golden Hour"
-    },
     packages: {
-      free: { name: "Trial", features: ["2 Free Generations", "Standard Quality", "Basic Support"] },
-      starter: { name: "Starter", features: ["10 Generations", "High Resolution", "No Watermark"] },
-      pro: { name: "Pro", features: ["50 Generations", "4K Ultra-HD", "Commercial License", "Priority Support"] },
-      studio: { name: "Studio", features: ["250 Generations", "Bulk Processing", "Dedicated Manager", "Full Commercial"] },
-      enterprise: { name: "Enterprise", features: ["1000+ Generations", "API Access", "Custom AI Models", "White-label Support"] }
+      free: { name: "Trial", features: ["2 Free Sessions", "Standard Quality", "Basic Support"] },
+      starter: { name: "Starter", features: ["10 Sessions", "High Resolution", "No Watermark"] },
+      pro: { name: "Pro", features: ["50 Sessions", "4K Ultra-HD", "Commercial License", "Priority Support"] },
+      studio: { name: "Studio", features: ["250 Sessions", "Bulk Processing", "Dedicated Manager", "Full Commercial"] },
+      enterprise: { name: "Enterprise", features: ["1000+ Sessions", "API Access", "Custom Solutions", "White-label Support"] }
     },
     onboarding: {
       title: "Welcome to Akraphy",
@@ -136,176 +167,207 @@ export const translations = {
       gift: "Welcome Gift",
       credits: "Credits",
       desc: "We've added free credits to your account. Upload your first product to see the magic.",
-      btn: "Start Creating"
+      btn: "Start Shooting"
     },
     help: {
-      title: "How to Use",
+      title: "Studio User Guide",
       subTitle: "Get professional results in 3 steps",
       steps: [
-        { title: "Upload Photo", desc: "Upload a clear photo of your product. A neutral background works best." },
-        { title: "Select Style", desc: "Choose the product category and the desired background style from the panel." },
-        { title: "Generate", desc: "Click the Generate button. The AI will place your product in the selected scene." }
+        { title: "Import Product", desc: "Upload a clear photo. Our engine works best with focused subjects." },
+        { title: "Select Setup", desc: "Choose your category and scenes. Enable Batch Mode to generate 5 scenes at once." },
+        { title: "Process", desc: "Start the session. Our simulator will reconstruct the environment and lighting." }
       ],
-      tipsTitle: "Best Practices",
+      tipsTitle: "Studio Pro Tips",
       tips: [
-        "Ensure the product is in focus and well-lit.",
-        "Avoid cutting off parts of the product in the original photo.",
-        "Use 'Pure White' for marketplace listings."
+        "Enable Batch Mode to save time and get a variety of marketing assets.",
+        "Use 'Background Removal' for clean assets you want to use elsewhere.",
+        "Ensure the product isn't cut off in the original photo for realistic shadows."
       ],
       btn: "Close Guide"
     }
   },
   tr: {
     title: "Akraphy Studio",
-    subtitle: "Yapay Zeka Ürün Fotoğrafçılığı",
-    desc: "Ürünleriniz için saniyeler içinde profesyonel stüdyo görselleri oluşturun. Ekipman gerekmez.",
-    poweredBy: "Powered by Akraphy Engine™",
-    selectStyle: "Stüdyo Ayarları",
-    uploadTitle: "Fotoğraf Yükle",
-    uploadDesc: "Sürükle bırak veya tıklayarak seç",
-    originalSource: "Orijinal",
-    aiResult: "Üretilen Görsel",
-    waitingInput: "Oluşturmaya Hazır",
-    waitingDesc: "Dönüşümü başlatmak için bir ürün fotoğrafı yükleyin.",
-    processButton: "Görseli Oluştur",
-    processing: "Oluşturuluyor...",
-    save: "İndir",
+    subtitle: "Stüdyo Simülatörü",
+    desc: "Ürün fotoğraflarınıza anında profesyonel stüdyo hissiyatı kazandırın. Donanım veya ışık gerektirmez.",
+    poweredBy: "Akraphy Studio Engine™",
+    selectStyle: "Stüdyo Yapılandırması",
+    uploadTitle: "Ürünü İçe Aktar",
+    uploadDesc: "Görseli buraya bırakın veya tıklayın",
+    originalSource: "Orijinal Özne",
+    aiResult: "Stüdyo İmzası",
+    waitingInput: "Çekime Hazır",
+    waitingDesc: "Dijital stüdyo seansını başlatmak için bir ürün fotoğrafı yükleyin.",
+    processButton: "Seansı Başlat",
+    batchProcessButton: "Toplu Seansı Başlat",
+    processing: "Çekim Yapılıyor...",
+    save: "Görseli Dışa Aktar",
     errorValidImage: "Lütfen geçerli bir resim dosyası yükleyin.",
-    errorLoad: "Yükleme başarısız.",
-    errorGen: "Oluşturma başarısız oldu.",
+    errorLoad: "Ürün yüklenemedi.",
+    errorGen: "Stüdyo simülasyonu başarısız oldu. Lütfen tekrar deneyin.",
     credits: "Kredi",
     buyCredits: "Kredi Al",
     noCreditsTitle: "Yetersiz Kredi",
-    noCreditsDesc: "Yeni görsel oluşturmak için krediye ihtiyacınız var.",
-    pricingTitle: "Fiyatlandırma",
-    pricingDesc: "Her ölçekteki satıcı için uygun seçenekler.",
+    noCreditsDesc: "Yeni stüdyo seansları başlatmak için krediye ihtiyacınız var.",
+    pricingTitle: "Stüdyo Paketleri",
+    pricingDesc: "Dijital ürün fotoğrafçılığı için esnek seçenekler.",
     mostPopular: "En Popüler",
-    purchase: "Planı Seç",
-    successTitle: "İşlem Başarılı",
+    purchase: "Paketi Seç",
+    successTitle: "Seans Onaylandı",
     successDesc: "Krediler hesabınıza tanımlandı.",
     loginRequired: "Giriş Yapın",
-    loginDesc: "Çalışmalarınızı kaydetmek için giriş yapın.",
-    loginBtn: "Giriş / Kayıt Ol",
+    loginDesc: "Seanslarınızı yönetmek için giriş yapın.",
+    loginBtn: "Giriş Yap / Kayıt Ol",
     logout: "Çıkış",
     welcome: "Hoşgeldin",
     currency: "Para Birimi",
+    batchToggle: "Çoklu Sahne Paketi",
+    batchDesc: "Tam koleksiyon için tek seferde 5 farklı sahne seçin.",
+    providerSelect: "Stüdyo Motoru",
+    download: "İndir",
+    downloadOptions: "İndirme Seçenekleri",
+    studioRecipe: "Stüdyo Reçetesi",
+    close: "Kapat",
+    footer: {
+      privacy: "Gizlilik Politikası",
+      terms: "Kullanım Koşulları",
+      guide: "Stüdyo Rehberi",
+      rights: "Tüm hakları saklıdır."
+    },
+    policies: {
+      privacy: `Akraphy Studio olarak ziyaretçilerimizin gizliliğine öncelik veriyoruz. Bu Gizlilik Politikası belgesi, Akraphy Studio tarafından toplanan ve kaydedilen bilgi türlerini ve bunları nasıl kullandığımızı içerir.
+
+1. Bilgi Toplama
+Hizmeti sağlamak amacıyla yalnızca işlenmek üzere yüklenen görselleri topluyoruz. İzniniz olmadan görsellerinizi genel yapay zeka modellerini eğitmek için kullanmayız.
+
+2. Veri Güvenliği
+Yüklenen tüm dosyalar güvenli bir şekilde işlenir ve işlem tamamlandıktan sonra geçici sunucularımızdan otomatik olarak silinir.
+
+3. Kullanıcı Hesapları
+Adınızı, e-postanızı ve kredi bakiyenizi güvenli bir şekilde saklıyoruz. Kişisel verilerinizi satmayız veya üçüncü taraflarla paylaşmayız.
+
+4. Çerezler
+Oturumunuzu ve tercihlerinizi (tema ve dil gibi) sürdürmek için yerel depolama (local storage) kullanıyoruz.`,
+      terms: `Akraphy Studio'ya hoş geldiniz! Bu hüküm ve koşullar, Akraphy Studio Web Sitesinin kullanımına ilişkin kuralları ve düzenlemeleri ana hatlarıyla belirtir.
+
+1. Lisans
+Aksi belirtilmedikçe, Akraphy Studio ve/veya lisans verenleri Akraphy Studio'daki tüm materyallerin fikri mülkiyet haklarına sahiptir. Platformumuzu kullanarak oluşturduğunuz görsellerin tüm ticari hakları size aittir.
+
+2. Kullanım Sınırları
+Hizmetimizi yasa dışı, saldırgan veya zararlı içerik oluşturmak için kullanamazsınız. Bu politikayı ihlal eden kullanıcıları yasaklama hakkımız saklıdır.
+
+3. İade Politikası
+Dijital krediler kullanıldıktan sonra iade edilemez. Teknik bir hata yaşarsanız, kredi iadesi için lütfen destek ekibiyle iletişime geçin.
+
+4. Hizmet Kullanılabilirliği
+%99,9 çalışma süresi hedefliyoruz ancak bakım veya üçüncü taraf sağlayıcı kesintileri nedeniyle hizmete kesintisiz erişimi garanti etmiyoruz.`
+    },
     nav: {
-      gallery: "Galeri",
+      gallery: "Vitrin",
       pricing: "Paketler",
       help: "Rehber",
       faq: "SSS"
     },
     loadingSteps: [
-      "Ürün taranıyor...",
-      "Arkaplan temizleniyor...",
-      "Sahne oluşturuluyor...",
-      "Işık ayarlanıyor...",
+      "Ürün geometrisi analiz ediliyor...",
+      "Orijinal ortam temizleniyor...",
+      "Dijital sahne kuruluyor...",
+      "Stüdyo ışıkları kalibre ediliyor...",
       "Detaylar işleniyor..."
     ],
     landing: {
-      featuresTitle: "Neden Akraphy?",
+      featuresTitle: "Dijital Stüdyo Avantajı",
       features: [
-        { title: "Pazaryeri Uyumlu", desc: "Trendyol, Amazon ve Instagram standartlarına uygun görselleri anında üretin." },
-        { title: "Gerçekçi Işık", desc: "Yapay zekamız, ürününüzün geometrisini anlayarak doğal gölge ve yansımalar oluşturur." },
-        { title: "Marka Tutarlılığı", desc: "Tüm ürün kataloğunuzda tutarlı bir görsel dil ve kalite standardı sağlayın." },
-        { title: "Ticari Kullanım", desc: "Oluşturulan görsellerin tüm ticari hakları işletmenize aittir." }
+        { title: "Pazaryeri Fiziği", desc: "Amazon ve Instagram standartlarına uygun ortamları simüle edin." },
+        { title: "Ray-Traced Gölgeler", desc: "Motorumuz doğal gölge ve yansımalar için 3D geometriyi hesaplar." },
+        { title: "Toplu Çekim Modu", desc: "Bir üründen tek seansta beş farklı stüdyo kurulumu elde edin." },
+        { title: "Tam Ticari Haklar", desc: "Dışa aktarılan tüm görsellerin ticari hakları size aittir." }
       ],
-      comparisonTitle: "Standart vs Profesyonel",
-      comparisonDesc: "Sıradan telefon fotoğraflarını nasıl yüksek dönüşümlü pazarlama görsellerine dönüştürdüğümüzü görün.",
+      comparisonTitle: "Sıradan vs. Stüdyo Kalitesi",
+      comparisonDesc: "Sıradan fotoğrafları nasıl yüksek dönüşümlü pazarlama görsellerine dönüştürdüğümüzü görün.",
       faqTitle: "Sıkça Sorulan Sorular",
       faq: [
-        { q: "Akraphy AI nasıl çalışır?", a: "Akraphy, gelişmiş üretken yapay zeka modellerini özel iş akışları (n8n) üzerinden kullanır. Ürününüzün geometrisini ve dokusunu analiz eder, ardından profesyonel stüdyo ortamında gerçekçi ışık ve gölgelerle yeniden oluşturur." },
-        { q: "Lüks segment ürünler için uygun mu?", a: "Evet. Özellikle Mücevher, Saat ve Kozmetik gibi alanlar için makro detayları ve yansımaları ön plana çıkaran özel modlarımız bulunmaktadır." },
-        { q: "Görsellerin kullanım hakları kime ait?", a: "Akraphy Studio ile oluşturulan tüm görsellerin tam ticari kullanım hakları size aittir. Sosyal medya, reklam ve e-ticaret sitelerinizde dilediğiniz gibi kullanabilirsiniz." },
-        { q: "Nasıl fotoğraflar yüklemeliyim?", a: "En iyi sonuçlar için telefonunuzla çektiğiniz net ve iyi ışıklandırılmış fotoğraflar yeterlidir. Yapay zekamız orijinal arkaplanı temizleyip ürünü yeni ortama yerleştirir." },
-        { q: "Kredi sisteminiz nasıl çalışıyor?", a: "Her görsel üretimi 1 kredi harcar. Deneme paketi ile başlayabilir, ihtiyacınıza göre Başlangıç, Profesyonel veya Kurumsal paketlerimizden kredi satın alabilirsiniz." },
-        { q: "Sosyal medya için uygun formatlar var mı?", a: "Görsel görüntüleyici üzerinden sonuçları Hikaye/Reels (9:16), Kare (1:1) veya Dikey (4:5) gibi popüler e-ticaret ve sosyal medya formatlarında indirebilirsiniz." }
+        { q: "Bu bir görsel üreticisi mi?", a: "Hayır, Akraphy bir Stüdyo Simülatörüdür. Ürününüzün formunu korur ve onu dijital stüdyo ortamına yerleştirir." },
+        { q: "Toplu Çekim nedir?", a: "Aynı ürün için 5 farklı sahne seçmenize olanak tanır. Motorumuz hepsini tek seansta işler." },
+        { q: "Arkaplan Sil modu nasıl çalışır?", a: "Sadece ürününüzü ortamdan ayırarak şeffaf bir PNG çıktısı hazırlamaya odaklanır." },
+        { q: "Sosyal medya için uygun mu?", a: "Kesinlikle! Farklı modlarda içerik üreterek anında sosyal medya koleksiyonları oluşturabilirsiniz." }
       ]
     },
     steps: {
-      upload: "Yükle",
-      analyze: "Analiz",
-      generate: "Oluştur",
-      done: "Tamamla"
+      upload: "İçe Aktar",
+      analyze: "Kalibre Et",
+      generate: "Simüle Et",
+      done: "Dışa Aktar"
     },
     config: {
-      categoryTitle: "1. Kategori",
-      sceneTitle: "2. Arkaplan (Sahne)",
-      lightingTitle: "3. Işık (Mood)",
+      categoryTitle: "1. Ürün Kategorisi",
+      sceneTitle: "2. Stüdyo Sahnesi",
+      lightingTitle: "3. Işık Kurulumu",
       categories: {
-        JEWELRY: "Mücevher & Takı",
-        FASHION: "Moda & Giyim",
+        JEWELRY: "Mücevher",
+        FASHION: "Moda",
         HANDMADE: "El Yapımı",
-        HOME: "Ev & Dekorasyon",
-        BEAUTY: "Kozmetik & Bakım",
-        BOOKS: "Kitap & Kırtasiye",
+        HOME: "Mobilya",
+        BEAUTY: "Kozmetik",
+        BOOKS: "Kırtasiye",
         TECH: "Elektronik",
-        KIDS: "Anne & Bebek",
-        FOOD: "Yiyecek & İçecek",
-        AUTOMOTIVE: "Otomotiv"
+        KIDS: "Bebek",
+        FOOD: "İçecek",
+        AUTOMOTIVE: "Oto"
       },
       scenes: {
+        TRANSPARENT: "Arkaplan Sil",
         CLEAN_WHITE: "Saf Beyaz",
         LIFESTYLE_HOME: "Yaşam Alanı",
         LUXURY_DARK: "Premium Koyu",
         OUTDOOR_NATURAL: "Dış Mekan",
         PASTEL_CREATIVE: "Kreatif Pastel",
-        CONCRETE_URBAN: "Beton / Endüstriyel",
+        CONCRETE_URBAN: "Endüstriyel",
         MARBLE_ELEGANCE: "Mermer Yüzey",
         WOODEN_RUSTIC: "Rustik Ahşap",
         WATER_DYNAMIC: "Su Yansıması",
         VELVET_SOFT: "Yumuşak Kadife"
       },
       lighting: {
-        STUDIO_SOFT: "Stüdyo Soft",
-        NATURAL_SUN: "Doğal Günışığı",
-        PROFESSIONAL_CRISP: "Keskin & Net",
-        MOODY_DIM: "Dramatik Loş",
-        GOLDEN_HOUR: "Altın Saat",
+        STUDIO_SOFT: "Softbox",
+        NATURAL_SUN: "Doğal",
+        PROFESSIONAL_CRISP: "Keskin",
+        MOODY_DIM: "Atmosferik",
+        GOLDEN_HOUR: "Gün Batımı",
         NEON_VIBE: "Cyber Neon",
-        RIM_LIGHT: "Kontür Işığı"
+        RIM_LIGHT: "Kontür"
       }
     },
-    styles: {
-      MARBLE_LUXURY: "Mermer Lüks",
-      WATER_REFLECTION: "Su Yansıması",
-      MINIMALIST_BEIGE: "Minimalist Bej",
-      BLACK_VELVET: "Siyah Kadife",
-      NATURE_STONE: "Doğal Taş",
-      PASTEL_PINK: "Pastel Pembe",
-      WOODEN_RUSTIC: "Ahşap Rustik",
-      GOLDEN_HOUR: "Altın Saat"
-    },
     packages: {
-      free: { name: "Deneme", features: ["2 Ücretsiz Görsel", "Standart Kalite", "Temel Destek"] },
-      starter: { name: "Başlangıç", features: ["10 Görsel", "Yüksek Çözünürlük", "Filigran Yok"] },
-      pro: { name: "Profesyonel", features: ["50 Görsel", "4K Ultra-HD", "Ticari Lisans", "Öncelikli Destek"] },
-      studio: { name: "Stüdyo", features: ["250 Görsel", "Toplu İşlem", "Özel Temsilci", "Ticari Haklar"] },
-      enterprise: { name: "Kurumsal", features: ["1000+ Görsel", "API Erişimi", "Özel Model Eğitimi", "Sınırsız Destek"] }
+      free: { name: "Deneme", features: ["2 Ücretsiz Seans", "Standart Kalite", "Temel Destek"] },
+      starter: { name: "Başlangıç", features: ["10 Seans", "Yüksek Çözünürlük", "Filigran Yok"] },
+      pro: { name: "Profesyonel", features: ["50 Seans", "4K Ultra-HD", "Ticari Lisans", "Öncelikli Destek"] },
+      studio: { name: "Stüdyo", features: ["250 Seans", "Toplu İşlem", "Özel Temsilci", "Ticari Haklar"] },
+      enterprise: { name: "Kurumsal", features: ["1000+ Seans", "API Erişimi", "Özel Çözümler", "Sınırsız Destek"] }
     },
     onboarding: {
       title: "Akraphy'ye Hoşgeldin",
-      subTitle: "Ürün fotoğrafçılığı stüdyonuz hazır.",
+      subTitle: "Stüdyonuz çekimler için hazır.",
       gift: "Hoşgeldin Hediyesi",
       credits: "Kredi",
       desc: "Hesabınıza ücretsiz deneme kredileri tanımladık. İlk ürününüzü yükleyerek hemen başlayın.",
-      btn: "Görsel Oluştur"
+      btn: "Çekime Başla"
     },
     help: {
-      title: "Nasıl Kullanılır?",
+      title: "Stüdyo Rehberi",
       subTitle: "3 adımda profesyonel sonuçlar",
       steps: [
-        { title: "Fotoğraf Yükle", desc: "Ürününüzün net bir fotoğrafını yükleyin. Düz bir zemin daha iyi sonuç verir." },
-        { title: "Tarzını Seç", desc: "Panelden ürün kategorisini ve istediğiniz arkaplan tarzını seçin." },
-        { title: "Oluştur", desc: "Oluştur butonuna basın. Yapay zeka ürününüzü seçilen sahneye yerleştirecektir." }
+        { title: "İçe Aktar", desc: "Net bir ürün fotoğrafı yükleyin." },
+        { title: "Yapılandır", desc: "Kategori ve sahneleri seçin." },
+        { title: "İşle", desc: "Seansı başlatın ve simülasyonu bekleyin." }
       ],
       tipsTitle: "İpuçları",
       tips: [
-        "Ürünün net ve iyi ışık almış olmasına dikkat edin.",
-        "Orijinal fotoğrafta ürünün kesilmemiş olması önemlidir.",
-        "Pazaryeri satışları için 'Saf Beyaz' modunu kullanın."
+        "Vakit kazanmak için Toplu Seans özelliğini kullanın.",
+        "Şeffaf PNG'ler için 'Arkaplan Sil' modunu tercih edin.",
+        "Gerçekçi gölgeler için ürünün kesilmemiş olduğundan emin olun."
       ],
-      btn: "Kılavuzu Kapat"
+      btn: "Rehberi Kapat"
     }
   }
 };

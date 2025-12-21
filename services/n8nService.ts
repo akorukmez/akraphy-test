@@ -77,9 +77,12 @@ export const processWithN8n = async (
 
   } catch (error: any) {
     console.error("🚨 n8n Bağlantı Hatası:", error);
-    if (error.message === "Failed to fetch" || error.message.includes("Load failed")) {
-      throw new Error("n8n servisine bağlanılamadı. n8n tarafında CORS ayarlarının açık olduğundan veya Webhook URL'nin doğruluğundan emin olun.");
+    
+    // Check if it's likely a CORS or connection error
+    if (error instanceof TypeError && (error.message === "Failed to fetch" || error.message.includes("Load failed"))) {
+      throw new Error("n8n servisine bağlanılamadı. n8n ayarlarında N8N_CORS_ALLOWED_ORIGINS değişkenine bu sitenin adresini eklediğinizden veya '*' (herkese açık) yaptığınızdan emin olun.");
     }
+    
     throw new Error(error.message || "n8n stüdyo bağlantısı başarısız oldu.");
   }
 };

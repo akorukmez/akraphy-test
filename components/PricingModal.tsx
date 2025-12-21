@@ -15,8 +15,8 @@ interface PricingModalProps {
 
 export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onPurchase, lang, currency, user }) => {
   const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
-  const t = translations[lang];
-  const pkgInfo = t.packages;
+  const t = translations[lang] || translations.en;
+  const pkgInfo = t.packages || translations.en.packages;
 
   if (!isOpen) return null;
 
@@ -147,7 +147,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                     ) : isFree ? (
                       <>
                         <Zap className="w-3 h-3" />
-                        {lang === 'tr' ? 'Hemen Başla' : 'Start'}
+                        {lang === 'tr' ? 'Hemen Başla' : 'Başlat'}
                       </>
                     ) : (
                       <>
