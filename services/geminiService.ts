@@ -17,7 +17,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 
 export const constructStudioPrompt = (category: ProductCategory, scene: SceneType, lighting: LightingType, variation: string = 'Standard'): string => {
   // Common watermark instruction for all generations
-  const watermarkInstruction = "CRITICAL SECURITY OVERLAY: Apply a repeating, semi-transparent watermark text 'akraphy' diagonally across the entire image. The text 'akraphy' must start from the top-left and repeat multiple times towards the bottom-right, covering the entire frame. Use a professional sans-serif font with 20-30% opacity. The watermark should be subtle enough to see the product details but clearly visible as a security pattern across the whole photo.";
+  const watermarkInstruction = "CRITICAL SECURITY OVERLAY: Apply a repeating, semi-transparent watermark text 'akraphy' diagonally across the entire image. The text 'akraphy' must start from the top-left and repeat multiple times towards the bottom-right, covering the entire frame. Use a professional sans-serif font with 20-25% opacity. The watermark should be subtle enough to see the product details but clearly visible as a security pattern across the whole photo.";
 
   if (scene === SceneType.TRANSPARENT) {
     return `You are an advanced image segmentation AI. Remove the entire background from the product image while maintaining the original product with perfect clarity. ${watermarkInstruction} Output format must be a clean PNG. Apply intelligent edge detection for smooth edges. Maintain product shadows and highlights that define form. Remove environmental elements. Achieve professional, e-commerce ready output.`;

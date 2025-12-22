@@ -2,7 +2,8 @@
 import { HistoryItem } from '../types';
 
 const HISTORY_KEY = 'jewelai_history';
-const MAX_HISTORY_ITEMS = 20; // Limit to prevent LocalStorage quota issues with Base64 strings
+// Limit increased theoretically, but actual limit is defined by storage quota (approx 5MB)
+const MAX_HISTORY_ITEMS = 50; 
 
 export const historyService = {
   getHistory: (): HistoryItem[] => {
@@ -16,21 +17,35 @@ export const historyService = {
   },
 
   addToHistory: (item: HistoryItem) => {
-    try {
-      const current = historyService.getHistory();
-      // Add new item to the beginning
-      const updated = [item, ...current];
-      
-      // Trim to max limit
-      if (updated.length > MAX_HISTORY_ITEMS) {
-        updated.length = MAX_HISTORY_ITEMS;
-      }
-
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
-    } catch (e) {
-      console.error("Failed to save history (likely quota exceeded)", e);
-      // Optional: Clear oldest items aggressively if quota fails
+    let current = historyService.getHistory();
+    // Add new item to the beginning
+    let updated = [item, ...current];
+    
+    // Safety cap
+    if (updated.length > MAX_HISTORY_ITEMS) {
+      updated = updated.slice(0, MAX_HISTORY_ITEMS);
     }
+
+    // Try to save, if quota exceeded, remove oldest items until it fits
+    const saveWithRetry = (items: HistoryItem[]) => {
+      try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
+      } catch (e: any) {
+        if (e.name === 'QuotaExceededError' || e.code === 22 || e.code === 1014) {
+          if (items.length > 1) {
+            // Remove the last (oldest) item and try again
+            items.pop(); 
+            saveWithRetry(items);
+          } else {
+            console.error("Storage full, cannot save even a single item.");
+          }
+        } else {
+          console.error("Failed to save history", e);
+        }
+      }
+    };
+
+    saveWithRetry(updated);
   },
 
   deleteFromHistory: (id: string) => {

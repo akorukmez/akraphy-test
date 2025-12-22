@@ -330,8 +330,8 @@ const App: React.FC = () => {
                                     onClick={() => { setShowPricing(true); setIsUserMenuOpen(false); }}
                                     className="w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-all text-left group"
                                 >
-                                    <div className="w-9 h-9 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600 dark:text-yellow-400 border border-yellow-100/50 dark:border-yellow-400/10 group-hover:scale-105 transition-transform">
-                                        <Coins className="w-4.5 h-4.5" />
+                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-black dark:text-white border border-gray-200 dark:border-white/10 group-hover:border-black dark:group-hover:border-white transition-colors shadow-sm">
+                                        <Coins className="w-4 h-4" />
                                     </div>
                                     <div>
                                         <div className="text-xs font-bold text-gray-900 dark:text-white">{t.buyCredits}</div>
@@ -343,8 +343,8 @@ const App: React.FC = () => {
                                     onClick={() => { setShowHistory(true); setIsUserMenuOpen(false); }}
                                     className="w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-all text-left mt-1 group"
                                 >
-                                    <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 border border-blue-100/50 dark:border-blue-400/10 group-hover:scale-105 transition-transform">
-                                        <History className="w-4.5 h-4.5" />
+                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-black dark:text-white border border-gray-200 dark:border-white/10 group-hover:border-black dark:group-hover:border-white transition-colors shadow-sm">
+                                        <History className="w-4 h-4" />
                                     </div>
                                     <div>
                                         <div className="text-xs font-bold text-gray-900 dark:text-white">{t.nav.history}</div>
@@ -358,8 +358,8 @@ const App: React.FC = () => {
                                     onClick={handleLogout}
                                     className="w-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all text-left group"
                                 >
-                                    <div className="w-9 h-9 rounded-lg bg-gray-50 dark:bg-anthracite-700 flex items-center justify-center text-gray-400 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 group-hover:text-red-500 transition-all border border-transparent group-hover:border-red-100 dark:group-hover:border-red-500/20">
-                                        <LogOut className="w-4.5 h-4.5" />
+                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-gray-400 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 group-hover:text-red-500 transition-all border border-transparent group-hover:border-red-100 dark:group-hover:border-red-500/20">
+                                        <LogOut className="w-4 h-4" />
                                     </div>
                                     <div>
                                         <div className="text-xs font-bold text-gray-500 dark:text-gray-400 group-hover:text-red-600 transition-colors">{t.logout}</div>
