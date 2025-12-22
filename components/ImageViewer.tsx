@@ -1,17 +1,18 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { X, Download, ChevronDown, Check, Maximize, Smartphone, Monitor, Layout, Image as ImageIcon, ScanLine, ChevronRight } from 'lucide-react';
+import { X, Download, ChevronDown, Check, Maximize, Smartphone, Monitor, Layout, Image as ImageIcon, ScanLine, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Language, ProductCategory, SceneType, LightingType } from '../types';
 import { translations } from '../translations';
 
 interface ImageViewerProps {
   isOpen: boolean;
-  imageUrl: string | null;
+  images: string[];
+  initialIndex?: number;
   onClose: () => void;
   alt: string;
   lang: Language;
   category?: ProductCategory;
-  scene?: SceneType;
+  scenes?: SceneType[]; // Changed from single scene to array
   lighting?: LightingType;
 }
 
@@ -26,23 +27,57 @@ interface FormatOption {
   icon: React.ElementType;
 }
 
-export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onClose, alt, lang, category, scene, lighting }) => {
+export const ImageViewer: React.FC<ImageViewerProps> = ({ 
+    isOpen, 
+    images, 
+    initialIndex = 0, 
+    onClose, 
+    alt, 
+    lang, 
+    category, 
+    scenes, 
+    lighting 
+}) => {
+  const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const downloadMenuRef = useRef<HTMLDivElement>(null);
   const t = translations[lang];
 
-  // Lock body scroll when open
   useEffect(() => {
     if (isOpen) {
+      setActiveIndex(initialIndex);
+      setIsClosing(false);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isOpen]);
+  }, [isOpen, initialIndex]);
 
-  // Click outside for download menu - specifically closes the menu, not the whole viewer
+  // Handle closing animation
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+        onClose();
+        setIsClosing(false);
+    }, 300); // Match animation duration
+  };
+
+  // Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (!isOpen) return;
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'Escape') handleClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, activeIndex]);
+
+  // Click outside for download menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (downloadMenuRef.current && !downloadMenuRef.current.contains(event.target as Node)) {
@@ -54,6 +89,26 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDownloadMenuOpen]);
+
+  const nextImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setActiveIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  // Calculate current scene based on index (assuming 5 images per scene)
+  // If scenes array is not provided or empty, fallback to null
+  const getCurrentScene = () => {
+    if (!scenes || scenes.length === 0) return null;
+    const sceneIndex = Math.floor(activeIndex / 5);
+    return scenes[sceneIndex] || scenes[0];
+  };
+
+  const currentScene = getCurrentScene();
 
   // Helper to get translated label
   const getTranslatedLabel = (type: 'category' | 'scene' | 'lighting', value: string) => {
@@ -81,6 +136,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
   ];
 
   const handleDownload = async (format: FormatOption) => {
+    const imageUrl = images[activeIndex];
     if (!imageUrl) return;
     setIsDownloading(true);
 
@@ -162,20 +218,20 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
     }
   };
 
-  if (!isOpen || !imageUrl) return null;
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center animate-in fade-in duration-500">
+    <div className={`fixed inset-0 z-[200] flex items-center justify-center transition-all duration-300 ${isClosing ? 'opacity-0' : 'opacity-100'}`}>
       
-      {/* Backdrop with Blur & Close Handler - Clicking here closes the viewer */}
+      {/* Backdrop with Blur & Close Handler - Increased Transparency */}
       <div 
-        className="absolute inset-0 bg-black/95 backdrop-blur-xl transition-opacity cursor-pointer" 
-        onClick={onClose}
+        className="absolute inset-0 bg-black/80 backdrop-blur-xl cursor-pointer" 
+        onClick={handleClose}
       ></div>
 
       {/* Close Button Top Right (Fixed) */}
       <button 
-        onClick={onClose}
+        onClick={handleClose}
         className="absolute top-6 right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all border border-transparent hover:border-white/10 z-[220] group"
         title={t.close}
       >
@@ -184,23 +240,50 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
 
       {/* Main Content Container */}
       <div 
-        className="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-12 pointer-events-none"
+        className={`relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-12 pointer-events-none transition-transform duration-300 ${isClosing ? 'scale-90' : 'scale-100'}`}
       >
         
-        {/* Image Container with Smooth Zoom Animation */}
+        {/* Navigation Buttons */}
+        {images.length > 1 && (
+            <>
+                <button 
+                    onClick={prevImage}
+                    className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white pointer-events-auto backdrop-blur-md transition-all z-[215] group"
+                >
+                    <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" />
+                </button>
+                <button 
+                    onClick={nextImage}
+                    className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white pointer-events-auto backdrop-blur-md transition-all z-[215] group"
+                >
+                    <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
+                </button>
+            </>
+        )}
+
+        {/* Image Container with Animation */}
         <div 
-            className="relative max-w-7xl max-h-[75vh] w-full flex items-center justify-center pointer-events-auto transform transition-all duration-500 animate-in zoom-in-95"
-            onClick={(e) => e.stopPropagation()} // Clicking image should NOT close viewer
+            className="relative max-w-7xl max-h-[75vh] w-full flex items-center justify-center pointer-events-auto"
+            onClick={(e) => e.stopPropagation()} 
         >
+          {/* Using key to trigger animation on index change */}
           <img 
-            src={imageUrl} 
+            key={activeIndex}
+            src={images[activeIndex]} 
             alt={alt} 
-            className="max-w-full max-h-[70vh] object-contain shadow-2xl rounded-lg select-none bg-[#111] border border-white/5"
+            className="max-w-full max-h-[70vh] object-contain shadow-2xl rounded-lg select-none bg-[#111] border border-white/5 animate-in fade-in slide-in-from-right-4 duration-500"
           />
+          
+          {/* Image Counter Badge */}
+          {images.length > 1 && (
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold border border-white/10">
+                {activeIndex + 1} / {images.length}
+            </div>
+          )}
         </div>
 
         {/* Studio Recipe (Metadata) - Only shows if data is present */}
-        {category && scene && lighting && (
+        {category && currentScene && lighting && (
             <div className="mt-6 pointer-events-auto animate-in slide-in-from-bottom-4 fade-in duration-700 delay-100" onClick={(e) => e.stopPropagation()}>
                 <div className="flex flex-wrap items-center justify-center gap-3 bg-white/5 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/10 shadow-2xl">
                     <span className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]">{t.studioRecipe}</span>
@@ -208,7 +291,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
                     <div className="flex items-center gap-2 text-white text-xs font-bold">
                         <span className="opacity-100">{getTranslatedLabel('category', category)}</span>
                         <ChevronRight className="w-3 h-3 text-white/30" />
-                        <span className="opacity-100">{getTranslatedLabel('scene', scene)}</span>
+                        <span className="opacity-100">{getTranslatedLabel('scene', currentScene)}</span>
                         <ChevronRight className="w-3 h-3 text-white/30" />
                         <span className="opacity-100 text-blue-400">{getTranslatedLabel('lighting', lighting)}</span>
                     </div>
@@ -219,7 +302,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
         {/* Floating Controls Bar */}
         <div 
             className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 px-2 py-2 bg-[#1C1C1E]/90 backdrop-blur-lg border border-white/10 rounded-2xl shadow-2xl pointer-events-auto transform translate-y-0 animate-in slide-in-from-bottom-8 duration-500 delay-200 z-[210] ring-1 ring-black/50"
-            onClick={(e) => e.stopPropagation()} // Clicking bar should NOT close viewer
+            onClick={(e) => e.stopPropagation()} 
         >
             
             {/* Download Dropdown */}
@@ -268,11 +351,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({ isOpen, imageUrl, onCl
               )}
             </div>
 
-            {/* Quick Actions (Future placeholder for Share/Like) */}
+            {/* Quick Actions */}
             <div className="w-[1px] h-8 bg-white/10 mx-1"></div>
             
             <button 
-                onClick={onClose} 
+                onClick={handleClose} 
                 className="p-3.5 rounded-xl hover:bg-white/10 text-white transition-colors"
                 title={t.close}
             >

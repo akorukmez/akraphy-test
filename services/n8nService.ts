@@ -11,6 +11,7 @@ export interface N8nPayload {
   lighting: LightingType;
   prompt: string;
   timestamp: string;
+  variation: string;
 }
 
 /**
@@ -20,9 +21,10 @@ export const processWithN8n = async (
   base64Image: string,
   category: ProductCategory,
   scene: SceneType,
-  lighting: LightingType
+  lighting: LightingType,
+  variation: string = 'Standard'
 ): Promise<string> => {
-  const prompt = constructStudioPrompt(category, scene, lighting);
+  const prompt = constructStudioPrompt(category, scene, lighting, variation);
   
   const payload: N8nPayload = {
     image: base64Image,
@@ -30,10 +32,11 @@ export const processWithN8n = async (
     scene,
     lighting,
     prompt,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    variation
   };
 
-  console.log("🚀 n8n İstek Atılıyor:", { category, scene, lighting });
+  console.log("🚀 n8n İstek Atılıyor:", { category, scene, lighting, variation });
 
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {

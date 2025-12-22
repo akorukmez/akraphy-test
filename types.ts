@@ -75,3 +75,13 @@ export interface GalleryItem {
   scene: SceneType;
   lighting: LightingType;
 }
+
+export interface HistoryItem {
+  id: string;
+  timestamp: string;
+  imageUrl: string;
+  category: ProductCategory;
+  scene: SceneType;
+  lighting: LightingType;
+  variation: string;
+}

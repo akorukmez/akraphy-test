@@ -11,7 +11,7 @@ export const translations: Record<Language, any> = {
     uploadTitle: "Import Photo",
     uploadDesc: "Drag & drop or click to upload original product",
     originalSource: "Original Subject",
-    aiResult: "Studio Signature",
+    aiResult: "Studio Results",
     waitingInput: "Ready for Shooting",
     waitingDesc: "Import a product photo to start the digital studio session.",
     processButton: "Start Session",
@@ -44,45 +44,60 @@ export const translations: Record<Language, any> = {
     downloadOptions: "Download Options",
     studioRecipe: "Studio Recipe",
     close: "Close",
+    newSession: "New Session",
+    images: "Images",
+    inspect: "Inspect",
+    variation: "Variation",
+    history: {
+        title: "Session History",
+        subtitle: "Your past generations are stored locally.",
+        empty: "No history yet.",
+        emptyDesc: "Start a studio session to see your results here.",
+        date: "Date",
+        delete: "Delete",
+        subLabels: {
+          upgrade: "Upgrade Plan",
+          past: "Past Sessions",
+          exit: "End Session"
+        }
+    },
+    contact: {
+      title: "Contact Us",
+      subtitle: "We are here to help with any questions or issues.",
+      nameLabel: "Name",
+      namePlaceholder: "Your Name",
+      emailLabel: "Email",
+      emailPlaceholder: "your@email.com",
+      subjectLabel: "Subject",
+      subjects: {
+        support: "Technical Support",
+        feature: "Feature Request",
+        billing: "Billing Issue",
+        other: "Other"
+      },
+      messageLabel: "Message",
+      messagePlaceholder: "How can we help you?",
+      sendBtn: "Send Message",
+      successTitle: "Message Sent",
+      successDesc: "We'll get back to you as soon as possible."
+    },
     footer: {
       privacy: "Privacy Policy",
       terms: "Terms of Use",
+      contact: "Contact Support",
       guide: "Studio Guide",
       rights: "All rights reserved."
     },
     policies: {
-      privacy: `At Akraphy Studio, we prioritize the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Akraphy Studio and how we use it.
-
-1. Information Collection
-We collect images uploaded for processing solely for the purpose of providing the service. We do not use your images for training public AI models without consent.
-
-2. Data Security
-All uploaded files are processed securely and automatically deleted from our temporary servers after processing is complete.
-
-3. User Accounts
-We store your name, email, and credit balance information securely. We do not sell or share your personal data with third parties.
-
-4. Cookies
-We use local storage to maintain your session and preferences (like theme and language).`,
-      terms: `Welcome to Akraphy Studio! These terms and conditions outline the rules and regulations for the use of Akraphy Studio's Website.
-
-1. License
-Unless otherwise stated, Akraphy Studio and/or its licensors own the intellectual property rights for all material on Akraphy Studio. You retain full commercial rights to the images you generate using our platform.
-
-2. Usage Limits
-You may not use our service to generate illegal, offensive, or harmful content. We reserve the right to ban users who violate this policy.
-
-3. Refund Policy
-Digital credits are non-refundable once used. If you experience a technical error, please contact support for credit restitution.
-
-4. Service Availability
-We strive for 99.9% uptime but do not guarantee uninterrupted access to the service due to maintenance or third-party provider outages.`
+      privacy: `At Akraphy Studio, we prioritize the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Akraphy Studio and how we use it.`,
+      terms: `Welcome to Akraphy Studio! These terms and conditions outline the rules and regulations for the use of Akraphy Studio's Website.`
     },
     nav: {
       gallery: "Showcase",
       pricing: "Access Plans",
       help: "Guide",
-      faq: "FAQ"
+      faq: "FAQ",
+      history: "History"
     },
     loadingSteps: [
       "Analyzing product geometry...",
@@ -151,7 +166,7 @@ We strive for 99.9% uptime but do not guarantee uninterrupted access to the serv
         MOODY_DIM: "Atmospheric",
         GOLDEN_HOUR: "Sunset",
         NEON_VIBE: "Cyber",
-        RIM_LIGHT: "Contour"
+        RIM_LIGHT: "Kontur"
       }
     },
     packages: {
@@ -195,7 +210,7 @@ We strive for 99.9% uptime but do not guarantee uninterrupted access to the serv
     uploadTitle: "Ürünü İçe Aktar",
     uploadDesc: "Görseli buraya bırakın veya tıklayın",
     originalSource: "Orijinal Özne",
-    aiResult: "Stüdyo İmzası",
+    aiResult: "Stüdyo Çıktıları",
     waitingInput: "Çekime Hazır",
     waitingDesc: "Dijital stüdyo seansını başlatmak için bir ürün fotoğrafı yükleyin.",
     processButton: "Seansı Başlat",
@@ -218,7 +233,7 @@ We strive for 99.9% uptime but do not guarantee uninterrupted access to the serv
     loginRequired: "Giriş Yapın",
     loginDesc: "Seanslarınızı yönetmek için giriş yapın.",
     loginBtn: "Giriş Yap / Kayıt Ol",
-    logout: "Çıkış",
+    logout: "Çıkış Yap",
     welcome: "Hoşgeldin",
     currency: "Para Birimi",
     batchToggle: "Çoklu Sahne Paketi",
@@ -228,45 +243,60 @@ We strive for 99.9% uptime but do not guarantee uninterrupted access to the serv
     downloadOptions: "İndirme Seçenekleri",
     studioRecipe: "Stüdyo Reçetesi",
     close: "Kapat",
+    newSession: "Yeni Seans",
+    images: "Görsel",
+    inspect: "İncele",
+    variation: "Varyasyon",
+    history: {
+        title: "İşlem Geçmişi",
+        subtitle: "Geçmiş üretimleriniz burada saklanır.",
+        empty: "Henüz geçmiş yok.",
+        emptyDesc: "Burada sonuçlarınızı görmek için bir stüdyo seansı başlatın.",
+        date: "Tarih",
+        delete: "Sil",
+        subLabels: {
+          upgrade: "Planı Yükselt",
+          past: "Geçmiş Seanslar",
+          exit: "Oturumu Kapat"
+        }
+    },
+    contact: {
+      title: "Bize Ulaşın",
+      subtitle: "Sorularınız veya istekleriniz için buradayız.",
+      nameLabel: "İsim Soyisim",
+      namePlaceholder: "Adınız",
+      emailLabel: "E-Posta",
+      emailPlaceholder: "ornek@email.com",
+      subjectLabel: "Konu",
+      subjects: {
+        support: "Teknik Destek",
+        feature: "Özellik İsteği",
+        billing: "Ödeme Sorunu",
+        other: "Diğer"
+      },
+      messageLabel: "Mesaj",
+      messagePlaceholder: "Size nasıl yardımcı olabiliriz?",
+      sendBtn: "Mesajı Gönder",
+      successTitle: "Mesaj İletildi",
+      successDesc: "En kısa sürede size dönüş yapacağız."
+    },
     footer: {
       privacy: "Gizlilik Politikası",
       terms: "Kullanım Koşulları",
+      contact: "İletişime Geç",
       guide: "Stüdyo Rehberi",
       rights: "Tüm hakları saklıdır."
     },
     policies: {
-      privacy: `Akraphy Studio olarak ziyaretçilerimizin gizliliğine öncelik veriyoruz. Bu Gizlilik Politikası belgesi, Akraphy Studio tarafından toplanan ve kaydedilen bilgi türlerini ve bunları nasıl kullandığımızı içerir.
-
-1. Bilgi Toplama
-Hizmeti sağlamak amacıyla yalnızca işlenmek üzere yüklenen görselleri topluyoruz. İzniniz olmadan görsellerinizi genel yapay zeka modellerini eğitmek için kullanmayız.
-
-2. Veri Güvenliği
-Yüklenen tüm dosyalar güvenli bir şekilde işlenir ve işlem tamamlandıktan sonra geçici sunucularımızdan otomatik olarak silinir.
-
-3. Kullanıcı Hesapları
-Adınızı, e-postanızı ve kredi bakiyenizi güvenli bir şekilde saklıyoruz. Kişisel verilerinizi satmayız veya üçüncü taraflarla paylaşmayız.
-
-4. Çerezler
-Oturumunuzu ve tercihlerinizi (tema ve dil gibi) sürdürmek için yerel depolama (local storage) kullanıyoruz.`,
-      terms: `Akraphy Studio'ya hoş geldiniz! Bu hüküm ve koşullar, Akraphy Studio Web Sitesinin kullanımına ilişkin kuralları ve düzenlemeleri ana hatlarıyla belirtir.
-
-1. Lisans
-Aksi belirtilmedikçe, Akraphy Studio ve/veya lisans verenleri Akraphy Studio'daki tüm materyallerin fikri mülkiyet haklarına sahiptir. Platformumuzu kullanarak oluşturduğunuz görsellerin tüm ticari hakları size aittir.
-
-2. Kullanım Sınırları
-Hizmetimizi yasa dışı, saldırgan veya zararlı içerik oluşturmak için kullanamazsınız. Bu politikayı ihlal eden kullanıcıları yasaklama hakkımız saklıdır.
-
-3. İade Politikası
-Dijital krediler kullanıldıktan sonra iade edilemez. Teknik bir hata yaşarsanız, kredi iadesi için lütfen destek ekibiyle iletişime geçin.
-
-4. Hizmet Kullanılabilirliği
-%99,9 çalışma süresi hedefliyoruz ancak bakım veya üçüncü taraf sağlayıcı kesintileri nedeniyle hizmete kesintisiz erişimi garanti etmiyoruz.`
+      privacy: `Akraphy Studio olarak ziyaretçilerimizin gizliliğine öncelik veriyoruz.`,
+      terms: `Akraphy Studio'ya hoş geldiniz! Bu hüküm ve koşullar, Akraphy Studio Web Sitesinin kullanımına ilişkin kuralları ve düzenlemeleri ana hatlarıyla belirtir.`
     },
     nav: {
       gallery: "Vitrin",
       pricing: "Paketler",
       help: "Rehber",
-      faq: "SSS"
+      faq: "SSS",
+      history: "Geçmiş"
     },
     loadingSteps: [
       "Ürün geometrisi analiz ediliyor...",
@@ -285,7 +315,7 @@ Dijital krediler kullanıldıktan sonra iade edilemez. Teknik bir hata yaşarsan
       ],
       comparisonTitle: "Sıradan vs. Stüdyo Kalitesi",
       comparisonDesc: "Sıradan fotoğrafları nasıl yüksek dönüşümlü pazarlama görsellerine dönüştürdüğümüzü görün.",
-      faqTitle: "Sıkça Sorulan Sorular",
+      faqTitle: "Sıkça Sorulan Sosyal Medya Soruları",
       faq: [
         { q: "Bu bir görsel üreticisi mi?", a: "Hayır, Akraphy bir Stüdyo Simülatörüdür. Ürününüzün formunu korur ve onu dijital stüdyo ortamına yerleştirir." },
         { q: "Toplu Çekim nedir?", a: "Aynı ürün için 5 farklı sahne seçmenize olanak tanır. Motorumuz hepsini tek seansta işler." },

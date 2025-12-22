@@ -87,8 +87,8 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
         </button>
 
         <div className="p-8 text-center border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-anthracite-900">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t.pricingTitle}</h2>
-          <p className="text-gray-500 dark:text-gray-400">{t.pricingDesc}</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">{t.pricingTitle}</h2>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">{t.pricingDesc}</p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 p-8 bg-white dark:bg-anthracite-900">
@@ -106,7 +106,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                         : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 bg-white dark:bg-anthracite-800'}`}
                 >
                   {pkg.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
                       {t.mostPopular}
                     </div>
                   )}
@@ -126,8 +126,8 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                   <ul className="flex-1 space-y-3 mb-6 text-left">
                     {pkg.features.map((feat, i) => (
                       <li key={i} className={`flex items-start gap-2 text-xs ${pkg.popular ? 'text-white/80 dark:text-black/80' : 'text-gray-600 dark:text-gray-300'}`}>
-                        <Check className={`w-3 h-3 flex-shrink-0 mt-0.5 ${pkg.popular ? 'text-white dark:text-black' : 'text-green-600 dark:text-green-400'}`} />
-                        <span className="leading-tight">{feat}</span>
+                        <Check className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${pkg.popular ? 'text-white dark:text-black' : 'text-green-600 dark:text-green-400'}`} />
+                        <span className="leading-tight font-medium">{feat}</span>
                       </li>
                     ))}
                   </ul>
@@ -135,10 +135,10 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                   <button
                     onClick={() => handleBuy(pkg)}
                     disabled={!!loadingPkg}
-                    className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all
+                    className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 font-bold text-sm transition-all shadow-md
                       ${pkg.popular 
                         ? 'bg-white dark:bg-black text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800' 
-                        : (isFree ? 'bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white hover:bg-gray-200' : 'bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-anthracite-600')}
+                        : (isFree ? 'bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white hover:bg-gray-200' : 'bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-anthracite-600 shadow-sm')}
                       ${loadingPkg && loadingPkg !== pkg.id ? 'opacity-50 cursor-not-allowed' : ''}
                     `}
                   >
@@ -147,11 +147,11 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                     ) : isFree ? (
                       <>
                         <Zap className="w-3 h-3" />
-                        {lang === 'tr' ? 'Hemen Başla' : 'Başlat'}
+                        {lang === 'tr' ? 'Hemen Başla' : 'Start Now'}
                       </>
                     ) : (
                       <>
-                        <CreditCard className="w-3 h-3" />
+                        <CreditCard className="w-3.5 h-3.5" />
                         {t.purchase}
                       </>
                     )}
@@ -161,7 +161,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
           })}
         </div>
         
-        <div className="p-3 bg-gray-50 dark:bg-anthracite-950 text-center text-[10px] text-gray-400 dark:text-gray-500 font-medium border-t border-gray-100 dark:border-white/5">
+        <div className="p-4 bg-gray-50 dark:bg-anthracite-950 text-center text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest border-t border-gray-100 dark:border-white/5">
           Secure Payments by Stripe & Akraphy
         </div>
       </div>
