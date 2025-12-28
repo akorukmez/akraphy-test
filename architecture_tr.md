@@ -1,43 +1,78 @@
 
-# Akraphy Studio Teknik Mimari (Mavi Plan)
+# Akraphy Studio Teknik Taslak
 
-Bu belge, hem insanlar için bir kılavuz hem de yapay zeka destekli geliştirme (Cursor/Bolt/Neo) için teknik bir temel belge niteliğindedir.
+Bu belge, Akraphy Studio'nun teknik mimarisini ana hatlarıyla belirtir. Backend geliştiricilerinin (n8n tasarımcıları), tam olarak hangi verileri alacaklarını ve frontend'in nasıl çalıştığını anlamaları için hazırlanmıştır.
 
-## 1. Genel Yapı
-Akraphy Studio, React 19 tabanlı bir SPA'dır (Tek Sayfalı Uygulama). Arayüz (UI), İş Mantığı (Servisler) ve Verilerin net bir şekilde ayrıldığı modüler bir tasarım deseni izler.
+## 1. Sisteme Genel Bakış
 
-## 2. Teknik Yığın
-- **Framework:** React 19 (TypeScript).
-- **İkonlar:** Lucide-React.
-- **Tasarım:** Tailwind CSS (Antrasit/Apple Sistemi).
-- **Backend:** n8n Webhook (`https://n8n-cb9h.onrender.com/webhook-test/e9725b70-543e-4419-97dc-a4c1b4666463`).
-- **Depolama:** Kalıcılık için tarayıcı LocalStorage (Yerel Depolama).
+Akraphy Studio, **Thick Client (Akıllı İstemci)** mimarisini izler.
+- **Frontend Sorumlulukları:** Kullanıcı Kimlik Doğrulama (Mock), Kredi Yönetimi, **İstem Mühendisliği (Prompt Engineering)**, Görsel Ön İşleme (Base64) ve Sonuç Görüntüleme.
+- **Backend Sorumlulukları (n8n):** Görselden Görsele İşleme (Stable Diffusion/Flux), dosya depolama ve sonucun döndürülmesi.
 
-## 3. Veri Akışı ve Yapay Zeka Süreci
-1.  **Yakalama:** Görsel `FileReader` aracılığıyla okunur ve Base64 dizisine dönüştürülür.
-2.  **Mühendislik:** `geminiService.ts`, kullanıcı seçimlerini teknik fotoğrafçılık terminolojisine çevirir.
-3.  **İletişim:** `n8nService.ts` veri paketini (payload) gönderir.
-4.  **Dönüşüm:** n8n görseli işler (Inpainting/Outpainting) ve değiştirilmiş sonucu geri gönderir.
-5.  **Sonuç Görüntüleyici:** `ImageViewer.tsx`, bozulma olmadan birden fazla sosyal medya formatı sağlamak için dinamik kanvas boyutlandırmasını yönetir.
+## 2. Servis Katmanı Mimarisi
 
-## 4. Bileşen Hiyerarşisi
-- **App.tsx:** Global state (durum), Üst Menü (Kullanıcı Bilgisi/Krediler), Navigasyon (Galeri > Paketler > Rehber).
-- **StyleSelector.tsx:** Stüdyo parametreleri için ızgara tabanlı seçim paneli.
-- **LandingSections.tsx:** Üst düzey pazarlama bölümleri (Özellikler, Karşılaştırma Sürgüsü, SSS).
-- **ShowcaseGallery.tsx:** "Reçeteleri" (dinamik olarak çevrilmiş) gösteren metadata odaklı galeri.
-- **PricingModal.tsx / PricingSection.tsx:** Ortalanmış 5 paketli abonelik sistemi.
+### A. `geminiService.ts` (Yönetmen)
+Bu servis "Stüdyo Yönetmeni" gibi davranır. n8n modu aktifken görüntüyü doğrudan oluşturmaz; bunun yerine **Talimatları** oluşturur.
+- **Girdi:** Kategori, Sahne, Işıklandırma, Açı.
+- **Çıktı:** Son derece detaylı bir metin istemi (prompt).
+- **Mantık:** Kullanıcı seçimlerine dayanarak özel fotoğrafçılık terimlerini (örneğin: "Sonsuzluk fonu", "Softbox difüzyonu", "Makro detaylar") birleştirir.
 
-## 5. Görsel Standartlar (Yapay Zeka Oluşturucuları İçin)
-- **Yuvarlatılmış Köşeler:** Ana kapsayıcılar için `rounded-[2rem]` (32px).
-- **Glassmorphism:** Yarı saydam katmanlarla (`/80`) `backdrop-blur-xl`.
-- **Renk Paleti:**
-  - Karanlık Mod: `#0B1120` (Arkaplan), `#151e32` (Kartlar).
-  - Vurgular: Apple Mavisi (`#0066CC`), Saf Beyaz ve Keskin Siyah.
+### B. `n8nService.ts` (Kurye)
+Bu servis backend ile iletişimi yönetir.
+- **Eylem:** Veri paketinin (payload) hazırlanmasını koordine eder.
+- **Bağlam Enjeksiyonu:** `user` (kullanıcı) nesnesini pakete ekler. Bu, backend'in şu gibi mantıkları uygulamasını sağlar:
+  - *Eğer Plan == 'Kurumsal' ise, Yüksek Çözünürlüklü Model kullan.*
+  - *Eğer Plan == 'Deneme' ise, filigran ekle.*
 
-## 6. Mantıksal Kalıcılık (AuthService)
-- Bu demo için gerçek bir backend sunucusu gerekmez.
-- `authService.ts` bir veritabanını simüle eder.
-- Krediler, başarılı görsel üretimi sonrasında istemci tarafında düşülür.
+### C. `authService.ts` & `historyService.ts` (Durum)
+- **Kalıcılık:** Kullanıcı oturumu ve üretim geçmişini saklamak için Tarayıcı `localStorage` kullanır.
+- **Anahtarlar:**
+  - `jewelai_users`: Kullanıcı nesnelerini, kredileri ve planları saklar.
+  - `jewelai_history`: Son 50 üretilen görseli ve metadatasını saklar.
 
----
-*Yapay Zeka Odaklı Geliştirme Referansı - Akraphy Studio v1.1*
+## 3. Veri Arayüzü Spesifikasyonu (Backend Kontratı)
+
+n8n iş akışı **MUTLAKA** aşağıdaki JSON şemasını kabul etmelidir.
+
+### İstek Nesnesi (`POST`)
+
+| Alan | Tür | Açıklama |
+| :--- | :--- | :--- |
+| `image` | `string` | Yüklenen dosyanın ham Base64 dizisi (başlık temizlenmiş). |
+| `prompt` | `string` | Frontend tarafından oluşturulan nihai, mühendisliği yapılmış istem. |
+| `timestamp` | `string` | İstek zamanının ISO formatı. |
+| `config` | `Object` | Çekimin teknik yapılandırması. |
+| `config.category` | `string` | Enum: `JEWELRY`, `FASHION`, `HOME`, vb. |
+| `config.scene` | `string` | Enum: `CLEAN_WHITE`, `LIFESTYLE_HOME`, vb. |
+| `config.lighting` | `string` | Enum: `STUDIO_SOFT`, `NEON_VIBE`, vb. |
+| `config.variation` | `string` | Açı etiketi (örneğin: "Front Standard"). |
+| `user` | `Object` | **Mantık için Kritik.** Kullanıcı bağlamı. |
+| `user.id` | `string` | Kullanıcı ID. |
+| `user.email` | `string` | Kullanıcı E-posta. |
+| `user.plan` | `string` | Plan Adı (`Free Trial`, `Starter`, `Pro`, `Studio`, `Enterprise`). |
+| `user.credits` | `number` | Mevcut kredi bakiyesi. |
+| `client` | `Object` | İstemci metadatası. |
+| `client.language` | `string` | `en` veya `tr`. |
+
+### Yanıt Nesnesi
+
+Backend aşağıdaki anahtarlardan herhangi birini döndürebilir; frontend bunları şu sırayla kontrol eder:
+1. `output_url` (Public URL)
+2. `url`
+3. `image_url`
+4. `image` (Base64)
+5. `data` (Base64)
+6. `output`
+
+## 4. Yürütme Akışı (Toplu Mod)
+
+Kullanıcı "Toplu Mod"u seçtiğinde (örneğin 3 sahne seçili):
+1. Frontend toplam işlem sayısını hesaplar (örneğin 3 Sahne * 5 Açı = 15 Üretim).
+2. Seçilen sahneler üzerinde döngü kurar.
+3. Her açı varyasyonu için benzersiz bir `prompt` oluşturur.
+4. Her varyasyon için `processWithN8n` fonksiyonunu tek tek çağırır.
+5. **Not:** Döngüyü frontend yönetir. Backend tekil istekleri sırayla (veya ağ durumuna göre paralel) alır.
+
+## 5. Güvenlik ve Kısıtlamalar
+- **Kimlik Doğrulama:** Şu anda LocalStorage ile simüle edilmektedir. Prodüksiyon backend'inde, `user.id` doğrulaması yapılmalı veya `n8nService.ts` içine API Key başlığı eklenmelidir.
+- **CORS:** n8n webhook'u, frontend domaininden (veya `*`) gelen isteklere izin vermelidir.

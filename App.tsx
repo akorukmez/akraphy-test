@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { UploadCloud, Image as ImageIcon, Download, Sparkles, RefreshCcw, Globe, Coins, User as UserIcon, LogOut, Moon, Sun, HelpCircle, Mail, Layers, Zap, Settings2, ShieldCheck, FileText, Info, History, ChevronDown } from 'lucide-react';
 import { ProductCategory, SceneType, LightingType, ProcessingState, Language, User, Currency, ProcessingProvider, HistoryItem } from './types';
@@ -179,7 +178,15 @@ const App: React.FC = () => {
 
           let resultUrl = '';
           if (engineProvider === 'n8n') {
-            resultUrl = await processWithN8n(rawBase64, selectedCategory, currentScene, selectedLighting, variation.label);
+            resultUrl = await processWithN8n(
+                rawBase64, 
+                selectedCategory, 
+                currentScene, 
+                selectedLighting, 
+                variation.label,
+                user, // Pass the user object
+                lang  // Pass the current language
+            );
           } else {
             resultUrl = await processWithGemini(rawBase64, mimeType, selectedCategory, currentScene, selectedLighting, variation.label);
           }

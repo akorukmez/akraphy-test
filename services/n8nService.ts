@@ -1,42 +1,77 @@
 
-import { ProductCategory, SceneType, LightingType } from '../types';
+import { ProductCategory, SceneType, LightingType, User, Language } from '../types';
 import { constructStudioPrompt } from './geminiService';
 
 const N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/9293d01d-0e35-4dc6-842d-5c0702f50ce3";
 
 export interface N8nPayload {
   image: string; // Base64
-  category: ProductCategory;
-  scene: SceneType;
-  lighting: LightingType;
   prompt: string;
   timestamp: string;
-  variation: string;
+  // Configuration Context
+  config: {
+    category: ProductCategory;
+    scene: SceneType;
+    lighting: LightingType;
+    variation: string;
+  };
+  // User Context (Crucial for Plan-based Logic)
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    plan: string;     // e.g., "Free Trial", "Starter", "Pro", "Studio", "Enterprise"
+    credits: number;
+  };
+  // Client Context
+  client: {
+    language: Language;
+    userAgent: string;
+  };
 }
 
 /**
- * n8n Webhook'una stüdyo verilerini gönderir ve gelen yanıtı işler.
+ * n8n Webhook'una stüdyo verilerini ve kapsamlı kullanıcı bilgilerini gönderir.
  */
 export const processWithN8n = async (
   base64Image: string,
   category: ProductCategory,
   scene: SceneType,
   lighting: LightingType,
-  variation: string = 'Standard'
+  variation: string = 'Standard',
+  user: User,
+  lang: Language
 ): Promise<string> => {
   const prompt = constructStudioPrompt(category, scene, lighting, variation);
   
   const payload: N8nPayload = {
     image: base64Image,
-    category,
-    scene,
-    lighting,
     prompt,
     timestamp: new Date().toISOString(),
-    variation
+    config: {
+      category,
+      scene,
+      lighting,
+      variation
+    },
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      plan: user.planName,
+      credits: user.credits
+    },
+    client: {
+      language: lang,
+      userAgent: navigator.userAgent
+    }
   };
 
-  console.log("🚀 n8n İstek Atılıyor:", { category, scene, lighting, variation });
+  console.log("🚀 n8n İstek Atılıyor (User Context Dahil):", { 
+    plan: user.planName, 
+    credits: user.credits,
+    config: payload.config 
+  });
 
   try {
     const response = await fetch(N8N_WEBHOOK_URL, {
@@ -81,7 +116,6 @@ export const processWithN8n = async (
   } catch (error: any) {
     console.error("🚨 n8n Bağlantı Hatası:", error);
     
-    // Check if it's likely a CORS or connection error
     if (error instanceof TypeError && (error.message === "Failed to fetch" || error.message.includes("Load failed"))) {
       throw new Error("n8n servisine bağlanılamadı. n8n ayarlarında N8N_CORS_ALLOWED_ORIGINS değişkenine bu sitenin adresini eklediğinizden veya '*' (herkese açık) yaptığınızdan emin olun.");
     }
