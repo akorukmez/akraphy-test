@@ -2,7 +2,7 @@
 import { ProductCategory, SceneType, LightingType } from '../types';
 import { constructStudioPrompt } from './geminiService';
 
-const N8N_WEBHOOK_URL = "https://n8n-cb9h.onrender.com/webhook-test/e9725b70-543e-4419-97dc-a4c1b4666463";
+const N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/9293d01d-0e35-4dc6-842d-5c0702f50ce3";
 
 export interface N8nPayload {
   image: string; // Base64

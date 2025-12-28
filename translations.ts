@@ -59,6 +59,16 @@ export const translations: Record<Language, any> = {
           upgrade: "Upgrade Plan",
           past: "Past Sessions",
           exit: "End Session"
+        },
+        searchPlaceholder: "Search category, scene...",
+        sortTitle: "Sort By",
+        sort: {
+            newest: "Newest First",
+            oldest: "Oldest First",
+            catAZ: "Category (A-Z)",
+            catZA: "Category (Z-A)",
+            sceneAZ: "Scene (A-Z)",
+            sceneZA: "Scene (Z-A)"
         }
     },
     contact: {
@@ -134,6 +144,7 @@ export const translations: Record<Language, any> = {
       categoryTitle: "1. Category",
       sceneTitle: "2. Scene",
       lightingTitle: "3. Lighting",
+      ecommerceHint: "E-Commerce Ready",
       categories: {
         JEWELRY: "Jewelry",
         FASHION: "Fashion",
@@ -155,7 +166,7 @@ export const translations: Record<Language, any> = {
         PASTEL_CREATIVE: "Pastel",
         CONCRETE_URBAN: "Industrial",
         MARBLE_ELEGANCE: "Marble",
-        WOODEN_RUSTIC: "Rustic Wood",
+        WOODEN_RUSTIC: "Rustik Wood",
         WATER_DYNAMIC: "Water Ripple",
         VELVET_SOFT: "Soft Velvet"
       },
@@ -258,6 +269,16 @@ export const translations: Record<Language, any> = {
           upgrade: "Planı Yükselt",
           past: "Geçmiş Seanslar",
           exit: "Oturumu Kapat"
+        },
+        searchPlaceholder: "Kategori, sahne ara...",
+        sortTitle: "Sıralama",
+        sort: {
+            newest: "En Yeni",
+            oldest: "En Eski",
+            catAZ: "Kategori (A-Z)",
+            catZA: "Kategori (Z-A)",
+            sceneAZ: "Sahne (A-Z)",
+            sceneZA: "Sahne (Z-A)"
         }
     },
     contact: {
@@ -333,6 +354,7 @@ export const translations: Record<Language, any> = {
       categoryTitle: "1. Ürün Kategorisi",
       sceneTitle: "2. Stüdyo Sahnesi",
       lightingTitle: "3. Işık Kurulumu",
+      ecommerceHint: "E-Ticaret Uyumlu",
       categories: {
         JEWELRY: "Mücevher",
         FASHION: "Moda",

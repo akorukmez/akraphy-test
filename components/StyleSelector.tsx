@@ -134,6 +134,8 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
             const label = t.scenes[key as keyof typeof t.scenes];
             const Icon = getSceneIcon(key);
             const isSelected = selectedScenes.includes(value);
+            const isCleanWhite = key === 'CLEAN_WHITE';
+
             return (
               <button 
                 key={key} 
@@ -142,6 +144,13 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
                 className={`relative flex flex-col items-center justify-center p-4 h-32 rounded-[2.2rem] border transition-all duration-300 ${isSelected ? 'bg-blue-50/50 dark:bg-blue-900/10 border-blue-500 dark:border-blue-400 ring-2 ring-blue-500/10 dark:ring-blue-400/10 shadow-xl scale-[1.02] z-10' : 'bg-gray-50/50 dark:bg-anthracite-900/30 border-gray-100 dark:border-white/5 hover:bg-white dark:hover:bg-anthracite-700/50 hover:shadow-xl'}`}
               >
                 {isSelected && <CheckCircle2 className="absolute top-4 right-4 w-4 h-4 text-blue-500 fill-white dark:fill-anthracite-900" />}
+                
+                {isCleanWhite && isSelected && (
+                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md whitespace-nowrap tracking-wide border-2 border-white dark:border-anthracite-900 animate-in zoom-in duration-300">
+                    {t.ecommerceHint}
+                  </div>
+                )}
+
                 <Icon className={`w-7 h-7 mb-3 transition-colors ${isSelected ? 'text-blue-500' : 'text-gray-400 dark:text-gray-500'}`} />
                 <span className={`text-[9px] font-bold text-center leading-snug uppercase tracking-[0.1em] ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>{label}</span>
               </button>

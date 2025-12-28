@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
-import { X, History, Trash2, Calendar, Clock, Layers, Zap, Tag, ZoomIn, Image as ImageIcon, LayoutGrid, List } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { X, History, Trash2, Calendar, Clock, Layers, Zap, Tag, ZoomIn, Image as ImageIcon, LayoutGrid, List, Search, ArrowUpDown, ChevronDown, Check } from 'lucide-react';
 import { Language, HistoryItem, ProductCategory, SceneType, LightingType } from '../types';
 import { translations } from '../translations';
 import { historyService } from '../services/historyService';
@@ -12,10 +12,21 @@ interface HistoryModalProps {
   lang: Language;
 }
 
+type SortBy = 'date' | 'category' | 'scene';
+type SortOrder = 'asc' | 'desc';
+
 export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lang }) => {
   const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
+  // Filtering & Sorting State
+  const [filterQuery, setFilterQuery] = useState('');
+  const [sortBy, setSortBy] = useState<SortBy>('date');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
+
   const t = translations[lang];
   const tHist = t.history;
 
@@ -28,6 +39,19 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
+
+  // Click outside for sort menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
+        setIsSortMenuOpen(false);
+      }
+    };
+    if (isSortMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSortMenuOpen]);
 
   if (!isOpen) return null;
 
@@ -62,6 +86,62 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
     };
   };
 
+  // 1. Filter Logic
+  const filteredItems = historyItems.filter(item => {
+    if (!filterQuery) return true;
+    const q = filterQuery.toLowerCase();
+    
+    const cat = getTranslatedLabel('category', item.category).toLowerCase();
+    const scn = getTranslatedLabel('scene', item.scene).toLowerCase();
+    const lgt = getTranslatedLabel('lighting', item.lighting).toLowerCase();
+    const vari = (item.variation || '').toLowerCase();
+    
+    return cat.includes(q) || scn.includes(q) || lgt.includes(q) || vari.includes(q);
+  });
+
+  // 2. Sort Logic
+  const sortedItems = [...filteredItems].sort((a, b) => {
+    let valA: string | number, valB: string | number;
+
+    switch(sortBy) {
+        case 'category':
+            valA = getTranslatedLabel('category', a.category);
+            valB = getTranslatedLabel('category', b.category);
+            break;
+        case 'scene':
+            valA = getTranslatedLabel('scene', a.scene);
+            valB = getTranslatedLabel('scene', b.scene);
+            break;
+        default: // date
+            valA = new Date(a.timestamp).getTime();
+            valB = new Date(b.timestamp).getTime();
+            break;
+    }
+
+    if (sortBy === 'date') {
+        // Numeric sort for timestamp
+        return sortOrder === 'asc' 
+            ? (valA as number) - (valB as number) 
+            : (valB as number) - (valA as number);
+    } else {
+        // String sort for labels
+        return sortOrder === 'asc' 
+            ? (valA as string).localeCompare(valB as string) 
+            : (valB as string).localeCompare(valA as string);
+    }
+  });
+
+  const sortOptions = [
+    { key: 'date_desc', label: tHist.sort.newest, by: 'date', order: 'desc' },
+    { key: 'date_asc', label: tHist.sort.oldest, by: 'date', order: 'asc' },
+    { key: 'cat_asc', label: tHist.sort.catAZ, by: 'category', order: 'asc' },
+    { key: 'cat_desc', label: tHist.sort.catZA, by: 'category', order: 'desc' },
+    { key: 'scn_asc', label: tHist.sort.sceneAZ, by: 'scene', order: 'asc' },
+    { key: 'scn_desc', label: tHist.sort.sceneZA, by: 'scene', order: 'desc' },
+  ];
+
+  const currentSortLabel = sortOptions.find(o => o.by === sortBy && o.order === sortOrder)?.label || tHist.sort.newest;
+
   return (
     <>
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
@@ -70,7 +150,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
         <div className="relative bg-white dark:bg-anthracite-900 rounded-[2rem] shadow-2xl w-full max-w-5xl overflow-hidden flex flex-col h-[85vh] animate-in fade-in zoom-in duration-300 border border-transparent dark:border-white/10">
             
             {/* Header */}
-            <div className="flex items-center justify-between p-6 md:p-8 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-anthracite-950">
+            <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-anthracite-950">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-black dark:bg-white rounded-2xl flex items-center justify-center shadow-lg">
                         <History className="w-6 h-6 text-white dark:text-black" />
@@ -106,19 +186,83 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                 </div>
             </div>
 
-            {/* Content */}
+            {/* Filter & Sort Toolbar */}
+            <div className="px-6 md:px-8 py-4 border-b border-gray-100 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-white dark:bg-anthracite-900 z-10 shadow-sm/50">
+                {/* Search */}
+                <div className="relative flex-1 max-w-md">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input 
+                        type="text" 
+                        placeholder={tHist.searchPlaceholder}
+                        value={filterQuery}
+                        onChange={(e) => setFilterQuery(e.target.value)}
+                        className="w-full bg-gray-50 dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-1 focus:ring-black dark:focus:ring-white transition-all text-gray-900 dark:text-white placeholder-gray-400"
+                    />
+                </div>
+
+                {/* Sort Dropdown */}
+                <div className="relative min-w-[180px]" ref={sortMenuRef}>
+                    <button 
+                        onClick={() => setIsSortMenuOpen(!isSortMenuOpen)}
+                        className="w-full flex items-center justify-between gap-2 px-4 py-2 bg-gray-50 dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-anthracite-700 transition-colors"
+                    >
+                        <div className="flex items-center gap-2 truncate">
+                            <ArrowUpDown className="w-3.5 h-3.5 text-gray-500" />
+                            <span>{currentSortLabel}</span>
+                        </div>
+                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isSortMenuOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isSortMenuOpen && (
+                        <div className="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-20 animate-in fade-in zoom-in-95">
+                             <div className="px-4 py-2 bg-gray-50 dark:bg-anthracite-950 border-b border-gray-100 dark:border-white/5 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                {tHist.sortTitle}
+                             </div>
+                             {sortOptions.map(opt => {
+                                 const isActive = sortBy === opt.by && sortOrder === opt.order;
+                                 return (
+                                     <button
+                                        key={opt.key}
+                                        onClick={() => {
+                                            setSortBy(opt.by as SortBy);
+                                            setSortOrder(opt.order as SortOrder);
+                                            setIsSortMenuOpen(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 text-xs font-medium flex items-center justify-between hover:bg-gray-50 dark:hover:bg-anthracite-700 transition-colors ${isActive ? 'text-black dark:text-white bg-gray-50 dark:bg-anthracite-700/50' : 'text-gray-600 dark:text-gray-300'}`}
+                                     >
+                                        {opt.label}
+                                        {isActive && <Check className="w-3.5 h-3.5 text-blue-500" />}
+                                     </button>
+                                 );
+                             })}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Content List/Grid */}
             <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8 bg-gray-50 dark:bg-anthracite-900">
-                {historyItems.length === 0 ? (
+                {sortedItems.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center opacity-50">
-                        <ImageIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{tHist.empty}</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">{tHist.emptyDesc}</p>
+                        {filterQuery ? (
+                            <>
+                                <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Sonuç Bulunamadı</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Arama kriterlerinize uygun kayıt yok.</p>
+                            </>
+                        ) : (
+                            <>
+                                <ImageIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{tHist.empty}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{tHist.emptyDesc}</p>
+                            </>
+                        )}
                     </div>
                 ) : (
                     <>
                         {viewMode === 'grid' ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                {historyItems.map((item) => {
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                {sortedItems.map((item) => {
                                     const dt = formatDate(item.timestamp);
                                     return (
                                         <div 
@@ -187,8 +331,8 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                 })}
                             </div>
                         ) : (
-                            <div className="flex flex-col gap-3">
-                                {historyItems.map((item) => {
+                            <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                                {sortedItems.map((item) => {
                                     const dt = formatDate(item.timestamp);
                                     return (
                                         <div 
