@@ -3,50 +3,59 @@ export type Language = 'en' | 'tr';
 export type Currency = 'TRY' | 'USD' | 'EUR';
 export type ProcessingProvider = 'gemini' | 'n8n';
 
+export enum UserPlanType {
+  FREE = 'free',
+  STARTER = 'starter',
+  PRO = 'pro',
+  STUDIO = 'studio',
+  ENTERPRISE = 'enterprise'
+}
+
+export interface PlanFeatures {
+  maxBatchSize: number;
+  highResOutput: boolean;
+  removeWatermark: boolean;
+  priorityProcessing: boolean;
+  commercialLicense: boolean;
+  apiAccess: boolean;
+}
+
 export interface User {
   id: string;
   email: string;
   credits: number;
   name: string;
   planName: string;
+  planType: UserPlanType;
+  features: PlanFeatures;
   preferredCurrency?: Currency;
 }
 
+// MVP UPDATE: 5 Specific Categories
 export enum ProductCategory {
-  JEWELRY = 'Jewelry & High-End',
-  FASHION = 'Fashion & Apparel',
-  HANDMADE = 'Handmade & Craft',
-  HOME = 'Home & Furniture',
-  BEAUTY = 'Beauty & Cosmetics',
-  BOOKS = 'Stationery & Books',
-  TECH = 'Consumer Electronics',
-  KIDS = 'Toys & Baby',
-  FOOD = 'Food & Beverage',
-  AUTOMOTIVE = 'Automotive Parts'
+  JEWELRY = 'jewelry_access',      // Takı & Aksesuar
+  COSMETICS = 'cosmetics_care',    // Kozmetik & Kişisel Bakım
+  SMALL_GOODS = 'small_goods',     // Küçük E-Ticaret Ürünleri
+  TECH = 'tech_access',            // Teknoloji & Aksesuar
+  GENERAL = 'general_universal'    // Genel Ürün
 }
 
+// MVP UPDATE: 6 Universal Scenes (Added Transparent)
 export enum SceneType {
-  TRANSPARENT = 'Transparent (Background Removal Only)',
-  CLEAN_WHITE = 'Pure White Studio (E-Commerce Standard)',
-  LIFESTYLE_HOME = 'Cozy Home Interior (Lifestyle)',
-  LUXURY_DARK = 'Dark Minimalist (Premium)',
-  OUTDOOR_NATURAL = 'Outdoor Nature (Organic)',
-  PASTEL_CREATIVE = 'Solid Pastel Colors (Creative)',
-  CONCRETE_URBAN = 'Concrete Texture (Industrial)',
-  MARBLE_ELEGANCE = 'Marble Surface (Luxury)',
-  WOODEN_RUSTIC = 'Aged Wood (Rustic)',
-  WATER_DYNAMIC = 'Water Ripples (Refreshing)',
-  VELVET_SOFT = 'Velvet Fabric (Soft)'
+  PURE_STUDIO = 'pure_studio',         // Beyaz/Gri, Katalog
+  DARK_PREMIUM = 'dark_premium',       // Siyah/Antrasit, Lüks
+  SOFT_GRADIENT = 'soft_gradient',     // Pastel Degrade
+  TABLETOP_MINIMAL = 'tabletop_min',   // Ahşap/Beton, Butik
+  FLOATING_OBJECT = 'floating_object', // Havada, Modern 3D
+  TRANSPARENT = 'transparent_bg'       // Dekupe, Arkaplan Sil
 }
 
+// MVP UPDATE: 4 Lighting Profiles
 export enum LightingType {
-  STUDIO_SOFT = 'Softbox Diffusion (Balanced)',
-  NATURAL_SUN = 'Natural Window Light (Warm)',
-  PROFESSIONAL_CRISP = 'High Key Crisp (Sharp)',
-  MOODY_DIM = 'Cinematic Dim (Atmospheric)',
-  GOLDEN_HOUR = 'Golden Hour (Sunset Glow)',
-  NEON_VIBE = 'Cyber Neon (Futuristic)',
-  RIM_LIGHT = 'Rim Highlight (Contour)'
+  SOFTBOX = 'softbox_studio',          // Default, Dengeli
+  DIRECTIONAL = 'directional_cont',    // Yönlü, Derinlik
+  HIGH_KEY = 'high_key_clean',         // Parlak, Satış Odaklı
+  MOODY = 'moody_side'                 // Sanatsal, Butik
 }
 
 export interface ProcessingState {

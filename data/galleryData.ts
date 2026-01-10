@@ -8,13 +8,13 @@ export const LANDING_COMPARISON = {
   before: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800",
   after: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800",
   category: ProductCategory.JEWELRY,
-  scene: SceneType.CLEAN_WHITE,
-  lighting: LightingType.STUDIO_SOFT
+  scene: SceneType.PURE_STUDIO,
+  lighting: LightingType.SOFTBOX
 };
 
 /**
  * Showcase Gallery Items
- * You can update these links and settings here.
+ * Updated to match new MVP Enums
  */
 export const SHOWCASE_ITEMS: GalleryItem[] = [
   {
@@ -23,71 +23,70 @@ export const SHOWCASE_ITEMS: GalleryItem[] = [
     beforeImage: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800",
     afterImage: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800",
     category: ProductCategory.JEWELRY,
-    scene: SceneType.MARBLE_ELEGANCE,
-    // Fix: Corrected property name from rim_LIGHT to RIM_LIGHT and removed extra space
-    lighting: LightingType.RIM_LIGHT
+    scene: SceneType.DARK_PREMIUM,
+    lighting: LightingType.DIRECTIONAL
   },
   {
     id: '2',
-    title: "Premium Perfume Bottle",
+    title: "Premium Perfume",
     beforeImage: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?auto=format&fit=crop&q=80&w=800",
     afterImage: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.BEAUTY,
-    scene: SceneType.WATER_DYNAMIC,
-    lighting: LightingType.NATURAL_SUN
+    category: ProductCategory.COSMETICS,
+    scene: SceneType.SOFT_GRADIENT,
+    lighting: LightingType.HIGH_KEY
   },
   {
     id: '3',
-    title: "Minimalist Smart Watch",
+    title: "Smart Watch",
     beforeImage: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800",
     afterImage: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=800",
     category: ProductCategory.TECH,
-    scene: SceneType.PASTEL_CREATIVE,
-    lighting: LightingType.PROFESSIONAL_CRISP
+    scene: SceneType.PURE_STUDIO,
+    lighting: LightingType.SOFTBOX
   },
   {
     id: '4',
-    title: "Organic Skincare Set",
+    title: "Organic Cream",
     beforeImage: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=800",
     afterImage: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.BEAUTY,
-    scene: SceneType.WOODEN_RUSTIC,
-    lighting: LightingType.GOLDEN_HOUR
+    category: ProductCategory.COSMETICS,
+    scene: SceneType.TABLETOP_MINIMAL,
+    lighting: LightingType.MOODY
   },
   {
     id: '5',
-    title: "Urban Sneakers",
-    beforeImage: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=800",
-    afterImage: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.FASHION,
-    scene: SceneType.CONCRETE_URBAN,
-    lighting: LightingType.RIM_LIGHT
+    title: "Urban Headphones",
+    beforeImage: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
+    afterImage: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800",
+    category: ProductCategory.TECH,
+    scene: SceneType.DARK_PREMIUM,
+    lighting: LightingType.DIRECTIONAL
   },
   {
     id: '6',
-    title: "Designer Handbag",
-    beforeImage: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800",
-    afterImage: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.FASHION,
-    scene: SceneType.LUXURY_DARK,
-    lighting: LightingType.MOODY_DIM
+    title: "Handmade Mug",
+    beforeImage: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&q=80&w=800",
+    afterImage: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&q=80&w=800",
+    category: ProductCategory.SMALL_GOODS,
+    scene: SceneType.TABLETOP_MINIMAL,
+    lighting: LightingType.SOFTBOX
   },
   {
     id: '7',
-    title: "Handmade Ceramic",
-    beforeImage: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=800",
-    afterImage: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.HANDMADE,
-    scene: SceneType.VELVET_SOFT,
-    lighting: LightingType.STUDIO_SOFT
+    title: "Gift Candle",
+    beforeImage: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=800",
+    afterImage: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&q=80&w=800",
+    category: ProductCategory.SMALL_GOODS,
+    scene: SceneType.SOFT_GRADIENT,
+    lighting: LightingType.HIGH_KEY
   },
   {
     id: '8',
-    title: "Artisan Coffee Beans",
-    beforeImage: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800",
-    afterImage: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800",
-    category: ProductCategory.FOOD,
-    scene: SceneType.OUTDOOR_NATURAL,
-    lighting: LightingType.GOLDEN_HOUR
+    title: "Universal Product",
+    beforeImage: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800",
+    afterImage: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800",
+    category: ProductCategory.GENERAL,
+    scene: SceneType.PURE_STUDIO,
+    lighting: LightingType.SOFTBOX
   }
 ];

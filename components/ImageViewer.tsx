@@ -110,20 +110,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   const currentScene = getCurrentScene();
 
-  // Helper to get translated label
+  // Helper to get translated label directly from value (Fixes empty recipe issue)
   const getTranslatedLabel = (type: 'category' | 'scene' | 'lighting', value: string) => {
     const configT = t.config;
-    let key: string | undefined;
-    
     if (type === 'category') {
-      key = Object.keys(ProductCategory).find(k => ProductCategory[k as keyof typeof ProductCategory] === value);
-      return key ? configT.categories[key as keyof typeof configT.categories] : value;
+      const catData = configT.categories[value as keyof typeof configT.categories];
+      return catData ? catData.label : value;
     } else if (type === 'scene') {
-      key = Object.keys(SceneType).find(k => SceneType[k as keyof typeof SceneType] === value);
-      return key ? configT.scenes[key as keyof typeof configT.scenes] : value;
+      const sceneData = configT.scenes[value as keyof typeof configT.scenes];
+      return sceneData ? sceneData.label : value;
     } else {
-      key = Object.keys(LightingType).find(k => LightingType[k as keyof typeof LightingType] === value);
-      return key ? configT.lighting[key as keyof typeof configT.lighting] : value;
+      const lightData = configT.lighting[value as keyof typeof configT.lighting];
+      return lightData ? lightData.label : value;
     }
   };
 

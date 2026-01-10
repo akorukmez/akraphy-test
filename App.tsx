@@ -27,8 +27,8 @@ const App: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>(ProductCategory.JEWELRY);
-  const [selectedScenes, setSelectedScenes] = useState<SceneType[]>([SceneType.CLEAN_WHITE]);
-  const [selectedLighting, setSelectedLighting] = useState<LightingType>(LightingType.STUDIO_SOFT);
+  const [selectedScenes, setSelectedScenes] = useState<SceneType[]>([SceneType.PURE_STUDIO]);
+  const [selectedLighting, setSelectedLighting] = useState<LightingType>(LightingType.SOFTBOX);
   const [isBatchMode, setIsBatchMode] = useState(false);
   const [engineProvider, setEngineProvider] = useState<ProcessingProvider>('gemini');
 

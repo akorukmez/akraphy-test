@@ -37,8 +37,8 @@ export const translations: Record<Language, any> = {
     logout: "Logout",
     welcome: "Welcome",
     currency: "Currency",
-    batchToggle: "Multi-Scene Suite",
-    batchDesc: "Select up to 5 scenes for a full studio collection.",
+    batchToggle: "Batch Mode",
+    batchDesc: "Generate multiple scene variations at once.",
     providerSelect: "Studio Engine",
     download: "Download",
     downloadOptions: "Download Options",
@@ -141,43 +141,30 @@ export const translations: Record<Language, any> = {
       done: "Export"
     },
     config: {
-      categoryTitle: "1. Category",
-      sceneTitle: "2. Scene",
-      lightingTitle: "3. Lighting",
+      categoryTitle: "1. Product Category",
+      sceneTitle: "2. Studio Scene",
+      lightingTitle: "3. Lighting Setup",
       ecommerceHint: "E-Commerce Ready",
       categories: {
-        JEWELRY: "Jewelry",
-        FASHION: "Fashion",
-        HANDMADE: "Handmade",
-        HOME: "Furniture",
-        BEAUTY: "Cosmetics",
-        BOOKS: "Stationery",
-        TECH: "Electronics",
-        KIDS: "Baby",
-        FOOD: "Beverage",
-        AUTOMOTIVE: "Auto"
+        jewelry_access: { label: "Jewelry & Access.", desc: "Rings, Necklaces, Watches" },
+        cosmetics_care: { label: "Cosmetics & Care", desc: "Perfume, Cream, Serum" },
+        small_goods: { label: "Small Goods", desc: "Candles, Mugs, Gifts" },
+        tech_access: { label: "Tech & Gadgets", desc: "Headphones, Mouse, Cases" },
+        general_universal: { label: "General Product", desc: "Universal Preset" }
       },
       scenes: {
-        TRANSPARENT: "Background Removal",
-        CLEAN_WHITE: "Pure White",
-        LIFESTYLE_HOME: "Lifestyle",
-        LUXURY_DARK: "Premium Dark",
-        OUTDOOR_NATURAL: "Natural",
-        PASTEL_CREATIVE: "Pastel",
-        CONCRETE_URBAN: "Industrial",
-        MARBLE_ELEGANCE: "Marble",
-        WOODEN_RUSTIC: "Rustik Wood",
-        WATER_DYNAMIC: "Water Ripple",
-        VELVET_SOFT: "Soft Velvet"
+        pure_studio: { label: "Pure Studio", desc: "Clean White/Grey. Professional." },
+        dark_premium: { label: "Dark Premium", desc: "Anthracite/Black. Luxury." },
+        soft_gradient: { label: "Soft Gradient", desc: "Pastel Tones. Modern & Airy." },
+        tabletop_min: { label: "Tabletop Minimal", desc: "Wood/Concrete. Boutique." },
+        floating_object: { label: "Floating Object", desc: "Solid Color. 3D Anti-Gravity." },
+        transparent_bg: { label: "Transparent", desc: "Solid White. Cutout Ready." }
       },
       lighting: {
-        STUDIO_SOFT: "Softbox",
-        NATURAL_SUN: "Natural",
-        PROFESSIONAL_CRISP: "Sharp",
-        MOODY_DIM: "Atmospheric",
-        GOLDEN_HOUR: "Sunset",
-        NEON_VIBE: "Cyber",
-        RIM_LIGHT: "Kontur"
+        softbox_studio: { label: "Softbox Studio", desc: "Balanced, Soft Shadows (Default)" },
+        directional_cont: { label: "Directional Contrast", desc: "Depth, Dramatic Shadows" },
+        high_key_clean: { label: "High-Key Clean", desc: "Bright, Homogeneous, Sales Focus" },
+        moody_side: { label: "Moody Side Light", desc: "Artistic, Low Key" }
       }
     },
     packages: {
@@ -196,20 +183,25 @@ export const translations: Record<Language, any> = {
       btn: "Start Shooting"
     },
     help: {
-      title: "Studio User Guide",
-      subTitle: "Get professional results in 3 steps",
-      steps: [
-        { title: "Import Product", desc: "Upload a clear photo. Our engine works best with focused subjects." },
-        { title: "Select Setup", desc: "Choose your category and scenes. Enable Batch Mode to generate 5 scenes at once." },
-        { title: "Process", desc: "Start the session. Our simulator will reconstruct the environment and lighting." }
-      ],
-      tipsTitle: "Studio Pro Tips",
+      title: "Studio Guide",
+      subTitle: "Which setting should you choose?",
+      btn: "Close Guide",
+      tipsTitle: "Pro Tips",
       tips: [
-        "Enable Batch Mode to save time and get a variety of marketing assets.",
-        "Use 'Background Removal' for clean assets you want to use elsewhere.",
-        "Ensure the product isn't cut off in the original photo for realistic shadows."
+        "Example: Use 'Pure Studio' for Amazon/Etsy listings.",
+        "Example: Use 'Dark Premium' for jewelry to make metals pop.",
+        "Example: Use 'Transparent' if you want to use the product in your own designs."
       ],
-      btn: "Close Guide"
+      steps: [
+        { title: "Import", desc: "Upload a clear photo." },
+        { title: "Configure", desc: "Select category & scene." },
+        { title: "Process", desc: "Get studio results." }
+      ],
+      guide: {
+        catTitle: "Categories",
+        sceneTitle: "Scenes",
+        lightTitle: "Lighting"
+      }
     }
   },
   tr: {
@@ -247,8 +239,8 @@ export const translations: Record<Language, any> = {
     logout: "Çıkış Yap",
     welcome: "Hoşgeldin",
     currency: "Para Birimi",
-    batchToggle: "Çoklu Sahne Paketi",
-    batchDesc: "Tam koleksiyon için tek seferde 5 farklı sahne seçin.",
+    batchToggle: "Toplu Çekim Modu",
+    batchDesc: "Tek seferde 5 farklı stüdyo sahnesi üretin.",
     providerSelect: "Stüdyo Motoru",
     download: "İndir",
     downloadOptions: "İndirme Seçenekleri",
@@ -340,8 +332,8 @@ export const translations: Record<Language, any> = {
       faq: [
         { q: "Bu bir görsel üreticisi mi?", a: "Hayır, Akraphy bir Stüdyo Simülatörüdür. Ürününüzün formunu korur ve onu dijital stüdyo ortamına yerleştirir." },
         { q: "Toplu Çekim nedir?", a: "Aynı ürün için 5 farklı sahne seçmenize olanak tanır. Motorumuz hepsini tek seansta işler." },
-        { q: "Arkaplan Sil modu nasıl çalışır?", a: "Sadece ürününüzü ortamdan ayırarak şeffaf bir PNG çıktısı hazırlamaya odaklanır." },
-        { q: "Sosyal medya için uygun mu?", a: "Kesinlikle! Farklı modlarda içerik üreterek anında sosyal medya koleksiyonları oluşturabilirsiniz." }
+        { q: "Genel Ürün seçeneği nedir?", a: "Belirli bir kategoriye girmeyen ürünler için dengeli bir 'Universal' moddur." },
+        { q: "Sosyal medya için uygun mu?", a: "Evet! Özellikle 'Soft Gradient' sahne modu Instagram için idealdir." }
       ]
     },
     steps: {
@@ -353,41 +345,28 @@ export const translations: Record<Language, any> = {
     config: {
       categoryTitle: "1. Ürün Kategorisi",
       sceneTitle: "2. Stüdyo Sahnesi",
-      lightingTitle: "3. Işık Kurulumu",
+      lightingTitle: "3. Işık Profili",
       ecommerceHint: "E-Ticaret Uyumlu",
       categories: {
-        JEWELRY: "Mücevher",
-        FASHION: "Moda",
-        HANDMADE: "El Yapımı",
-        HOME: "Mobilya",
-        BEAUTY: "Kozmetik",
-        BOOKS: "Kırtasiye",
-        TECH: "Elektronik",
-        KIDS: "Bebek",
-        FOOD: "İçecek",
-        AUTOMOTIVE: "Oto"
+        jewelry_access: { label: "Takı & Aksesuar", desc: "Yüzük, Kolye, Saat, Bileklik" },
+        cosmetics_care: { label: "Kozmetik & Bakım", desc: "Parfüm, Krem, Serum, Makyaj" },
+        small_goods: { label: "Küçük Ürünler", desc: "Mum, Defter, Fincan, Hediyelik" },
+        tech_access: { label: "Teknoloji & Aks.", desc: "Kulaklık, Mouse, Klavye, Kılıf" },
+        general_universal: { label: "Genel Ürün", desc: "Universal Preset (Diğer Her Şey)" }
       },
       scenes: {
-        TRANSPARENT: "Arkaplan Sil",
-        CLEAN_WHITE: "Saf Beyaz",
-        LIFESTYLE_HOME: "Yaşam Alanı",
-        LUXURY_DARK: "Premium Koyu",
-        OUTDOOR_NATURAL: "Dış Mekan",
-        PASTEL_CREATIVE: "Kreatif Pastel",
-        CONCRETE_URBAN: "Endüstriyel",
-        MARBLE_ELEGANCE: "Mermer Yüzey",
-        WOODEN_RUSTIC: "Rustik Ahşap",
-        WATER_DYNAMIC: "Su Yansıması",
-        VELVET_SOFT: "Yumuşak Kadife"
+        pure_studio: { label: "Pure Studio", desc: "Beyaz/Gri Zemin. Temiz, Profesyonel." },
+        dark_premium: { label: "Dark Premium", desc: "Siyah/Antrasit. Lüks Algısı." },
+        soft_gradient: { label: "Soft Gradient", desc: "Pastel Tonlar. Modern ve Ferah." },
+        tabletop_min: { label: "Tabletop Minimal", desc: "Ahşap/Beton. Butik Marka." },
+        floating_object: { label: "Floating Object", desc: "Düz Renk. Havada Asılı Ürün, 3D." },
+        transparent_bg: { label: "Arkaplanı Sil", desc: "Saf Beyaz Zemin. Dekupe İçin Uygun." }
       },
       lighting: {
-        STUDIO_SOFT: "Softbox",
-        NATURAL_SUN: "Doğal",
-        PROFESSIONAL_CRISP: "Keskin",
-        MOODY_DIM: "Atmosferik",
-        GOLDEN_HOUR: "Gün Batımı",
-        NEON_VIBE: "Cyber Neon",
-        RIM_LIGHT: "Kontür"
+        softbox_studio: { label: "Softbox Studio", desc: "Yumuşak, Dağınık Işık (Varsayılan)" },
+        directional_cont: { label: "Yönlü Kontrast", desc: "Derinlikli, Belirgin Gölgeler" },
+        high_key_clean: { label: "High-Key Clean", desc: "Çok Parlak, Satış Odaklı" },
+        moody_side: { label: "Moody Side Light", desc: "Sanatsal, Düşük Yoğunluk" }
       }
     },
     packages: {
@@ -406,20 +385,25 @@ export const translations: Record<Language, any> = {
       btn: "Çekime Başla"
     },
     help: {
-      title: "Stüdyo Rehberi",
-      subTitle: "3 adımda profesyonel sonuçlar",
-      steps: [
-        { title: "İçe Aktar", desc: "Net bir ürün fotoğrafı yükleyin." },
-        { title: "Yapılandır", desc: "Kategori ve sahneleri seçin." },
-        { title: "İşle", desc: "Seansı başlatın ve simülasyonu bekleyin." }
-      ],
-      tipsTitle: "İpuçları",
+      title: "Stüdyo Kılavuzu",
+      subTitle: "Hangi ayarı seçmelisiniz?",
+      btn: "Kılavuzu Kapat",
+      tipsTitle: "Profesyonel İpuçları",
       tips: [
-        "Vakit kazanmak için Toplu Seans özelliğini kullanın.",
-        "Şeffaf PNG'ler için 'Arkaplan Sil' modunu tercih edin.",
-        "Gerçekçi gölgeler için ürünün kesilmemiş olduğundan emin olun."
+        "Örnek: Etsy/Trendyol için 'Pure Studio' sahnesini kullanın.",
+        "Örnek: Mücevherlerin parlaması için 'Dark Premium' idealdir.",
+        "Örnek: Ürünü başka tasarımda kullanmak için 'Arkaplanı Sil' seçin."
       ],
-      btn: "Rehberi Kapat"
+      steps: [
+        { title: "İçe Aktar", desc: "Net bir fotoğraf yükle." },
+        { title: "Seç", desc: "Kategori ve sahne seç." },
+        { title: "İşle", desc: "Sonucu al." }
+      ],
+      guide: {
+        catTitle: "Kategoriler",
+        sceneTitle: "Sahneler",
+        lightTitle: "Işıklandırma"
+      }
     }
   }
 };

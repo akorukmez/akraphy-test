@@ -15,14 +15,8 @@ export interface N8nPayload {
     lighting: LightingType;
     variation: string;
   };
-  // User Context (Crucial for Plan-based Logic)
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    plan: string;     // e.g., "Free Trial", "Starter", "Pro", "Studio", "Enterprise"
-    credits: number;
-  };
+  // User Context (Full User Object with Permissions)
+  user: User; 
   // Client Context
   client: {
     language: Language;
@@ -54,22 +48,17 @@ export const processWithN8n = async (
       lighting,
       variation
     },
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      plan: user.planName,
-      credits: user.credits
-    },
+    user: user, // Sends full user object including features and planType
     client: {
       language: lang,
       userAgent: navigator.userAgent
     }
   };
 
-  console.log("🚀 n8n İstek Atılıyor (User Context Dahil):", { 
+  console.log("🚀 n8n İstek Atılıyor (Extended Context):", { 
     plan: user.planName, 
-    credits: user.credits,
+    type: user.planType,
+    features: user.features,
     config: payload.config 
   });
 

@@ -19,40 +19,69 @@ export const constructStudioPrompt = (category: ProductCategory, scene: SceneTyp
   // Common watermark instruction for all generations
   const watermarkInstruction = "CRITICAL SECURITY OVERLAY: Apply a repeating, semi-transparent watermark text 'akraphy' diagonally across the entire image. The text 'akraphy' must start from the top-left and repeat multiple times towards the bottom-right, covering the entire frame. Use a professional sans-serif font with 20-25% opacity. The watermark should be subtle enough to see the product details but clearly visible as a security pattern across the whole photo.";
 
-  if (scene === SceneType.TRANSPARENT) {
-    return `You are an advanced image segmentation AI. Remove the entire background from the product image while maintaining the original product with perfect clarity. ${watermarkInstruction} Output format must be a clean PNG. Apply intelligent edge detection for smooth edges. Maintain product shadows and highlights that define form. Remove environmental elements. Achieve professional, e-commerce ready output.`;
-  }
-
+  // 1. SUBJECT Instructions based on MVP Categories
   let subjectInstructions = "";
-  if (category === ProductCategory.JEWELRY) {
-    subjectInstructions = "Enhance macro details, metallic luster, and stone clarity. Ensure high-fidelity reflections.";
-  } else if (category === ProductCategory.FASHION) {
-    subjectInstructions = "Focus on fabric texture realism and natural clothing drape in a studio environment.";
-  } else if (category === ProductCategory.HOME) {
-    subjectInstructions = "Simulate realistic interior placement with accurate perspective and soft shadows.";
-  } else if (category === ProductCategory.BEAUTY) {
-    subjectInstructions = "Simulate premium cosmetics packaging with clean reflections and skin-tone accurate lighting.";
-  } else if (category === ProductCategory.TECH) {
-    subjectInstructions = "Sharp edges, matte/glossy surface contrast, and high-tech product aesthetics.";
-  } else {
-    subjectInstructions = "Maintain product identity and sharp focus.";
+  switch(category) {
+    case ProductCategory.JEWELRY:
+        subjectInstructions = "Subject is high-end jewelry (ring/necklace/watch). Focus on macro details, metallic luster, stone clarity, and sharp facets. Eliminate micro-scratches.";
+        break;
+    case ProductCategory.COSMETICS:
+        subjectInstructions = "Subject is a cosmetic product (perfume/bottle/cream). Focus on glass transparency, liquid refraction, and smooth texture of packaging. Clean, sterile premium look.";
+        break;
+    case ProductCategory.SMALL_GOODS:
+        subjectInstructions = "Subject is a small lifestyle item (candle/mug/gift). Focus on texture realism (wax, ceramic, paper) and inviting warmth.";
+        break;
+    case ProductCategory.TECH:
+        subjectInstructions = "Subject is a consumer electronic. Focus on matte/glossy contrasts, sharp edges, buttons, and screen clarity. High-tech, sleek aesthetic.";
+        break;
+    case ProductCategory.GENERAL:
+    default:
+        subjectInstructions = "Subject is a general e-commerce product. Maintain absolute fidelity to original form and color. Sharp focus throughout.";
+        break;
   }
 
+  // 2. SCENE Instructions based on MVP Scenes
   let sceneInstructions = "";
-  if (scene.includes('Pure White')) {
-    sceneInstructions = "Pure white studio cyclorama. Professional infinity cove background. Clean contact shadows.";
-  } else if (scene.includes('Cozy Home')) {
-    sceneInstructions = "Soft lifestyle interior. Modern living room background with natural bokeh.";
-  } else if (scene.includes('Dark Minimalist')) {
-    sceneInstructions = "Luxury dark studio environment. Moody charcoal backdrop with dramatic highlights.";
-  } else if (scene.includes('Outdoor')) {
-    sceneInstructions = "Natural outdoor setting. Soft daylight, organic textures, and cinematic depth of field.";
-  } else if (scene.includes('Concrete')) {
-    sceneInstructions = "Industrial studio with concrete textures. Minimalist urban loft aesthetic.";
-  } else if (scene.includes('Water')) {
-    sceneInstructions = "Splashing water environment. Dynamic ripples and refreshing reflections.";
-  } else {
-    sceneInstructions = "High-end professional studio environment with balanced color grading.";
+  switch(scene) {
+    case SceneType.PURE_STUDIO:
+        sceneInstructions = "Background: PURE WHITE / LIGHT GREY cyclorama. Professional e-commerce catalog style. 'Infinity cove' curve. Shadows: Soft contact shadows only. Zero distractions.";
+        break;
+    case SceneType.DARK_PREMIUM:
+        sceneInstructions = "Background: DARK ANTHRACITE / BLACK. Luxury aesthetic. Surface: Slightly reflective black glass or matte slate. Atmosphere: Premium, exclusive, high-value.";
+        break;
+    case SceneType.SOFT_GRADIENT:
+        sceneInstructions = "Background: PASTEL GRADIENT (Beige to Cream or Soft Grey to White). Modern social media aesthetic. Clean, soft, inviting, airy atmosphere.";
+        break;
+    case SceneType.TABLETOP_MINIMAL:
+        sceneInstructions = "Background: Blurred minimal interior. Surface: TEXTURED WOOD or CONCRETE tabletop. Depth of field: Shallow (Bokeh background). Boutique shop feel.";
+        break;
+    case SceneType.FLOATING_OBJECT:
+        sceneInstructions = "Background: CLEAN SOLID COLOR (Neutral or Vibrant). Composition: Subject FLOATING in mid-air. ZERO contact shadows. Cast distinct drop shadow on a distant wall or floor to create depth. Anti-gravity, 3D render aesthetic. Modern digital look.";
+        break;
+    case SceneType.TRANSPARENT:
+        sceneInstructions = "Background: PURE SOLID WHITE (#FFFFFF). NO SHADOWS on background. ISOLATE the product completely. Create high contrast between product and background for easy clipping path/mask creation. Cutout style.";
+        break;
+    default:
+        sceneInstructions = "Professional studio environment.";
+  }
+
+  // 3. LIGHTING Instructions based on MVP Profiles
+  let lightingInstructions = "";
+  switch(lighting) {
+    case LightingType.SOFTBOX:
+        lightingInstructions = "Lighting: SOFTBOX STUDIO. Large light source, very soft shadows, balanced exposure. No harsh highlights. Even illumination.";
+        break;
+    case LightingType.DIRECTIONAL:
+        lightingInstructions = "Lighting: DIRECTIONAL CONTRAST. Single light source from side. Distinct, controlled shadows. Adds depth and 3D form definition. Dramatic but professional.";
+        break;
+    case LightingType.HIGH_KEY:
+        lightingInstructions = "Lighting: HIGH-KEY CLEAN. Very bright, almost overexposed background. Subject is evenly lit with fill lights. Cheerful, commercial, energetic.";
+        break;
+    case LightingType.MOODY:
+        lightingInstructions = "Lighting: MOODY SIDE LIGHT. Low-key lighting. Rim lighting highlights edges. Shadows are deep. Artistic, cinematic, emotional atmosphere.";
+        break;
+    default:
+        lightingInstructions = "Balanced studio lighting.";
   }
 
   let angleInstructions = "";
@@ -76,7 +105,7 @@ export const constructStudioPrompt = (category: ProductCategory, scene: SceneTyp
         angleInstructions = "COMPOSITION: Professional Standard View.";
   }
 
-  const fullPrompt = `STÜDYO SİMÜLASYONU: Profesyonel Ürün Çekimi. KATEGORİ: ${category}. VARYASYON/AÇI: ${angleInstructions}. DETAYLAR: ${subjectInstructions} ARKA PLAN KURULUMU: ${sceneInstructions} IŞIKLANDIRMA: ${lighting}. ${watermarkInstruction} ÇIKTI: 4K fotoğraf gerçekçiliği, ticari kalite, ürün formunu %100 koru.`;
+  const fullPrompt = `STÜDYO SİMÜLASYONU: Profesyonel Ürün Çekimi. ${subjectInstructions} ORTAM: ${sceneInstructions} IŞIK: ${lightingInstructions} AÇI: ${angleInstructions}. ${watermarkInstruction} ÇIKTI: 4K fotoğraf gerçekçiliği, ticari kalite, ürün formunu %100 koru.`;
   
   return fullPrompt.replace(/\s+/g, ' ').trim();
 };
