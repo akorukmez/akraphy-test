@@ -61,20 +61,19 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
     setHistoryItems(updated);
   };
 
-  // Helper to translate labels
-  const getTranslatedLabel = (type: 'category' | 'scene' | 'lighting', value: string) => {
+  // Helper to translate labels and get description
+  const getTranslatedData = (type: 'category' | 'scene' | 'lighting', value: string) => {
     const configT = t.config;
-    let key: string | undefined;
     
     if (type === 'category') {
-      key = Object.keys(ProductCategory).find(k => ProductCategory[k as keyof typeof ProductCategory] === value);
-      return key ? configT.categories[key as keyof typeof configT.categories] : value;
+      const item = configT.categories[value as keyof typeof configT.categories];
+      return item ? { label: item.label, desc: item.desc } : { label: value, desc: '' };
     } else if (type === 'scene') {
-      key = Object.keys(SceneType).find(k => SceneType[k as keyof typeof SceneType] === value);
-      return key ? configT.scenes[key as keyof typeof configT.scenes] : value;
+      const item = configT.scenes[value as keyof typeof configT.scenes];
+      return item ? { label: item.label, desc: item.desc } : { label: value, desc: '' };
     } else {
-      key = Object.keys(LightingType).find(k => LightingType[k as keyof typeof LightingType] === value);
-      return key ? configT.lighting[key as keyof typeof configT.lighting] : value;
+      const item = configT.lighting[value as keyof typeof configT.lighting];
+      return item ? { label: item.label, desc: item.desc } : { label: value, desc: '' };
     }
   };
 
@@ -91,9 +90,9 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
     if (!filterQuery) return true;
     const q = filterQuery.toLowerCase();
     
-    const cat = getTranslatedLabel('category', item.category).toLowerCase();
-    const scn = getTranslatedLabel('scene', item.scene).toLowerCase();
-    const lgt = getTranslatedLabel('lighting', item.lighting).toLowerCase();
+    const cat = getTranslatedData('category', item.category).label.toLowerCase();
+    const scn = getTranslatedData('scene', item.scene).label.toLowerCase();
+    const lgt = getTranslatedData('lighting', item.lighting).label.toLowerCase();
     const vari = (item.variation || '').toLowerCase();
     
     return cat.includes(q) || scn.includes(q) || lgt.includes(q) || vari.includes(q);
@@ -105,12 +104,12 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
 
     switch(sortBy) {
         case 'category':
-            valA = getTranslatedLabel('category', a.category);
-            valB = getTranslatedLabel('category', b.category);
+            valA = getTranslatedData('category', a.category).label;
+            valB = getTranslatedData('category', b.category).label;
             break;
         case 'scene':
-            valA = getTranslatedLabel('scene', a.scene);
-            valB = getTranslatedLabel('scene', b.scene);
+            valA = getTranslatedData('scene', a.scene).label;
+            valB = getTranslatedData('scene', b.scene).label;
             break;
         default: // date
             valA = new Date(a.timestamp).getTime();
@@ -247,8 +246,8 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                         {filterQuery ? (
                             <>
                                 <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mb-4" />
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Sonuç Bulunamadı</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">Arama kriterlerinize uygun kayıt yok.</p>
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{tHist.noResults}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{tHist.noResultsDesc}</p>
                             </>
                         ) : (
                             <>
@@ -306,15 +305,15 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                                 <div className="space-y-1.5">
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
                                                         <Tag className="w-3.5 h-3.5 text-blue-500" />
-                                                        <span className="truncate">{getTranslatedLabel('category', item.category)}</span>
+                                                        <span className="truncate">{getTranslatedData('category', item.category).label}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
                                                         <Layers className="w-3.5 h-3.5 text-purple-500" />
-                                                        <span className="truncate">{getTranslatedLabel('scene', item.scene)}</span>
+                                                        <span className="truncate">{getTranslatedData('scene', item.scene).label}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
                                                         <Zap className="w-3.5 h-3.5 text-yellow-500" />
-                                                        <span className="truncate">{getTranslatedLabel('lighting', item.lighting)}</span>
+                                                        <span className="truncate">{getTranslatedData('lighting', item.lighting).label}</span>
                                                     </div>
                                                 </div>
 
@@ -334,6 +333,9 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                             <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
                                 {sortedItems.map((item) => {
                                     const dt = formatDate(item.timestamp);
+                                    const categoryData = getTranslatedData('category', item.category);
+                                    const sceneData = getTranslatedData('scene', item.scene);
+                                    
                                     return (
                                         <div 
                                             key={item.id} 
@@ -350,21 +352,26 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                             <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
                                                 <div className="col-span-1">
                                                      <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
-                                                        {t.config.categoryTitle.split('.')[1]}
+                                                        {t.config.categoryTitle.split('.')[1] || t.config.categoryTitle}
                                                      </div>
                                                      <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
                                                         <Tag className="w-3.5 h-3.5 text-blue-500" />
-                                                        {getTranslatedLabel('category', item.category)}
+                                                        {categoryData.label}
                                                      </div>
                                                 </div>
                                                 
                                                 <div className="col-span-1">
                                                      <div className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
-                                                        {t.config.sceneTitle.split('.')[1]}
+                                                        {t.config.sceneTitle.split('.')[1] || t.config.sceneTitle}
                                                      </div>
-                                                     <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                                                        <Layers className="w-3.5 h-3.5 text-purple-500" />
-                                                        {getTranslatedLabel('scene', item.scene)}
+                                                     <div className="flex flex-col">
+                                                        <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                                                            <Layers className="w-3.5 h-3.5 text-purple-500" />
+                                                            {sceneData.label}
+                                                        </div>
+                                                        <div className="text-[9px] text-gray-500 dark:text-gray-400 ml-5 mt-0.5 truncate max-w-[120px]">
+                                                            {sceneData.desc}
+                                                        </div>
                                                      </div>
                                                 </div>
 

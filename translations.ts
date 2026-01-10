@@ -53,6 +53,8 @@ export const translations: Record<Language, any> = {
         subtitle: "Your past generations are stored locally.",
         empty: "No history yet.",
         emptyDesc: "Start a studio session to see your results here.",
+        noResults: "No results found",
+        noResultsDesc: "No records match your search criteria.",
         date: "Date",
         delete: "Delete",
         subLabels: {
@@ -255,6 +257,8 @@ export const translations: Record<Language, any> = {
         subtitle: "Geçmiş üretimleriniz burada saklanır.",
         empty: "Henüz geçmiş yok.",
         emptyDesc: "Burada sonuçlarınızı görmek için bir stüdyo seansı başlatın.",
+        noResults: "Sonuç Bulunamadı",
+        noResultsDesc: "Arama kriterlerinize uygun kayıt yok.",
         date: "Tarih",
         delete: "Sil",
         subLabels: {
