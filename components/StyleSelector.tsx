@@ -116,7 +116,6 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({
         <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-4 ml-1">
           {t.sceneTitle} {isBatchMode && <span className="text-blue-500 ml-1">({selectedScenes.length}/5)</span>}
         </h3>
-        {/* Changed grid layout to match categories style but kept 3 columns for better spacing given 6 items */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full">
           {Object.entries(SceneType).map(([key, value]) => {
              const sceneData = t.scenes[value as keyof typeof t.scenes];

@@ -5,11 +5,20 @@ export const translations: Record<Language, any> = {
   en: {
     title: "Akraphy Studio",
     subtitle: "Professional Studio Simulator",
-    desc: "Instantly give your product photos a professional studio feel. No hardware or lighting equipment needed.",
+    desc: "Turn home-shot product photos into e-commerce showcase quality with a single click.",
+    heroValues: ["No Hardware", "No Photoshop", "No Studio"],
     poweredBy: "Akraphy Studio Engine™",
     selectStyle: "Studio Configuration",
     uploadTitle: "Import Photo",
     uploadDesc: "Drag & drop or click to upload original product",
+    uploadTips: {
+      title: "Quick Tips:",
+      tips: [
+        "Background doesn't matter",
+        "Bad lighting is okay",
+        "Phone photos work great"
+      ]
+    },
     originalSource: "Original Subject",
     aiResult: "Studio Results",
     waitingInput: "Ready for Shooting",
@@ -209,11 +218,20 @@ export const translations: Record<Language, any> = {
   tr: {
     title: "Akraphy Studio",
     subtitle: "Stüdyo Simülatörü",
-    desc: "Ürün fotoğraflarınıza anında profesyonel stüdyo hissiyatı kazandırın. Donanım veya ışık gerektirmez.",
+    desc: "Evde çekilmiş ürün fotoğraflarını, tek tıkla e-ticaret vitrini kalitesine dönüştürün.",
+    heroValues: ["Donanım Yok", "Photoshop Yok", "Stüdyo Yok"],
     poweredBy: "Akraphy Studio Engine™",
     selectStyle: "Stüdyo Yapılandırması",
     uploadTitle: "Ürünü İçe Aktar",
     uploadDesc: "Görseli buraya bırakın veya tıklayın",
+    uploadTips: {
+      title: "İpuçları:",
+      tips: [
+        "Arka plan önemsiz",
+        "Işık bozuk olabilir",
+        "Telefon çekimi yeterli"
+      ]
+    },
     originalSource: "Orijinal Özne",
     aiResult: "Stüdyo Çıktıları",
     waitingInput: "Çekime Hazır",

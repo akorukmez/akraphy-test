@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { UploadCloud, Image as ImageIcon, Download, Sparkles, RefreshCcw, Globe, Coins, User as UserIcon, LogOut, Moon, Sun, HelpCircle, Mail, Layers, Zap, Settings2, ShieldCheck, FileText, Info, History, ChevronDown } from 'lucide-react';
+import { UploadCloud, Image as ImageIcon, Download, Sparkles, RefreshCcw, Globe, Coins, User as UserIcon, LogOut, Moon, Sun, HelpCircle, Mail, Layers, Zap, Settings2, ShieldCheck, FileText, Info, History, ChevronDown, ArrowRight, Check, CheckCircle2 } from 'lucide-react';
 import { ProductCategory, SceneType, LightingType, ProcessingState, Language, User, Currency, ProcessingProvider, HistoryItem } from './types';
 import { translations } from './translations';
 import { fileToBase64, generateProfessionalHeadshot as processWithGemini } from './services/geminiService';
@@ -90,11 +91,22 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Check system preference or saved theme
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    if (savedTheme === 'dark') {
-      setTheme('dark');
-      document.documentElement.classList.add('dark');
+    if (savedTheme) {
+      setTheme(savedTheme);
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } else {
+      // Default to Light
+      setTheme('light');
+      document.documentElement.classList.remove('dark');
     }
+    
+    // Auto login admin for testing
     const adminUser = authService.getOrCreateAdmin();
     setUser(adminUser);
   }, []);
@@ -184,8 +196,8 @@ const App: React.FC = () => {
                 currentScene, 
                 selectedLighting, 
                 variation.label,
-                user, // Pass the user object
-                lang  // Pass the current language
+                user,
+                lang
             );
           } else {
             resultUrl = await processWithGemini(rawBase64, mimeType, selectedCategory, currentScene, selectedLighting, variation.label);
@@ -252,7 +264,7 @@ const App: React.FC = () => {
   const hasResults = processedImages.length > 0;
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-apple-bg dark:bg-anthracite-900 font-sans transition-colors duration-500">
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 dark:bg-anthracite-950 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
       
       <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} onLoginSuccess={(u, isNew) => { setUser(u); if (isNew) setShowOnboarding(true); }} />
       {user && <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} lang={lang} user={user} />}
@@ -274,337 +286,342 @@ const App: React.FC = () => {
         alt="Studio Result" 
       />
 
-      <nav className="w-full bg-white/70 dark:bg-anthracite-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/5 sticky top-0 z-[100] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black font-black text-xs shadow-md">AK</div>
-            <span className="font-bold text-lg tracking-tight text-apple-text dark:text-white hidden sm:block">{t.title}</span>
+      {/* Navbar */}
+      <nav className="w-full bg-white/80 dark:bg-anthracite-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/5 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+          
+          {/* Left: Logo */}
+          <div className="flex items-center gap-2 cursor-pointer z-10" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black font-black text-xs">AK</div>
+            <span className="font-bold text-xl tracking-tight hidden sm:block">Akraphy<span className="text-gray-400">.io</span></span>
           </div>
           
-          <div className="flex items-center gap-1 md:gap-3">
-            <button onClick={() => scrollToSection('showcase')} className="hidden lg:block text-[13px] font-bold text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors px-2 py-2">{t.nav.gallery}</button>
-            <button onClick={() => scrollToSection('pricing')} className="hidden lg:block text-[13px] font-bold text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors px-2 py-2">{t.nav.pricing}</button>
-            <button onClick={() => setShowHelp(true)} className="hidden md:flex items-center gap-1 text-[13px] font-bold text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors px-2 py-2"><HelpCircle className="w-3.5 h-3.5" />{t.nav.help}</button>
+          {/* Center: Navigation Links */}
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <button onClick={() => scrollToSection('showcase')} className="text-sm font-medium text-gray-500 hover:text-black dark:hover:text-white transition-colors">{t.nav.gallery}</button>
+            <button onClick={() => scrollToSection('pricing')} className="text-sm font-medium text-gray-500 hover:text-black dark:hover:text-white transition-colors">{t.nav.pricing}</button>
+            <button onClick={() => setShowHelp(true)} className="text-sm font-medium text-gray-500 hover:text-black dark:hover:text-white transition-colors">{t.nav.help}</button>
+            <button onClick={() => scrollToSection('faq')} className="text-sm font-medium text-gray-500 hover:text-black dark:hover:text-white transition-colors">{t.nav.faq}</button>
+          </div>
 
-            <div className="w-[1px] h-4 bg-gray-200 dark:bg-white/10 hidden md:block mx-1"></div>
-
+          {/* Right: Actions */}
+          <div className="flex items-center gap-4 z-10">
+            
             <div className="flex items-center gap-2">
+              <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-anthracite-800 transition-colors">
+                {theme === 'light' ? <Moon className="w-4 h-4 text-gray-600" /> : <Sun className="w-4 h-4 text-gray-300" />}
+              </button>
+
+              {/* Language */}
               <div className="relative" ref={langDropdownRef}>
-                <button onClick={() => setIsLangOpen(!isLangOpen)} className="p-2 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors flex items-center gap-1 uppercase text-[10px] font-black"><Globe className="w-4 h-4" /> {lang}</button>
+                <button onClick={() => setIsLangOpen(!isLangOpen)} className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 font-bold text-xs uppercase"><Globe className="w-4 h-4" /> {lang}</button>
                 {isLangOpen && (
-                  <div className="absolute top-full mt-2 right-0 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/5 rounded-xl shadow-2xl p-1 w-24 overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
-                    <button onClick={() => { setLang('tr'); setIsLangOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold ${lang === 'tr' ? 'bg-black text-white dark:bg-white dark:text-black' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700 text-gray-700 dark:text-gray-300'}`}>TR</button>
-                    <button onClick={() => { setLang('en'); setIsLangOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold ${lang === 'en' ? 'bg-black text-white dark:bg-white dark:text-black' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700 text-gray-700 dark:text-gray-300'}`}>EN</button>
+                  <div className="absolute top-full mt-2 right-0 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl p-1 w-24 overflow-hidden animate-in fade-in zoom-in-95 z-50">
+                    <button onClick={() => { setLang('tr'); setIsLangOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium ${lang === 'tr' ? 'bg-gray-100 dark:bg-anthracite-700' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700/50'}`}>Türkçe</button>
+                    <button onClick={() => { setLang('en'); setIsLangOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium ${lang === 'en' ? 'bg-gray-100 dark:bg-anthracite-700' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700/50'}`}>English</button>
                   </div>
                 )}
               </div>
+              
+              {/* Currency */}
               <div className="relative" ref={currencyDropdownRef}>
-                <button onClick={() => setIsCurrencyOpen(!isCurrencyOpen)} className="p-2 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors flex items-center gap-1 uppercase text-[10px] font-black"><Coins className="w-4 h-4" /> {currencySymbols[currency]} {currency}</button>
+                <button onClick={() => setIsCurrencyOpen(!isCurrencyOpen)} className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 font-bold text-xs uppercase"><Coins className="w-4 h-4" /> {currencySymbols[currency]}</button>
                 {isCurrencyOpen && (
-                  <div className="absolute top-full mt-2 right-0 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/5 rounded-xl shadow-2xl p-1 w-32 overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
+                  <div className="absolute top-full mt-2 right-0 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl p-1 w-32 overflow-hidden animate-in fade-in zoom-in-95 z-50">
                     {(Object.keys(currencySymbols) as Currency[]).map(c => (
-                      <button key={c} onClick={() => { setCurrency(c); setIsCurrencyOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold ${currency === c ? 'bg-black text-white dark:bg-white dark:text-black' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700 text-gray-700 dark:text-gray-300'}`}>{currencySymbols[c]} {c}</button>
+                      <button key={c} onClick={() => { setCurrency(c); setIsCurrencyOpen(false); }} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium ${currency === c ? 'bg-gray-100 dark:bg-anthracite-700' : 'hover:bg-gray-50 dark:hover:bg-anthracite-700/50'}`}>{currencySymbols[c]} {c}</button>
                     ))}
                   </div>
                 )}
               </div>
             </div>
 
+            {/* User Menu */}
             <div className="flex items-center gap-2 ml-2">
               {user ? (
                 <div className="relative" ref={userMenuRef}>
                     <button 
                         onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                        className="flex items-center gap-3 bg-gray-50 dark:bg-anthracite-800/50 border border-gray-100 dark:border-white/10 rounded-full pl-3 pr-2 py-1 shadow-sm transition-colors hover:bg-gray-100 dark:hover:bg-anthracite-700"
+                        className="flex items-center gap-3 bg-gray-100 dark:bg-anthracite-800 border border-transparent hover:border-gray-200 dark:hover:border-white/10 rounded-full pl-1 pr-3 py-1 transition-all"
                     >
-                        <div className="hidden lg:flex flex-col items-end mr-2 pr-2 border-r border-gray-200 dark:border-white/10 leading-tight">
-                            <span className="text-[9px] font-bold text-gray-400 dark:text-gray-500 lowercase flex items-center gap-1 tracking-tight">{user.email.toLowerCase()}</span>
-                            <span className="text-[8px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-tighter bg-gray-200 dark:bg-white/5 px-1.5 py-0.5 rounded mt-0.5">{user.planName}</span>
+                        <div className="w-8 h-8 bg-gradient-to-br from-gray-700 to-black rounded-full flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                          {user.name.charAt(0)}
                         </div>
-                        <div className="flex items-center gap-1 mr-1">
-                            <Coins className="w-3.5 h-3.5 text-yellow-500" />
-                            <span className="text-xs font-black text-gray-900 dark:text-white">{user.credits}</span>
+                        <div className="hidden lg:flex flex-col items-end leading-none gap-0.5">
+                            <span className="text-xs font-bold text-gray-900 dark:text-white">{user.name}</span>
+                            <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <Coins className="w-3 h-3 text-yellow-500" /> {user.credits}
+                            </span>
                         </div>
-                        <div className="bg-white dark:bg-black rounded-full p-1 border border-gray-100 dark:border-white/10">
-                            <ChevronDown className="w-3 h-3 text-gray-500" />
-                        </div>
+                        <ChevronDown className="w-3 h-3 text-gray-500" />
                     </button>
 
                     {isUserMenuOpen && (
-                        <div className="absolute top-full right-0 mt-2 w-52 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 z-50">
+                        <div className="absolute top-full right-0 mt-2 w-60 bg-white dark:bg-anthracite-800 border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in-95 z-50">
+                            <div className="p-4 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-anthracite-900/50">
+                              <p className="text-sm font-bold text-gray-900 dark:text-white">{user.name}</p>
+                              <p className="text-xs text-gray-500">{user.email}</p>
+                              <div className="mt-2 flex items-center gap-2">
+                                <span className="text-[10px] font-bold bg-black dark:bg-white text-white dark:text-black px-2 py-0.5 rounded uppercase tracking-wider">{user.planName}</span>
+                              </div>
+                            </div>
                             <div className="p-1.5">
-                                <button 
-                                    onClick={() => { setShowPricing(true); setIsUserMenuOpen(false); }}
-                                    className="w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-all text-left group"
-                                >
-                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-black dark:text-white border border-gray-200 dark:border-white/10 group-hover:border-black dark:group-hover:border-white transition-colors shadow-sm">
-                                        <Coins className="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <div className="text-xs font-bold text-gray-900 dark:text-white">{t.buyCredits}</div>
-                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">{t.history.subLabels.upgrade}</div>
-                                    </div>
-                                </button>
-                                
-                                <button 
-                                    onClick={() => { setShowHistory(true); setIsUserMenuOpen(false); }}
-                                    className="w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-all text-left mt-1 group"
-                                >
-                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-black dark:text-white border border-gray-200 dark:border-white/10 group-hover:border-black dark:group-hover:border-white transition-colors shadow-sm">
-                                        <History className="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <div className="text-xs font-bold text-gray-900 dark:text-white">{t.nav.history}</div>
-                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">{t.history.subLabels.past}</div>
-                                    </div>
-                                </button>
-
-                                <div className="h-[1px] bg-gray-100 dark:bg-white/10 my-2 mx-2"></div>
-
-                                <button 
-                                    onClick={handleLogout}
-                                    className="w-full flex items-center gap-3 px-3 py-3 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all text-left group"
-                                >
-                                    <div className="w-9 h-9 rounded-lg bg-white dark:bg-anthracite-700 flex items-center justify-center text-gray-400 group-hover:bg-red-100 dark:group-hover:bg-red-900/30 group-hover:text-red-500 transition-all border border-transparent group-hover:border-red-100 dark:group-hover:border-red-500/20">
-                                        <LogOut className="w-4 h-4" />
-                                    </div>
-                                    <div>
-                                        <div className="text-xs font-bold text-gray-500 dark:text-gray-400 group-hover:text-red-600 transition-colors">{t.logout}</div>
-                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">{t.history.subLabels.exit}</div>
-                                    </div>
-                                </button>
+                                <button onClick={() => { setShowPricing(true); setIsUserMenuOpen(false); }} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-colors text-left text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"><Coins className="w-4 h-4" /> {t.buyCredits}</button>
+                                <button onClick={() => { setShowHistory(true); setIsUserMenuOpen(false); }} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 dark:hover:bg-anthracite-700 rounded-xl transition-colors text-left text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"><History className="w-4 h-4" /> {t.nav.history}</button>
+                                <div className="h-[1px] bg-gray-100 dark:bg-white/5 my-1"></div>
+                                <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors text-left text-xs font-bold text-red-500"><LogOut className="w-4 h-4" /> {t.logout}</button>
                             </div>
                         </div>
                     )}
                 </div>
               ) : (
-                <button onClick={() => setShowLogin(true)} className="flex items-center gap-2 px-5 py-2 rounded-full bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-all text-[12px] font-bold shadow-md"><UserIcon className="w-3.5 h-3.5" /><span>{t.loginBtn}</span></button>
+                <button onClick={() => setShowLogin(true)} className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-black dark:bg-white text-white dark:text-black hover:opacity-90 transition-all text-xs font-bold shadow-lg">
+                  <span>{t.loginBtn}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </button>
               )}
-              <button onClick={toggleTheme} className="p-2.5 rounded-full bg-gray-50 dark:bg-anthracite-800 hover:bg-gray-100 dark:hover:bg-anthracite-700 transition-colors text-gray-600 dark:text-gray-300">{theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}</button>
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="w-full flex flex-col items-center">
-        <section className="text-center pt-20 pb-14 max-w-4xl px-6">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest mb-6 border border-blue-100 dark:border-blue-800/20 shadow-sm">
-            <Zap className="w-3 h-3" /> v2.2 Stüdyo Yayında
-          </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-[1.1] transition-colors">{t.subtitle}</h1>
-          <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed transition-colors max-w-2xl mx-auto">{t.desc}</p>
-        </section>
+      <main className="w-full max-w-7xl px-6 sm:px-10 py-12 flex flex-col items-center">
+        
+        {/* Header Section */}
+        <header className="text-center max-w-3xl mx-auto mb-16">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-gray-900 dark:text-white">
+            {t.title}
+            <span className="block text-xl md:text-2xl font-medium text-gray-500 dark:text-gray-400 mt-4 font-sans">{t.subtitle}</span>
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">{t.desc}</p>
 
-        <main className="w-full max-w-7xl px-6 sm:px-10 mb-20 space-y-16">
-          {!hasResults && (
-            <section className="w-full bg-white dark:bg-anthracite-800/80 backdrop-blur-md rounded-[2.5rem] p-8 lg:p-10 shadow-sm border border-gray-100 dark:border-white/5 animate-in fade-in slide-up duration-700">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 border-b border-gray-100 dark:border-white/5 pb-8">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-gray-50 dark:bg-anthracite-900 rounded-xl">
-                      <Settings2 className="w-5 h-5 text-gray-400" />
-                  </div>
-                  <div>
-                      <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">{t.selectStyle}</h2>
-                      <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">{t.poweredBy}</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 justify-center">
-                  <div className="bg-gray-50/50 dark:bg-anthracite-900/50 px-4 py-2 rounded-xl flex items-center gap-3 border border-gray-100 dark:border-white/5">
-                    <div className="flex items-center gap-2">
-                      <Layers className="w-3.5 h-3.5 text-blue-500" />
-                      <span className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-tight">{t.batchToggle}</span>
+           {/* NEW: Instant Value Props (No Hardware, No Photoshop, No Studio) */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+             {(t.heroValues || []).map((val: string, i: number) => (
+                <div key={i} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-anthracite-800 rounded-full border border-gray-200 dark:border-white/10 shadow-sm transition-transform hover:scale-105">
+                    <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                         <Check className="w-3 h-3 text-green-600 dark:text-green-400" />
                     </div>
-                    <button 
-                      onClick={() => {
-                        const nextBatch = !isBatchMode;
-                        setIsBatchMode(nextBatch);
-                        if (!nextBatch && selectedScenes.length > 1) {
-                          setSelectedScenes([selectedScenes[0]]);
-                        }
-                      }}
-                      className={`w-10 h-5 rounded-full transition-all relative ${isBatchMode ? 'bg-blue-600' : 'bg-gray-300 dark:bg-anthracite-700'}`}
-                    >
-                      <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all duration-300 ${isBatchMode ? 'translate-x-5' : 'translate-x-0'}`}></div>
-                    </button>
-                  </div>
-
-                  <div className="flex bg-gray-50/50 dark:bg-anthracite-900/50 p-1 rounded-xl border border-gray-100 dark:border-white/5">
-                    <button onClick={() => setEngineProvider('n8n')} className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter transition-all ${engineProvider === 'n8n' ? 'bg-white dark:bg-anthracite-700 text-black dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}>n8n Webhook</button>
-                    <button onClick={() => setEngineProvider('gemini')} className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter transition-all ${engineProvider === 'gemini' ? 'bg-white dark:bg-anthracite-700 text-black dark:text-white shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}>Gemini Studio</button>
-                  </div>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{val}</span>
                 </div>
-              </div>
+             ))}
+          </div>
+        </header>
 
-              <div className="w-full">
-                <StyleSelector 
-                  selectedCategory={selectedCategory} 
-                  selectedScenes={selectedScenes} 
-                  selectedLighting={selectedLighting}
-                  onSelectCategory={setSelectedCategory} 
-                  onSelectScenes={setSelectedScenes} 
-                  onSelectLighting={setSelectedLighting}
-                  disabled={processingState.isProcessing} 
-                  lang={lang}
-                  isBatchMode={isBatchMode}
-                />
-              </div>
-            </section>
-          )}
+        <StepIndicator state={processingState} lang={lang} />
 
-          <section className="w-full space-y-10">
-            <StepIndicator state={processingState} lang={lang} />
-
-            {!hasResults ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                    <div className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-bottom-8 duration-700">
-                        <div className={`relative group rounded-[2.5rem] overflow-hidden h-[550px] flex flex-col items-center justify-center bg-white dark:bg-anthracite-800 shadow-sm border border-gray-100 dark:border-white/5 transition-all duration-500 ${!originalImage ? 'cursor-pointer hover:shadow-2xl hover:-translate-y-1' : ''}`}>
+        {/* REARRANGED: Upload Area is now ABOVE Configuration Panel */}
+        {!hasResults ? (
+            <div className="w-full flex flex-col gap-10">
+                
+                {/* 1. Upload & Processing Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+                    {/* Left: Upload */}
+                    <div className="flex flex-col gap-6">
+                         <div className={`relative group rounded-[2.5rem] overflow-hidden h-[500px] flex flex-col items-center justify-center bg-white dark:bg-anthracite-900 border-2 border-dashed border-gray-200 dark:border-anthracite-700 transition-all duration-300 hover:border-gray-400 dark:hover:border-anthracite-500 ${!originalImage ? 'cursor-pointer' : ''}`}>
                             {!originalImage ? (
-                            <label className="w-full h-full flex flex-col items-center justify-center p-12 cursor-pointer">
-                                <div className="w-16 h-16 bg-gray-50 dark:bg-anthracite-900 rounded-2xl flex items-center justify-center mb-8 text-gray-300 group-hover:scale-110 group-hover:rotate-1 transition-all duration-500 shadow-inner">
-                                    <UploadCloud className="w-8 h-8" />
+                            <label id="main-upload" className="w-full h-full flex flex-col items-center justify-center p-12 cursor-pointer">
+                                <div className="w-20 h-20 bg-gray-50 dark:bg-anthracite-800 rounded-full flex items-center justify-center mb-6 text-gray-400 group-hover:scale-110 transition-transform duration-300">
+                                    <UploadCloud className="w-10 h-10" />
                                 </div>
-                                <span className="text-xl font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">{t.uploadTitle}</span>
-                                <span className="text-gray-400 dark:text-gray-500 font-medium text-sm">{t.uploadDesc}</span>
+                                <span className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t.uploadTitle}</span>
+                                <span className="text-gray-500 dark:text-gray-400 text-sm mb-6">{t.uploadDesc}</span>
+                                
+                                {/* NEW: Upload Tips for Reassurance */}
+                                <div className="flex flex-wrap justify-center gap-3">
+                                  {(t.uploadTips?.tips || []).map((tip: string, i: number) => (
+                                    <div key={i} className="flex items-center gap-1.5 text-xs font-medium text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-white/5 px-3 py-1.5 rounded-full">
+                                      <CheckCircle2 className="w-3 h-3 text-green-500 dark:text-green-400" />
+                                      <span>{tip}</span>
+                                    </div>
+                                  ))}
+                                </div>
+
                                 <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                             </label>
                             ) : (
-                            <div className="relative w-full h-full p-10 bg-gray-50 dark:bg-anthracite-900/50">
-                                <img src={originalImage} alt="Original" className="w-full h-full object-contain drop-shadow-2xl animate-in zoom-in duration-700" />
-                                <div className="absolute top-8 right-8 z-10">
-                                    <button onClick={handleReset} disabled={processingState.isProcessing} className="bg-white dark:bg-anthracite-700 hover:bg-gray-50 dark:hover:bg-anthracite-600 text-gray-900 dark:text-white p-3.5 rounded-2xl shadow-2xl border border-gray-100 dark:border-white/5 transition-all active:scale-90">
+                            <div className="relative w-full h-full p-8 bg-gray-100 dark:bg-anthracite-800">
+                                <img src={originalImage} alt="Original" className="w-full h-full object-contain drop-shadow-xl" />
+                                <div className="absolute top-6 right-6 z-10">
+                                    <button onClick={handleReset} disabled={processingState.isProcessing} className="bg-white/90 dark:bg-black/50 text-gray-700 dark:text-white p-3 rounded-full shadow-lg border border-gray-200 dark:border-white/10 hover:scale-105 transition-transform backdrop-blur-sm">
                                         <RefreshCcw className={`w-5 h-5 ${processingState.isProcessing ? 'animate-spin' : ''}`} />
                                     </button>
                                 </div>
-                                <div className="absolute top-8 left-8 bg-white/90 dark:bg-anthracite-700/90 backdrop-blur-md px-5 py-1.5 rounded-full text-[10px] font-black text-gray-900 dark:text-white shadow-xl uppercase tracking-widest">{t.originalSource}</div>
+                                <div className="absolute top-6 left-6 bg-white/90 dark:bg-black/50 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-black dark:text-white shadow-sm border border-gray-200 dark:border-white/10 uppercase tracking-wider">{t.originalSource}</div>
                             </div>
                             )}
                         </div>
-                        {originalImage && processedImages.length === 0 && (
-                            <button 
-                            onClick={handleProcessImage} 
-                            disabled={processingState.isProcessing} 
-                            className={`w-full py-4 rounded-2xl font-bold text-sm shadow-lg flex items-center justify-center gap-3 transition-all duration-300 tracking-wide border ${processingState.isProcessing ? 'bg-gray-100 dark:bg-anthracite-700 text-gray-400 cursor-wait border-transparent' : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 border-transparent hover:shadow-xl hover:scale-[1.01] active:scale-[0.98]'}`}
-                            >
-                            {processingState.isProcessing ? (<><RefreshCcw className="w-4 h-4 animate-spin" />{t.processing}</>) : (<><Sparkles className="w-4 h-4" />{isBatchMode ? t.batchProcessButton : t.processButton} <span className="bg-white/20 dark:bg-black/10 px-2 py-0.5 rounded-md text-[10px] ml-1 font-black">{selectedScenes.length} {t.credits}</span></>)}
-                            </button>
-                        )}
                     </div>
 
-                    <div className={`relative rounded-[2.5rem] h-[550px] flex flex-col items-center justify-center bg-white dark:bg-anthracite-800 border border-gray-100 dark:border-white/5 overflow-hidden transition-all duration-700 shadow-sm animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-150`}>
+                    {/* Right: Placeholder / Status */}
+                    <div className="relative rounded-[2.5rem] h-[500px] flex flex-col items-center justify-center bg-gray-50 dark:bg-anthracite-900 border border-gray-200 dark:border-white/5 overflow-hidden">
                         <ProcessingOverlay isProcessing={processingState.isProcessing} lang={lang} batchProgress={processingState.batchProgress} />
-                        <div className="text-center p-12 opacity-30 max-w-xs group">
-                            <div className="w-16 h-16 bg-gray-100 dark:bg-anthracite-700 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner transition-transform group-hover:scale-95 duration-500">
-                                <ImageIcon className="w-8 h-8 text-gray-400" />
-                            </div>
-                            <h3 className="text-lg font-extrabold text-gray-900 dark:text-white mb-2 tracking-tight">{t.waitingInput}</h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold leading-relaxed">{t.waitingDesc}</p>
+                        <div className="text-center p-12 opacity-40">
+                            <ImageIcon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t.waitingInput}</h3>
+                            <p className="text-sm text-gray-500">{t.waitingDesc}</p>
                         </div>
                     </div>
                 </div>
-            ) : (
-                <div className="flex flex-col gap-10 animate-in fade-in slide-in-from-bottom-10 duration-700">
-                    <div className="w-full bg-white dark:bg-anthracite-800 rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 dark:border-white/5">
-                        <div className="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onClick={openOriginalViewer}>
-                            <div className="h-12 w-12 rounded-xl bg-gray-100 dark:bg-anthracite-900 overflow-hidden relative group">
-                                <img src={originalImage!} alt="Original" className="h-full w-full object-cover" />
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+
+                {/* 2. Configuration Panel */}
+                <section className="w-full bg-white dark:bg-anthracite-900 rounded-[2rem] p-8 lg:p-12 shadow-2xl border border-gray-100 dark:border-white/5 animate-in fade-in slide-up duration-500 relative overflow-hidden">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 border-b border-gray-100 dark:border-white/5 pb-8">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-gray-50 dark:bg-anthracite-800 rounded-2xl">
+                                <Settings2 className="w-6 h-6 text-gray-900 dark:text-white" />
                             </div>
-                            <div className="hidden sm:block">
-                                <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{t.originalSource}</p>
-                                <p className="text-sm font-bold text-gray-900 dark:text-white">{t.selectStyle}</p>
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t.selectStyle}</h2>
+                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">{t.poweredBy}</p>
                             </div>
                         </div>
-                        <button onClick={handleReset} className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-anthracite-700 hover:bg-gray-200 dark:hover:bg-anthracite-600 rounded-lg text-xs font-bold transition-colors text-gray-900 dark:text-white shadow-sm">
-                            <RefreshCcw className="w-3.5 h-3.5" />
-                            <span>{t.newSession}</span>
-                        </button>
+
+                        <div className="flex items-center gap-4">
+                            <div className="bg-gray-50 dark:bg-anthracite-800 px-5 py-2.5 rounded-xl flex items-center gap-3 border border-gray-100 dark:border-white/5">
+                                <div className="flex items-center gap-2">
+                                    <Layers className="w-4 h-4 text-gray-500" />
+                                    <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t.batchToggle}</span>
+                                </div>
+                                <button 
+                                    onClick={() => {
+                                        const nextBatch = !isBatchMode;
+                                        setIsBatchMode(nextBatch);
+                                        if (!nextBatch && selectedScenes.length > 1) {
+                                            setSelectedScenes([selectedScenes[0]]);
+                                        }
+                                    }}
+                                    className={`w-11 h-6 rounded-full transition-all relative ${isBatchMode ? 'bg-black dark:bg-white' : 'bg-gray-200 dark:bg-anthracite-600'}`}
+                                >
+                                    <div className={`absolute top-1 left-1 w-4 h-4 rounded-full shadow-md transition-all duration-300 ${isBatchMode ? 'translate-x-5 bg-white dark:bg-black' : 'translate-x-0 bg-white'}`}></div>
+                                </button>
+                            </div>
+
+                            <div className="flex bg-gray-100 dark:bg-anthracite-800 p-1 rounded-xl">
+                                <button onClick={() => setEngineProvider('n8n')} className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${engineProvider === 'n8n' ? 'bg-white dark:bg-anthracite-600 text-black dark:text-white shadow-sm' : 'text-gray-400'}`}>n8n</button>
+                                <button onClick={() => setEngineProvider('gemini')} className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${engineProvider === 'gemini' ? 'bg-white dark:bg-anthracite-600 text-black dark:text-white shadow-sm' : 'text-gray-400'}`}>Gemini</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="results-section" className="w-full bg-white dark:bg-anthracite-800/50 backdrop-blur-xl rounded-[3rem] p-8 md:p-12 border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500 opacity-20"></div>
-                        
-                        <div className="flex items-center justify-between mb-8">
-                             <div>
-                                <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3">
-                                    <Layers className="w-6 h-6 text-gray-900 dark:text-white" />
-                                    {t.aiResult}
-                                </h3>
-                             </div>
-                             <span className="bg-black dark:bg-white text-white dark:text-black px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg border border-transparent dark:border-white/10">
-                                 {processedImages.length} {t.images}
-                             </span>
+                    <StyleSelector 
+                      selectedCategory={selectedCategory} 
+                      selectedScenes={selectedScenes} 
+                      selectedLighting={selectedLighting}
+                      onSelectCategory={setSelectedCategory} 
+                      onSelectScenes={setSelectedScenes} 
+                      onSelectLighting={setSelectedLighting}
+                      disabled={processingState.isProcessing} 
+                      lang={lang}
+                      isBatchMode={isBatchMode}
+                    />
+
+                    {/* MOVED: Process Button now at the bottom of Configuration Flow */}
+                    {originalImage && processedImages.length === 0 && (
+                        <div className="mt-12 flex justify-center border-t border-gray-100 dark:border-white/5 pt-8">
+                             <button 
+                                onClick={handleProcessImage} 
+                                disabled={processingState.isProcessing} 
+                                className={`w-full md:w-auto md:min-w-[300px] py-4 px-12 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3 ${processingState.isProcessing ? 'bg-gray-100 dark:bg-anthracite-800 text-gray-400 cursor-wait' : 'bg-black dark:bg-white text-white dark:text-black'}`}
+                             >
+                                {processingState.isProcessing ? (<><RefreshCcw className="w-5 h-5 animate-spin" />{t.processing}</>) : (<><Sparkles className="w-5 h-5" />{isBatchMode ? t.batchProcessButton : t.processButton}</>)}
+                             </button>
                         </div>
+                    )}
+                </section>
+            </div>
+        ) : (
+            <div className="w-full flex flex-col gap-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                {/* Results Header with Original Thumbnail */}
+                <div className="w-full bg-white dark:bg-anthracite-900 rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 dark:border-white/5">
+                    <div className="flex items-center gap-4 cursor-pointer hover:opacity-80 transition-opacity" onClick={openOriginalViewer}>
+                        <div className="h-14 w-14 rounded-xl bg-gray-100 dark:bg-anthracite-800 overflow-hidden relative group">
+                            <img src={originalImage!} alt="Original" className="h-full w-full object-cover" />
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{t.originalSource}</p>
+                            <p className="text-sm font-bold text-gray-900 dark:text-white">{t.selectStyle}</p>
+                        </div>
+                    </div>
+                    <button onClick={handleReset} className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 dark:bg-anthracite-800 hover:bg-gray-200 dark:hover:bg-anthracite-700 rounded-xl text-xs font-bold transition-colors text-gray-900 dark:text-white">
+                        <RefreshCcw className="w-3.5 h-3.5" />
+                        <span>{t.newSession}</span>
+                    </button>
+                </div>
 
-                        <div className="flex flex-col gap-12">
-                          {selectedScenes.map((scene, sceneIdx) => {
-                            const sceneImages = processedImages.slice(sceneIdx * 5, (sceneIdx + 1) * 5);
-                            if (sceneImages.length === 0) return null;
+                <div id="results-section" className="w-full bg-white dark:bg-anthracite-900 rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-100 dark:border-white/5">
+                    <div className="flex items-center justify-between mb-10">
+                         <h3 className="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                             <Layers className="w-6 h-6" />
+                             {t.aiResult}
+                         </h3>
+                         <span className="bg-black dark:bg-white text-white dark:text-black px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                             {processedImages.length} {t.images}
+                         </span>
+                    </div>
 
-                            return (
-                              <div key={sceneIdx} className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700" style={{ animationDelay: `${sceneIdx * 200}ms` }}>
-                                <div className="flex items-center gap-3 mb-6 pl-2">
-                                  <div className="w-1.5 h-6 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
-                                  <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wide">
-                                    {getTranslatedSceneLabel(scene)}
-                                  </h4>
-                                </div>
-                                
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-                                    {sceneImages.map((img, imgIdx) => {
-                                        const globalIdx = (sceneIdx * 5) + imgIdx;
-                                        return (
-                                          <div key={globalIdx} className="group relative aspect-[4/5] cursor-zoom-in animate-in zoom-in-95 duration-700 fill-mode-forwards" style={{ animationDelay: `${imgIdx * 100}ms` }} onClick={() => openViewer(globalIdx)}>
-                                              <div className="absolute inset-0 bg-gray-100 dark:bg-anthracite-900 rounded-2xl animate-pulse"></div>
-                                              <img src={img} alt={`Result ${globalIdx}`} className="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-md border border-gray-100 dark:border-white/5 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-xl group-hover:z-10" />
-                                              
-                                              <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[9px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity border border-white/10">
-                                                  {t.variation} {imgIdx + 1}
-                                              </div>
+                    <div className="flex flex-col gap-12">
+                      {selectedScenes.map((scene, sceneIdx) => {
+                        const sceneImages = processedImages.slice(sceneIdx * 5, (sceneIdx + 1) * 5);
+                        if (sceneImages.length === 0) return null;
 
-                                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-2xl flex items-center justify-center pointer-events-none">
-                                                  <div className="bg-white/90 dark:bg-anthracite-900/90 text-black dark:text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wide opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl border border-transparent dark:border-white/10">
-                                                      {t.inspect}
-                                                  </div>
+                        return (
+                          <div key={sceneIdx} className="w-full animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${sceneIdx * 100}ms` }}>
+                            <div className="flex items-center gap-3 mb-6 pl-2 border-l-4 border-black dark:border-white">
+                              <h4 className="text-lg font-bold text-gray-900 dark:text-white uppercase tracking-wide">
+                                {getTranslatedSceneLabel(scene)}
+                              </h4>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                {sceneImages.map((img, imgIdx) => {
+                                    const globalIdx = (sceneIdx * 5) + imgIdx;
+                                    return (
+                                      <div key={globalIdx} className="group relative aspect-square cursor-zoom-in rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300" onClick={() => openViewer(globalIdx)}>
+                                          <img src={img} alt={`Result ${globalIdx}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                          
+                                          <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/60 backdrop-blur-md text-black dark:text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                              {t.variation} {imgIdx + 1}
+                                          </div>
+
+                                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                                              <div className="bg-white/90 backdrop-blur-md text-black px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-xl">
+                                                  {t.inspect}
                                               </div>
                                           </div>
-                                        );
-                                    })}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                                      </div>
+                                    );
+                                })}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                 </div>
-            )}
-          </section>
+            </div>
+        )}
 
-          <div className="pt-6 text-center">
-            <div className="inline-flex items-center gap-4 px-6 py-2 rounded-full bg-white dark:bg-anthracite-800 border border-gray-100 dark:border-white/5 shadow-sm">
-                <span className="text-[10px] font-black tracking-[0.3em] text-gray-400 dark:text-gray-500 uppercase">{t.poweredBy}</span>
+      </main>
+
+      <LandingSections lang={lang} currency={currency} user={user} onOpenPricing={() => setShowPricing(true)} />
+      
+      <footer className="w-full border-t border-gray-200 dark:border-white/5 mt-20 py-12 bg-white dark:bg-anthracite-950">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black font-black text-xs">AK</div>
+                <span className="font-bold text-md text-gray-900 dark:text-white tracking-tight">Akraphy Studio</span>
             </div>
-          </div>
-        </main>
-        
-        <LandingSections lang={lang} currency={currency} user={user} onOpenPricing={() => setShowPricing(true)} />
-        
-        <footer className="w-full border-t border-gray-200 dark:border-white/5 mt-20 py-16 bg-white dark:bg-anthracite-950 transition-colors">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black font-black text-xs">AK</div>
-                    <span className="font-bold text-md text-gray-900 dark:text-white tracking-tight">Akraphy Studio</span>
-                </div>
-                <div className="flex flex-wrap gap-x-8 gap-y-4 text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest justify-center">
-                    <button onClick={() => setShowHelp(true)} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-1.5"><Info className="w-3.5 h-3.5" /> {t.footer.guide}</button>
-                    <button onClick={() => setActivePolicy('privacy')} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5" /> {t.footer.privacy}</button>
-                    <button onClick={() => setActivePolicy('terms')} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> {t.footer.terms}</button>
-                    <button onClick={() => setShowContact(true)} className="hover:text-black dark:hover:text-white transition-colors flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> {t.footer.contact}</button>
-                </div>
-                <p className="text-gray-400 dark:text-gray-600 text-[9px] font-bold tracking-tight uppercase">&copy; 2024 Akraphy. {t.footer.rights}</p>
+            <div className="flex flex-wrap gap-6 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                <button onClick={() => setShowHelp(true)} className="hover:text-black dark:hover:text-white transition-colors">{t.footer.guide}</button>
+                <button onClick={() => setActivePolicy('privacy')} className="hover:text-black dark:hover:text-white transition-colors">{t.footer.privacy}</button>
+                <button onClick={() => setActivePolicy('terms')} className="hover:text-black dark:hover:text-white transition-colors">{t.footer.terms}</button>
+                <button onClick={() => setShowContact(true)} className="hover:text-black dark:hover:text-white transition-colors">{t.footer.contact}</button>
             </div>
-        </footer>
-      </div>
+            <p className="text-gray-400 text-[10px] font-medium">&copy; 2024 Akraphy. {t.footer.rights}</p>
+        </div>
+      </footer>
+
     </div>
   );
 };
