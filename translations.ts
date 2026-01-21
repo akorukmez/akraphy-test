@@ -36,8 +36,10 @@ export const translations: Record<Language, any> = {
     noCreditsDesc: "You need more credits to start new studio sessions.",
     pricingTitle: "Studio Access Plans",
     pricingDesc: "Flexible options for digital product photography.",
-    mostPopular: "Best Value",
+    mostPopular: "Chosen by 85% of Sellers",
+    satisfactionGuarantee: "Satisfaction Guarantee",
     purchase: "Select Plan",
+    securePayment: "Secure Payments by Stripe & Akraphy",
     successTitle: "Session Confirmed",
     successDesc: "Credits added to your studio account.",
     loginRequired: "Login Required",
@@ -57,6 +59,13 @@ export const translations: Record<Language, any> = {
     images: "Images",
     inspect: "Inspect",
     variation: "Variation",
+    beforeAfter: "Before & After",
+    compatibleWith: "Compatible With:",
+    simulatorActive: "Simulator Active",
+    processingStep: "Processing...",
+    generatedFrom: "Generated from 1 Photo",
+    settingsUsed: "Settings Used",
+    dragCompare: "Drag to compare",
     history: {
         title: "Session History",
         subtitle: "Your past generations are stored locally.",
@@ -129,11 +138,36 @@ export const translations: Record<Language, any> = {
     ],
     landing: {
       featuresTitle: "The Digital Studio Edge",
+      stats: {
+        images: { label: "Studio Photos Generated", value: "50,000+" },
+        users: { label: "Active E-Sellers", value: "1,200+" },
+        platforms: { label: "Platform Compatibility", value: "Amazon / IG" }
+      },
       features: [
-        { title: "Marketplace Physics", desc: "Simulate backgrounds compliant with Amazon, Shopify, and Instagram standards." },
-        { title: "Ray-Traced Shadows", desc: "Our engine understands 3D geometry to cast natural shadows and reflections." },
-        { title: "Batch Photography", desc: "One product photo, five different studio setups in a single session." },
-        { title: "Full Commercial Rights", desc: "You own 100% of the rights to the exported studio images." }
+        { 
+            title: "Marketplace Physics", 
+            desc: "Simulate backgrounds compliant with Amazon, Shopify, and Instagram standards.",
+            techTitle: "Compliance Engine",
+            techDesc: "Automatically adjusts RGB values (Pure White #FFFFFF) and padding ratios to meet strict marketplace algorithms."
+        },
+        { 
+            title: "Ray-Traced Shadows", 
+            desc: "Our engine understands 3D geometry to cast natural shadows and reflections.",
+            techTitle: "Global Illumination",
+            techDesc: "We don't 'paste' backgrounds. We simulate virtual photons hitting your product to calculate exact shadow falloff and reflections, preventing the 'fake cutout' look."
+        },
+        { 
+            title: "Batch Photography", 
+            desc: "One product photo, five different studio setups in a single session.",
+            techTitle: "Parallel Rendering",
+            techDesc: "Generates multiple diffusion latent spaces simultaneously, ensuring consistency across different angles and environments."
+        },
+        { 
+            title: "Full Commercial Rights", 
+            desc: "You own 100% of the rights to the exported studio images.",
+            techTitle: "Licensing",
+            techDesc: "Enterprise-grade output suitable for billboards, print catalogs, and global digital campaigns."
+        }
       ],
       comparisonTitle: "Ordinary vs. Studio Quality",
       comparisonDesc: "See how we transform ordinary phone photos into high-conversion marketing assets.",
@@ -152,6 +186,13 @@ export const translations: Record<Language, any> = {
       done: "Export"
     },
     config: {
+      presetsTitle: "Quick Start Recipes",
+      presets: {
+        amazon: { label: "Amazon/E-Commerce", desc: "Clean White" },
+        social: { label: "Instagram/Social", desc: "Pastel Pop" },
+        luxury: { label: "Luxury/Jewelry", desc: "Dark Premium" },
+        transparent: { label: "Graphic Design", desc: "Transparent PNG" }
+      },
       categoryTitle: "1. Product Category",
       sceneTitle: "2. Studio Scene",
       lightingTitle: "3. Lighting Setup",
@@ -249,8 +290,10 @@ export const translations: Record<Language, any> = {
     noCreditsDesc: "Yeni stüdyo seansları başlatmak için krediye ihtiyacınız var.",
     pricingTitle: "Stüdyo Paketleri",
     pricingDesc: "Dijital ürün fotoğrafçılığı için esnek seçenekler.",
-    mostPopular: "En Popüler",
+    mostPopular: "Satıcıların %85'i Seçiyor",
+    satisfactionGuarantee: "Memnuniyet Garantisi",
     purchase: "Paketi Seç",
+    securePayment: "Stripe & Akraphy Güvenli Ödeme",
     successTitle: "Seans Onaylandı",
     successDesc: "Krediler hesabınıza tanımlandı.",
     loginRequired: "Giriş Yapın",
@@ -270,6 +313,13 @@ export const translations: Record<Language, any> = {
     images: "Görsel",
     inspect: "İncele",
     variation: "Varyasyon",
+    beforeAfter: "Öncesi & Sonrası",
+    compatibleWith: "Uyumlu Platformlar:",
+    simulatorActive: "Simülatör Aktif",
+    processingStep: "İşleniyor...",
+    generatedFrom: "1 Fotoğraftan Üretildi",
+    settingsUsed: "Kullanılan Ayarlar",
+    dragCompare: "Karşılaştırmak için kaydırın",
     history: {
         title: "İşlem Geçmişi",
         subtitle: "Geçmiş üretimleriniz burada saklanır.",
@@ -342,11 +392,36 @@ export const translations: Record<Language, any> = {
     ],
     landing: {
       featuresTitle: "Dijital Stüdyo Avantajı",
+      stats: {
+        images: { label: "Üretilen Stüdyo Karesi", value: "50,000+" },
+        users: { label: "Aktif E-Satıcı", value: "1,200+" },
+        platforms: { label: "Platform Uyumluluğu", value: "Amazon / IG / Etsy" }
+      },
       features: [
-        { title: "Pazaryeri Fiziği", desc: "Amazon ve Instagram standartlarına uygun ortamları simüle edin." },
-        { title: "Ray-Traced Gölgeler", desc: "Motorumuz doğal gölge ve yansımalar için 3D geometriyi hesaplar." },
-        { title: "Toplu Çekim Modu", desc: "Bir üründen tek seansta beş farklı stüdyo kurulumu elde edin." },
-        { title: "Tam Ticari Haklar", desc: "Dışa aktarılan tüm görsellerin ticari hakları size aittir." }
+        { 
+            title: "Pazaryeri Fiziği", 
+            desc: "Amazon ve Instagram standartlarına uygun ortamları simüle edin.",
+            techTitle: "Uyumluluk Motoru",
+            techDesc: "RGB değerlerini (Saf Beyaz #FFFFFF) ve dolgu oranlarını pazaryeri algoritmalarına göre otomatik ayarlar."
+        },
+        { 
+            title: "Ray-Traced Gölgeler", 
+            desc: "Motorumuz doğal gölge ve yansımalar için 3D geometriyi hesaplar.",
+            techTitle: "Global Illumination",
+            techDesc: "Sadece 'yapıştırma' yapmayız. Motorumuz sanal fotonları ürününüze göndererek gerçekçi gölge kırılımlarını hesaplar."
+        },
+        { 
+            title: "Toplu Çekim Modu", 
+            desc: "Bir üründen tek seansta beş farklı stüdyo kurulumu elde edin.",
+            techTitle: "Paralel İşleme",
+            techDesc: "Birden fazla diffusion uzayını aynı anda işleyerek farklı açılarda tutarlılık sağlar."
+        },
+        { 
+            title: "Tam Ticari Haklar", 
+            desc: "Dışa aktarılan tüm görsellerin ticari hakları size aittir.",
+            techTitle: "Lisanslama",
+            techDesc: "Billboard, katalog ve global dijital kampanyalar için uygun kurumsal kalitede çıktı."
+        }
       ],
       comparisonTitle: "Sıradan vs. Stüdyo Kalitesi",
       comparisonDesc: "Sıradan fotoğrafları nasıl yüksek dönüşümlü pazarlama görsellerine dönüştürdüğümüzü görün.",
@@ -365,6 +440,13 @@ export const translations: Record<Language, any> = {
       done: "Dışa Aktar"
     },
     config: {
+      presetsTitle: "Hızlı Başlangıç Reçeteleri",
+      presets: {
+        amazon: { label: "Amazon/E-Ticaret", desc: "Beyaz Zemin" },
+        social: { label: "Instagram/Sosyal", desc: "Pastel Pop" },
+        luxury: { label: "Lüks/Mücevher", desc: "Koyu Premium" },
+        transparent: { label: "Grafik Tasarım", desc: "Şeffaf PNG" }
+      },
       categoryTitle: "1. Ürün Kategorisi",
       sceneTitle: "2. Stüdyo Sahnesi",
       lightingTitle: "3. Işık Profili",

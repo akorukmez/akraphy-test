@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Check, CreditCard, Loader2, Zap } from 'lucide-react';
+import { X, Check, CreditCard, Loader2, Zap, ShieldCheck, Users } from 'lucide-react';
 import { CreditPackage, Language, Currency, User } from '../types';
 import { translations } from '../translations';
 
@@ -95,6 +95,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
           {packages.map((pkg) => {
              const price = pkg.prices[currency];
              const isFree = pkg.id === 'free';
+             const isStarter = pkg.id === 'starter';
              const displayPrice = price === 0 ? (lang === 'tr' ? 'Ücretsiz' : 'Free') : `${currencySymbol[currency]}${price}`;
 
              return (
@@ -105,9 +106,19 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                         ? 'border-black dark:border-white shadow-xl scale-105 z-10 bg-black dark:bg-white' 
                         : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 bg-white dark:bg-anthracite-800'}`}
                 >
+                  {/* PRO PACKAGE BADGE (Monochrome) */}
                   {pkg.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white dark:bg-black text-black dark:text-white border border-gray-200 dark:border-white/20 text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 w-max">
+                      <Users className="w-3 h-3 fill-current" />
                       {t.mostPopular}
+                    </div>
+                  )}
+
+                  {/* STARTER PACKAGE BADGE (Monochrome) */}
+                  {isStarter && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 w-max">
+                       <ShieldCheck className="w-3 h-3" />
+                       {t.satisfactionGuarantee}
                     </div>
                   )}
                   
@@ -126,7 +137,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
                   <ul className="flex-1 space-y-3 mb-6 text-left">
                     {pkg.features.map((feat, i) => (
                       <li key={i} className={`flex items-start gap-2 text-xs ${pkg.popular ? 'text-white/80 dark:text-black/80' : 'text-gray-600 dark:text-gray-300'}`}>
-                        <Check className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${pkg.popular ? 'text-white dark:text-black' : 'text-green-600 dark:text-green-400'}`} />
+                        <Check className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${pkg.popular ? 'text-white dark:text-black' : 'text-black dark:text-white'}`} />
                         <span className="leading-tight font-medium">{feat}</span>
                       </li>
                     ))}
@@ -162,7 +173,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ isOpen, onClose, onP
         </div>
         
         <div className="p-4 bg-gray-50 dark:bg-anthracite-950 text-center text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest border-t border-gray-100 dark:border-white/5">
-          Secure Payments by Stripe & Akraphy
+          {t.securePayment}
         </div>
       </div>
     </div>

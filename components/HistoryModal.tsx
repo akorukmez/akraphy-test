@@ -230,7 +230,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                         className={`w-full text-left px-4 py-2.5 text-xs font-medium flex items-center justify-between hover:bg-gray-50 dark:hover:bg-anthracite-700 transition-colors ${isActive ? 'text-black dark:text-white bg-gray-50 dark:bg-anthracite-700/50' : 'text-gray-600 dark:text-gray-300'}`}
                                      >
                                         {opt.label}
-                                        {isActive && <Check className="w-3.5 h-3.5 text-blue-500" />}
+                                        {isActive && <Check className="w-3.5 h-3.5 text-black dark:text-white" />}
                                      </button>
                                  );
                              })}
@@ -282,7 +282,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
 
                                                 <button 
                                                     onClick={(e) => handleDelete(e, item.id)}
-                                                    className="absolute top-3 right-3 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-lg z-10"
+                                                    className="absolute top-3 right-3 p-2 bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-800 shadow-lg z-10"
                                                     title={tHist.delete}
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" />
@@ -304,15 +304,15 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
 
                                                 <div className="space-y-1.5">
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                        <Tag className="w-3.5 h-3.5 text-blue-500" />
+                                                        <Tag className="w-3.5 h-3.5 text-gray-500" />
                                                         <span className="truncate">{getTranslatedData('category', item.category).label}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                        <Layers className="w-3.5 h-3.5 text-purple-500" />
+                                                        <Layers className="w-3.5 h-3.5 text-gray-500" />
                                                         <span className="truncate">{getTranslatedData('scene', item.scene).label}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                        <Zap className="w-3.5 h-3.5 text-yellow-500" />
+                                                        <Zap className="w-3.5 h-3.5 text-gray-500" />
                                                         <span className="truncate">{getTranslatedData('lighting', item.lighting).label}</span>
                                                     </div>
                                                 </div>
@@ -355,7 +355,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                                         {t.config.categoryTitle.split('.')[1] || t.config.categoryTitle}
                                                      </div>
                                                      <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                                                        <Tag className="w-3.5 h-3.5 text-blue-500" />
+                                                        <Tag className="w-3.5 h-3.5 text-gray-500" />
                                                         {categoryData.label}
                                                      </div>
                                                 </div>
@@ -366,7 +366,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
                                                      </div>
                                                      <div className="flex flex-col">
                                                         <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                                                            <Layers className="w-3.5 h-3.5 text-purple-500" />
+                                                            <Layers className="w-3.5 h-3.5 text-gray-500" />
                                                             {sceneData.label}
                                                         </div>
                                                         <div className="text-[9px] text-gray-500 dark:text-gray-400 ml-5 mt-0.5 truncate max-w-[120px]">
@@ -396,7 +396,7 @@ export const HistoryModal: React.FC<HistoryModalProps> = ({ isOpen, onClose, lan
 
                                             <button 
                                                 onClick={(e) => handleDelete(e, item.id)}
-                                                className="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                                                className="p-3 text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors"
                                                 title={tHist.delete}
                                             >
                                                 <Trash2 className="w-5 h-5" />

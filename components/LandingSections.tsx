@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import { Language, Currency, User } from '../types';
 import { translations } from '../translations';
-import { Zap, LayoutTemplate, Aperture, HelpCircle, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react';
+import { Zap, LayoutTemplate, Aperture, HelpCircle, ChevronDown, ChevronUp, ShieldCheck, ShoppingBag, Instagram, Globe, Info } from 'lucide-react';
 import { ComparisonSlider } from './ComparisonSlider';
 import { ShowcaseGallery } from './ShowcaseGallery';
 import { PricingSection } from './PricingSection';
-import { LANDING_COMPARISON } from '../data/galleryData';
 
 interface LandingSectionsProps {
   lang: Language;
@@ -17,7 +16,13 @@ interface LandingSectionsProps {
 
 export const LandingSections: React.FC<LandingSectionsProps> = ({ lang, currency = 'TRY', user, onOpenPricing }) => {
   const t = translations[lang].landing;
+  const tGeneral = translations[lang];
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
+
+  const handleBuyClick = () => {
+    onOpenPricing();
+  };
 
   const features = [
     { icon: Zap, ...t.features[0] },
@@ -26,9 +31,34 @@ export const LandingSections: React.FC<LandingSectionsProps> = ({ lang, currency
     { icon: ShieldCheck, ...t.features[3] },
   ];
 
+  const stats = [
+    { ...t.stats.images, icon: Aperture },
+    { ...t.stats.users, icon: Globe },
+    { ...t.stats.platforms, icon: ShoppingBag }
+  ];
+
   return (
-    <div className="w-full flex flex-col gap-32 pb-20">
-      <section className="max-w-7xl mx-auto px-6 pt-20">
+    <div className="w-full flex flex-col gap-24 pb-20">
+      
+      {/* TRUST STRIP (Monochrome) */}
+      <section className="w-full border-b border-gray-100 dark:border-white/5 bg-white dark:bg-anthracite-900 py-8">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {stats.map((stat: any, i: number) => (
+                <div key={i} className="flex items-center justify-center md:justify-start gap-4 p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-anthracite-800 transition-colors">
+                    <div className="w-12 h-12 bg-black dark:bg-white rounded-xl flex items-center justify-center text-white dark:text-black shadow-lg">
+                        <stat.icon className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <div className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{stat.value}</div>
+                        <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">{stat.label}</div>
+                    </div>
+                </div>
+            ))}
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight transition-colors">{t.featuresTitle}</h2>
           <div className="w-20 h-1 bg-black dark:bg-white mx-auto rounded-full"></div>
@@ -37,40 +67,75 @@ export const LandingSections: React.FC<LandingSectionsProps> = ({ lang, currency
           {features.map((f, i) => {
             const Icon = f.icon;
             return (
-              <div key={i} className="group bg-white dark:bg-anthracite-800 p-8 rounded-3xl border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-start">
-                <div className="w-14 h-14 bg-gray-50 dark:bg-anthracite-700 group-hover:bg-black dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-black rounded-2xl flex items-center justify-center mb-6 text-black dark:text-white transition-colors">
+              <div key={i} className="group relative bg-white dark:bg-anthracite-800 p-8 rounded-3xl border border-gray-100 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-start overflow-visible">
+                <div className="w-14 h-14 bg-gray-50 dark:bg-anthracite-700 group-hover:bg-black dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-black rounded-2xl flex items-center justify-center mb-6 text-black dark:text-white transition-colors duration-300">
                   <Icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">{f.title}</h3>
+                
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white flex items-center gap-2">
+                    {f.title}
+                    {/* Tech Tooltip Trigger */}
+                    <button 
+                        onMouseEnter={() => setActiveTooltip(i)}
+                        onMouseLeave={() => setActiveTooltip(null)}
+                        className="text-gray-300 hover:text-black dark:text-gray-600 dark:hover:text-white transition-colors"
+                    >
+                        <Info className="w-4 h-4" />
+                    </button>
+                </h3>
+                
                 <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-medium text-sm">{f.desc}</p>
+
+                {/* Technical Info Tooltip */}
+                {activeTooltip === i && (
+                    <div className="absolute top-full left-0 right-0 mx-4 mt-2 p-4 bg-gray-900 dark:bg-black text-white rounded-xl text-xs shadow-2xl z-20 animate-in fade-in slide-in-from-top-2 border border-white/10">
+                        <div className="font-bold text-gray-200 uppercase tracking-widest mb-1 text-[10px]">{f.techTitle}</div>
+                        <p className="leading-relaxed opacity-90">{f.techDesc}</p>
+                        {/* Little triangle arrow */}
+                        <div className="absolute -top-2 left-8 w-4 h-4 bg-gray-900 dark:bg-black rotate-45 border-l border-t border-white/10"></div>
+                    </div>
+                )}
               </div>
             );
           })}
         </div>
       </section>
 
+      {/* Comparison Showcase (Before & After) */}
       <section className="relative max-w-6xl mx-auto px-6 w-full">
         <div className="text-center mb-16">
-            <span className="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs mb-2 block">Stüdyo Kalitesi</span>
+            <span className="text-black dark:text-white font-bold tracking-widest uppercase text-xs mb-2 block opacity-50">{tGeneral.beforeAfter}</span>
             <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4 transition-colors">{t.comparisonTitle}</h2>
             <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto transition-colors">{t.comparisonDesc}</p>
         </div>
+
         <div className="w-full max-w-5xl mx-auto aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5 dark:ring-white/10 bg-gray-100 dark:bg-anthracite-800">
              <ComparisonSlider 
-                beforeImage={LANDING_COMPARISON.before} 
-                afterImage={LANDING_COMPARISON.after} 
+                beforeImage="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=2000" 
+                afterImage="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=2000" 
                 beforeLabel={translations[lang].originalSource}
                 afterLabel={translations[lang].aiResult}
                 beforeImageClassName="grayscale brightness-90 contrast-75 blur-[1px]" 
              />
         </div>
+
+        {/* Platform Badges (Monochrome) */}
+        <div className="flex flex-wrap justify-center items-center gap-8 mt-12 opacity-60 hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest">{tGeneral.compatibleWith}</div>
+            <div className="h-6 w-[1px] bg-gray-300 dark:bg-gray-700 hidden md:block"></div>
+            <span className="text-gray-500 font-bold flex items-center gap-2"><ShoppingBag className="w-4 h-4" /> Amazon</span>
+            <span className="text-gray-500 font-bold flex items-center gap-2"><Instagram className="w-4 h-4" /> Instagram</span>
+            <span className="text-gray-500 font-bold flex items-center gap-2"><Globe className="w-4 h-4" /> Shopify</span>
+        </div>
       </section>
 
-      {/* Reordered to: Gallery > Pricing > FAQ */}
+      {/* Showcase Gallery */}
       <ShowcaseGallery lang={lang} />
-      
-      <PricingSection lang={lang} onBuyClick={onOpenPricing} currency={currency} user={user} />
 
+      {/* Pricing Section */}
+      <PricingSection lang={lang} onBuyClick={handleBuyClick} currency={currency} user={user} />
+
+      {/* FAQ Section */}
       <section id="faq" className="max-w-3xl mx-auto px-6 w-full">
         <div className="text-center mb-16">
           <HelpCircle className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-6" />
@@ -78,16 +143,28 @@ export const LandingSections: React.FC<LandingSectionsProps> = ({ lang, currency
         </div>
         <div className="space-y-4">
           {t.faq.map((item, i) => (
-            <div key={i} className={`bg-white dark:bg-anthracite-800 border rounded-2xl overflow-hidden transition-all duration-300 ${openFaqIndex === i ? 'border-black dark:border-white shadow-lg ring-1 ring-black dark:ring-white' : 'border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/20'}`}>
-              <button onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)} className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-anthracite-700 transition-colors">
+            <div 
+                key={i} 
+                className={`bg-white dark:bg-anthracite-800 border rounded-2xl overflow-hidden transition-all duration-300 ${openFaqIndex === i ? 'border-black dark:border-white shadow-lg ring-1 ring-black dark:ring-white' : 'border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/20'}`}
+            >
+              <button 
+                onClick={() => setOpenFaqIndex(openFaqIndex === i ? null : i)}
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 dark:hover:bg-anthracite-700 transition-colors"
+              >
                 <h3 className="font-bold text-lg text-gray-900 dark:text-white">{item.q}</h3>
                 {openFaqIndex === i ? <ChevronUp className="w-5 h-5 text-gray-900 dark:text-white" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
               </button>
-              <div className={`px-6 text-gray-500 dark:text-gray-400 leading-relaxed overflow-hidden transition-all duration-300 ease-in-out ${openFaqIndex === i ? 'max-h-64 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}>{item.a}</div>
+              
+              <div 
+                className={`px-6 text-gray-500 dark:text-gray-400 leading-relaxed overflow-hidden transition-all duration-300 ease-in-out ${openFaqIndex === i ? 'max-h-48 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                  {item.a}
+              </div>
             </div>
           ))}
         </div>
       </section>
+
     </div>
   );
 };

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Star, Zap } from 'lucide-react';
+import { Check, Star, Zap, ShieldCheck, Users } from 'lucide-react';
 import { Language, Currency, CreditPackage, User } from '../types';
 import { translations } from '../translations';
 
@@ -95,7 +95,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ lang, onBuyClick
       <div className="max-w-7xl mx-auto px-6">
         
         <div className="text-center mb-16">
-          <span className="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs mb-2 block">
+          <span className="text-black dark:text-white font-bold tracking-widest uppercase text-xs mb-2 block opacity-50">
              {lang === 'tr' ? 'Fiyatlandırma' : 'Pricing'}
           </span>
           <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4 transition-colors">{t.pricingTitle}</h2>
@@ -115,15 +115,25 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ lang, onBuyClick
             return (
               <div 
                 key={i} 
-                className={`relative flex flex-col w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[240px] max-w-[320px] rounded-3xl p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 border ${styles.border} ${styles.color} ${styles.textColor} ${pkg.popular ? 'shadow-2xl ring-1 ring-black/5 dark:ring-white/10 scale-105 z-10' : 'hover:shadow-lg dark:shadow-none'}`}
+                className={`relative flex flex-col w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(20%-1.5rem)] min-w-[240px] max-w-[320px] rounded-2xl p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 border ${styles.border} ${styles.color} ${styles.textColor} ${pkg.popular ? 'shadow-2xl ring-1 ring-black/5 dark:ring-white/10 scale-105 z-10' : 'hover:shadow-lg dark:shadow-none'}`}
               >
+                {/* PRO: Social Proof Badge (Monochrome) */}
                 {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-current" />
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white dark:bg-black text-black dark:text-white border border-gray-200 dark:border-white/20 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1 w-max">
+                    <Users className="w-3 h-3 fill-current" />
                     {t.mostPopular}
                   </div>
                 )}
                 
+                {/* STARTER: Satisfaction Guarantee (Monochrome) */}
+                {pkg.id === 'starter' && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gray-100 dark:bg-anthracite-700 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm flex items-center gap-1 w-max">
+                    <ShieldCheck className="w-3 h-3" />
+                    {t.satisfactionGuarantee}
+                  </div>
+                )}
+
+                {/* FREE: Trial Badge (Monochrome) */}
                 {pkg.id === 'free' && (
                    <div className="absolute -top-3 left-6 bg-gray-200 dark:bg-anthracite-600 text-gray-600 dark:text-gray-300 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
                     <Zap className="w-3 h-3 fill-current" />
@@ -141,8 +151,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ lang, onBuyClick
                 <ul className="space-y-3 mb-8 flex-1 text-left">
                   {pkg.features.map((feat, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-sm">
-                      <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${pkg.popular ? 'bg-white/20 dark:bg-black/10' : (pkg.id === 'free' ? 'bg-gray-200 dark:bg-anthracite-600' : 'bg-green-100 dark:bg-green-900/30')}`}>
-                         <Check className={`w-3 h-3 ${pkg.popular ? (pkg.id === 'pro' ? 'text-current' : 'text-white') : (pkg.id === 'free' ? 'text-gray-600 dark:text-gray-300' : 'text-green-600 dark:text-green-400')}`} />
+                      <div className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${pkg.popular ? 'bg-white/20 dark:bg-black/10' : (pkg.id === 'free' ? 'bg-gray-200 dark:bg-anthracite-600' : 'bg-gray-100 dark:bg-white/10')}`}>
+                         <Check className={`w-3 h-3 ${pkg.popular ? (pkg.id === 'pro' ? 'text-current' : 'text-white') : 'text-black dark:text-white'}`} />
                       </div>
                       <span className="font-medium opacity-90 leading-tight">{feat}</span>
                     </li>

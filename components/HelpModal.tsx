@@ -44,7 +44,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, lang }) =
             {/* 1. Categories Guide */}
             <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-6">
-                    <Package className="w-5 h-5 text-blue-500" />
+                    <Package className="w-5 h-5 text-black dark:text-white" />
                     {t.guide.catTitle}
                 </h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -62,7 +62,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, lang }) =
             {/* 2. Scenes Guide */}
             <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-6">
-                    <Layers className="w-5 h-5 text-purple-500" />
+                    <Layers className="w-5 h-5 text-black dark:text-white" />
                     {t.guide.sceneTitle}
                 </h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -80,7 +80,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, lang }) =
             {/* 3. Lighting Guide */}
             <div>
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white mb-6">
-                    <Sun className="w-5 h-5 text-yellow-500" />
+                    <Sun className="w-5 h-5 text-black dark:text-white" />
                     {t.guide.lightTitle}
                 </h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -93,23 +93,21 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose, lang }) =
                 </div>
             </div>
 
-            {/* Pro Tips Box */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-anthracite-800 dark:to-anthracite-800/50 rounded-2xl p-8 border border-blue-100 dark:border-white/5 relative overflow-hidden mt-8">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-100/50 dark:bg-blue-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-                
+            {/* Pro Tips Box (Monochrome) */}
+            <div className="bg-gray-50 dark:bg-anthracite-800 rounded-2xl p-8 border border-gray-200 dark:border-white/5 relative overflow-hidden mt-8">
                 <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                             <Lightbulb className="w-5 h-5 text-blue-700 dark:text-blue-300" />
+                        <div className="p-2 bg-white dark:bg-black rounded-lg border border-gray-200 dark:border-white/10">
+                             <Lightbulb className="w-5 h-5 text-black dark:text-white" />
                         </div>
-                        <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100">{t.tipsTitle}</h3>
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-white">{t.tipsTitle}</h3>
                     </div>
                     
                     <div className="grid md:grid-cols-3 gap-6">
                         {t.tips.map((tip, i) => (
                             <div key={i} className="flex items-start gap-3">
-                                <span className="mt-2 w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"></span>
-                                <p className="text-sm text-blue-800 dark:text-blue-200/80 font-medium leading-relaxed">{tip}</p>
+                                <span className="mt-2 w-1.5 h-1.5 bg-black dark:bg-white rounded-full flex-shrink-0"></span>
+                                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium leading-relaxed">{tip}</p>
                             </div>
                         ))}
                     </div>

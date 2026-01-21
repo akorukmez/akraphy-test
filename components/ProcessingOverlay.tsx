@@ -13,7 +13,7 @@ interface ProcessingOverlayProps {
 export const ProcessingOverlay: React.FC<ProcessingOverlayProps> = ({ isProcessing, lang, batchProgress }) => {
   const [stepIndex, setStepIndex] = useState(0);
   const t = translations[lang];
-  const steps = t.loadingSteps || ["Processing..."];
+  const steps = t.loadingSteps || [t.processingStep];
 
   useEffect(() => {
     if (isProcessing) {
@@ -33,10 +33,10 @@ export const ProcessingOverlay: React.FC<ProcessingOverlayProps> = ({ isProcessi
     <div className="absolute inset-0 z-50 bg-white/95 dark:bg-anthracite-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-8 text-center rounded-[2rem] animate-in fade-in duration-500">
       
       {isMulti && (
-        <div className="absolute top-10 flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full border border-blue-200 dark:border-blue-800/50">
-          <RefreshCcw className="w-4 h-4 text-blue-600 dark:text-blue-400 animate-spin" />
-          <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
-            {batchProgress.current} / {batchProgress.total} Seans İşleniyor
+        <div className="absolute top-10 flex items-center gap-2 bg-gray-100 dark:bg-white/10 px-4 py-2 rounded-full border border-gray-200 dark:border-white/5">
+          <RefreshCcw className="w-4 h-4 text-black dark:text-white animate-spin" />
+          <span className="text-xs font-bold text-black dark:text-white">
+            {batchProgress.current} / {batchProgress.total}
           </span>
         </div>
       )}
@@ -56,7 +56,7 @@ export const ProcessingOverlay: React.FC<ProcessingOverlayProps> = ({ isProcessi
       </div>
       
       <p className="text-xs text-gray-400 font-medium tracking-widest uppercase">
-        Simulator Active
+        {t.simulatorActive}
       </p>
 
       <div className="w-48 h-1 bg-gray-100 dark:bg-white/5 rounded-full mt-8 overflow-hidden">
@@ -65,12 +65,6 @@ export const ProcessingOverlay: React.FC<ProcessingOverlayProps> = ({ isProcessi
             style={{ width: `${((stepIndex + 1) / steps.length) * 100}%` }}
         ></div>
       </div>
-
-      {isMulti && (
-        <p className="mt-6 text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
-          Toplu çekim seansı devam ediyor. Lütfen bekleyin.
-        </p>
-      )}
     </div>
   );
 };
